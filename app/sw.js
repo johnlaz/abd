@@ -1,6 +1,6 @@
 // AIM AV service worker
 // Bump this on every deploy that changes cached files — old caches are purged on activate.
-const CACHE_VERSION = "aimav-v1";
+const CACHE_VERSION = "aimav-v1.1";
 
 const APP_SHELL = [
   "./index.html",
