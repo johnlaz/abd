@@ -1,12 +1,26 @@
-# AIM AV — Booth Designer
+# AIM AV
 
-A local-first, single-file PWA for laying out AV/trade-show booths and generating photorealistic renders with AI. No backend, no build step — everything runs in the browser and persists in IndexedDB.
+A local-first booth layout and AI rendering tool for AV/event equipment, plus its landing page.
+
+## Repo structure
+
+```
+index.html           — landing page (this is the site's homepage)
+assets/images/        — landing page workflow screenshots
+app/
+  index.html           — the app itself: all HTML, CSS, JS, and the app icon (embedded as base64)
+  manifest.json         — PWA manifest (installable, icons embedded as base64, theme color)
+  sw.js                  — service worker: caches the app shell + pinned CDN libs for offline use
+```
+
+The app lives at `/app/` — on GitHub Pages that means `yoursite.com/app/`. The landing page at the repo root links to it via `./app/`. The manifest and service worker use paths relative to `/app/`, so they only need to stay next to `app/index.html`, not next to the landing page.
+
+If you move the app to a different path, update in `app/manifest.json`: `start_url`, and in `app/sw.js`: the first entry in `APP_SHELL`.
 
 ## Quick start
 
-Just open `aim-av.html` in a browser. That's it — no install, no server.
+Open `index.html` for the landing page, or go straight to `app/index.html` to use the tool. No build step, no install — deploy the folder as-is to GitHub Pages or any static host.
 
-To deploy: drop the file into a GitHub Pages repo (rename to `index.html` if you want it at the repo root) or host it anywhere that serves static files.
 
 ## What it does
 
@@ -69,18 +83,8 @@ Use **Backup** in the toolbar periodically if you want a portable copy — it's 
 - Single active project at a time (no project switcher yet)
 - No true 3D — items are flat images composited in 2D; the AI render step is what adds real dimensionality and shadows
 
-## File structure
+## File structure details
 
-Three files, still zero build tools:
+Icons are embedded directly as base64 data URIs in both `app/index.html` (favicon/apple-touch-icon) and `app/manifest.json` (install icons) — no separate `icons/` folder to keep track of.
 
-```
-aim-av.html    — the app itself: all HTML, CSS, JS, and the app icon (embedded as base64)
-manifest.json  — PWA manifest (installable, icons embedded as base64, theme color)
-sw.js          — service worker: caches the app shell + pinned CDN libs for offline use
-```
-
-Icons are embedded directly as base64 data URIs in both `aim-av.html` (favicon/apple-touch-icon) and `manifest.json` (install icons) — no separate `icons/` folder to keep track of.
-
-Deploy all three files together — the manifest and service worker reference relative paths, so they need to sit alongside `aim-av.html`. On GitHub Pages, push them as-is; if you want the app at the repo root URL, rename `aim-av.html` to `index.html` and update `start_url` in `manifest.json` and `APP_SHELL[0]` in `sw.js` to match.
-
-**Note:** the service worker only registers over `http(s)` — opening the file directly via `file://` (e.g. double-clicking it locally) still works fine as an app, it just won't install as a PWA or cache for offline use. Deploy it to GitHub Pages (or any static host) to get the full installable/offline experience.
+**Note:** the service worker only registers over `http(s)` — opening `app/index.html` directly via `file://` (e.g. double-clicking it locally) still works fine as an app, it just won't install as a PWA or cache for offline use. Deploy it to GitHub Pages (or any static host) to get the full installable/offline experience.
