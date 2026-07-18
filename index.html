@@ -3,1602 +3,300 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>AIM AV — Booth Designer</title>
-<link rel="manifest" href="manifest.json">
-<link rel="icon" type="image/png" sizes="32x32" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAFmElEQVR42p2Xy48cVxXGf9+91a95vxwciyQGEskOkoEoCyIWQSJIIFBYAIkUYANiF8gfgCyRiD+A1yoSGxaAyLBBkWCBwgoCEmIxSmQEwRobM7HHduye7pme7qp7D4vq6q6erm47lFStvo+633l+51yRPx4IjdUPnPWK3xV8UXAWlACC4lfDwfDRxGi8qvEMYIIM2DV4XVn4cbt9Y7fAVPFncWXrOZN+4pwewKx8CuNzJwHLAoykVIVIyvcKh5ntG/E7B7f2fg14ASytnvoy0nYOawFwo9P/f83H4PnIgIjkJWEWv9K++d/fqLm+/pALyY6cVoVFkJ9UawwuTWtZBW5WBj9hNQhyzmHWVhYv+Hpj+RXn9elZ4ABOYAZpFgkGIRpx+IYIwWw4B8FyuzovTkiGJCQ5IEpaiE5Oi2tbl4XOTti2pLmUAzfqCZvrLbNoNlrVpFtiNLkY1e5lHB1n1GsJlm9Hk27LbWS2q6W1U1keiKIKPMsi66stfvDSp+gepqQh4jQdjBaNes3RXF6wWjbQK6/+jb39LvWaq3JD4cqQzPU5otcPfPJDG9x8r8fPtneuffz86Zvd3kBOYMV3LpHvttPOM88+cvCJz5/6xtuv2bkPLurf19o06wlDo51MKQQ+mQU+2uREMLPDXqqvfenxty5+75lB/932AzWvDBwA0VBi/fBm67HbF3f2a907ndVgyi0lSpJOgAOQzE21Ukh452gf9GuDvYPlG7e6p73zqUoploZQf+rUO9ee2P7jfzoLC5+tNeuGmWZoPhonU1lUznMbrxlGkjhXX6jveO8veT/p18Q5aC2mWlo6J+9KWldrztgC90MypTmLNWQNSRMQRBOWgRkymxFzTDFsMh988okREYwQhrxWZpeY/8SI8OUTBLJK8HEMzNK8CCJykm41k4zNhcFGr+9q3k+IkIYgNhcHrYbPQrRJza0KPLdtQmWGanpG4l+776394fVLZ27d7dWcnJUPjDFqa62V/vPK3bVHH16bMLtVFrbCAvdRWIKhZt3xq9/948nf//nKkzHYCeGGdODFnbt9Xn7xKcKUTauzLZkPnhs/ceK4H7DjAR3vyUKuk/cOCUKwfJ932HGfXj8jcRrHAFad6mUBqkuqSJzoHg04/5ENnv3ceRZaNcxywM5hCsDKYn1IG47u0YCPndvirzvXcU7cq6RreeO0TTcT45iVIAvGF57+MI89ssYgDYCoJY4XX7gAwE9/sUMaIgLqNc/uXoffvnE5F2CG5iMBVjYetPtoJugcDohZzGtzMGrNhL+/9gIAT3z1l6T9DCUOi+ATx8pivbqTOhEZyXzw8ea15UZez50IIdJseAo23Npo0u8HvHc5+5oRijI8B1xlKp4HPiw4I5YLQzIarY3Gltf/99HGuYosmQKXVJFPqubMebWF6Th3U93rHHANWzMbFqdRqlrx2rD71b1rS8Ed9wtuZhz34+hwDeeKlivvHRyDQSCOqPheJAda3TyT5eVjvtnN4NXvf4aPPrrBYS/Fe8fDDy6DwdXrHWI0mo2EK3sHfOviG3nr5vIOeRY4KCQGVyWdpZSMVT43M97ceZcbt4/opwEh+mkeiY26B4NazbG3f0iIRt77zwS33Pt2VSubZ37onHvJzALgNeWK8ccH3QEWbeTXgunK5V8SK0uNketnXFqCk/Mxhh9pff3MQ8FrR2gVLEqlJvVEJ+NdcWGaxe35xhBsLrgkh1k7SBf88XHnoLm48o6ce97ll4ZQ6iQmGLqIdCu0tnIGMJ6vvisaKCq/mikqfv3O3uW/eMD3jzpv11tLl4R7WnLLo1vHRBt1srCosoGtSrWivXbOOWAfwjdv7+1uA94PK67vH3Xeaiy3tjFnSFuIlSFP6CS7vM9bsoEy0GVhP09D+Pad61f+VNzK/wf6TEymvDEJaQAAAABJRU5ErkJggg==">
-<link rel="icon" type="image/png" sizes="192x192" href="data:image/png;base64,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">
-<link rel="apple-touch-icon" href="data:image/png;base64,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">
-<meta name="theme-color" content="#0B0F14">
-<meta name="mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="apple-mobile-web-app-title" content="AIM AV">
+<title>AIM AV — From empty floor to finished booth</title>
+<meta name="description" content="AIM AV turns a booth photo and a few dragged icons into a photorealistic render — local-first booth layout tool for AV rental teams.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
-<script src="https://cdn.jsdelivr.net/npm/dexie@4.0.8/dist/dexie.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/konva@9.3.14/konva.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700;800&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
   :root{
-    --radius-lg:18px; --radius-md:12px; --radius-sm:8px;
+    --gold:#E8C97A; --gold-dim:rgba(232,201,122,.5); --teal:#4FD1C5;
+    --bg-a:#0B0F14; --bg-b:#151b24; --bg-c:#0d1219;
+    --text:#E9EDEF; --text-dim:rgba(233,237,239,.62); --text-faint:rgba(233,237,239,.4);
+    --glass-bg:rgba(24,30,38,.5); --glass-border:rgba(255,255,255,.09); --glass-highlight:rgba(255,255,255,.06);
   }
-  /* Dark theme (default) */
-  :root, :root[data-theme="dark"]{
-    --gold:#E8C97A; --teal:#4FD1C5;
-    --bg-a:#0B0F14; --bg-b:#151b24;
-    --text:#E4E9ED; --text-dim:rgba(228,233,237,.55);
-    --glass-bg:rgba(24,30,38,.55); --glass-bg-strong:rgba(20,25,32,.72);
-    --glass-border:rgba(255,255,255,.10); --glass-highlight:rgba(255,255,255,.07);
-    --shadow:0 8px 32px rgba(0,0,0,.45); --shadow-sm:0 2px 10px rgba(0,0,0,.3);
-    --input-bg:rgba(255,255,255,.06); --hover-bg:rgba(255,255,255,.08);
-    --canvas-bg:#1a1f26;
-    --icon-filter:none;
-  }
-  /* Light theme — deeper accent colors (the bright dark-mode gold/teal wash out
-     on light backgrounds), and a dimmer, warmer base so glass panels read as
-     distinct surfaces instead of blending into stark white. */
-  :root[data-theme="light"]{
-    --gold:#96650E; --teal:#0A7A6E;
-    --bg-a:#D6DBE2; --bg-b:#C5CCD6;
-    --text:#141922; --text-dim:rgba(20,25,34,.62);
-    --glass-bg:rgba(255,255,255,.58); --glass-bg-strong:rgba(255,255,255,.82);
-    --glass-border:rgba(15,20,30,.16); --glass-highlight:rgba(255,255,255,.9);
-    --shadow:0 8px 32px rgba(15,20,30,.18); --shadow-sm:0 2px 10px rgba(15,20,30,.12);
-    --input-bg:rgba(15,20,30,.06); --hover-bg:rgba(15,20,30,.09);
-    --canvas-bg:#e9ecef;
-    --icon-filter:brightness(.6) saturate(1.3);
-  }
-
   *{box-sizing:border-box;}
-  html,body{height:100%;margin:0;color:var(--text);font-family:'DM Sans',sans-serif;}
+  html{scroll-behavior:smooth;}
   body{
+    margin:0; color:var(--text); font-family:'DM Sans',sans-serif; background:var(--bg-a);
     background:
-      radial-gradient(circle at 15% 10%, rgba(232,201,122,.12), transparent 40%),
-      radial-gradient(circle at 85% 90%, rgba(79,209,197,.10), transparent 45%),
-      linear-gradient(160deg, var(--bg-a), var(--bg-b));
+      radial-gradient(circle at 12% 8%, rgba(232,201,122,.10), transparent 38%),
+      radial-gradient(circle at 88% 68%, rgba(79,209,197,.09), transparent 42%),
+      linear-gradient(165deg, var(--bg-a), var(--bg-b) 55%, var(--bg-c));
     background-attachment:fixed;
-    transition:background-color .2s ease, color .2s ease;
   }
-  h1,h2,h3{font-family:'Playfair Display',serif;color:var(--gold);margin:0;}
-  button{font-family:inherit;cursor:pointer;}
-  #app{height:100vh;display:flex;flex-direction:column;}
+  h1,h2,h3{font-family:'Playfair Display',serif;margin:0;color:var(--text);}
+  p{margin:0;}
+  a{color:inherit;}
+  .wrap{max-width:1180px;margin:0 auto;padding:0 28px;}
+  @media (prefers-reduced-motion: reduce){ *{animation-duration:0.001ms !important; transition-duration:0.001ms !important;} html{scroll-behavior:auto;} }
 
-  /* Glass surface — shared treatment for topbar, sidebars, modals, cards */
-  .glass{
-    background:var(--glass-bg);
-    -webkit-backdrop-filter:blur(22px) saturate(180%);
-    backdrop-filter:blur(22px) saturate(180%);
-    border:1px solid var(--glass-border);
-    box-shadow:var(--shadow), inset 0 1px 0 var(--glass-highlight);
-  }
+  /* Nav */
+  header{position:sticky;top:0;z-index:40;backdrop-filter:blur(18px) saturate(160%);-webkit-backdrop-filter:blur(18px) saturate(160%);
+    background:rgba(11,15,20,.55);border-bottom:1px solid var(--glass-border);}
+  nav{display:flex;align-items:center;justify-content:space-between;padding:16px 28px;max-width:1180px;margin:0 auto;}
+  .brand{display:flex;align-items:center;gap:10px;font-family:'Playfair Display',serif;font-weight:700;font-size:18px;letter-spacing:.01em;color:var(--gold);}
+  .brand-mark{width:30px;height:30px;border-radius:9px;background:linear-gradient(160deg,#151b24,#0B0F14);border:1px solid var(--glass-border);display:flex;align-items:center;justify-content:center;}
+  .brand-mark svg{width:16px;height:16px;}
+  .nav-cta{background:var(--gold);color:#1a1508;font-weight:600;font-size:13.5px;padding:9px 18px;border-radius:999px;text-decoration:none;
+    box-shadow:0 4px 16px rgba(232,201,122,.3);transition:transform .15s, filter .15s;}
+  .nav-cta:hover{transform:translateY(-1px);filter:brightness(1.05);}
 
-  /* Topbar */
-  #topbar{display:flex;align-items:center;justify-content:space-between;padding:12px 20px;gap:12px;flex-wrap:wrap;
-    margin:12px 12px 0 12px;border-radius:var(--radius-lg);position:relative;z-index:5;}
-  #topbar h1{font-size:19px;}
-  .btn{background:var(--input-bg);border:1px solid var(--glass-border);color:var(--text);border-radius:999px;padding:7px 14px;font-size:12.5px;transition:.15s;}
-  .btn:hover{background:var(--hover-bg);transform:translateY(-1px);}
-  .btn.primary{background:var(--gold);color:#1a1508;border-color:var(--gold);font-weight:600;box-shadow:0 4px 14px rgba(232,201,122,.35);}
-  .btn.primary:hover{filter:brightness(1.04);transform:translateY(-1px);}
-  .btn:disabled{opacity:.35;cursor:not-allowed;transform:none;}
-  .btn-row{display:flex;gap:8px;flex-wrap:wrap;align-items:center;}
-  #autosave-status{font-size:11px;color:var(--text-dim);min-width:90px;text-align:right;}
-  #theme-toggle{display:flex;align-items:center;gap:2px;background:var(--input-bg);border:1px solid var(--glass-border);border-radius:999px;padding:3px;}
-  #theme-toggle button{background:none;border:none;border-radius:999px;padding:5px 9px;font-size:13px;color:var(--text-dim);line-height:1;transition:.15s;}
-  #theme-toggle button.active{background:var(--gold);color:#1a1508;}
+  /* Hero */
+  .hero{padding:88px 0 40px;}
+  .eyebrow{display:inline-flex;align-items:center;gap:8px;font-size:11.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--teal);
+    background:rgba(79,209,197,.08);border:1px solid rgba(79,209,197,.25);padding:6px 14px;border-radius:999px;margin-bottom:22px;}
+  .eyebrow::before{content:"";width:6px;height:6px;border-radius:50%;background:var(--teal);box-shadow:0 0 8px var(--teal);}
+  h1.headline{font-size:clamp(38px, 5.4vw, 66px);line-height:1.04;font-weight:700;letter-spacing:-.01em;max-width:15ch;}
+  h1.headline em{font-style:normal;color:var(--gold);}
+  .sub{margin-top:22px;font-size:18px;line-height:1.55;color:var(--text-dim);max-width:52ch;}
+  .hero-ctas{display:flex;gap:14px;margin-top:34px;flex-wrap:wrap;}
+  .btn-primary{background:var(--gold);color:#1a1508;font-weight:600;font-size:14.5px;padding:13px 26px;border-radius:999px;text-decoration:none;
+    box-shadow:0 8px 24px rgba(232,201,122,.32);transition:transform .15s, filter .15s;display:inline-block;}
+  .btn-primary:hover{transform:translateY(-2px);filter:brightness(1.05);}
+  .btn-ghost{border:1px solid var(--glass-border);color:var(--text-dim);font-size:14.5px;padding:13px 24px;border-radius:999px;text-decoration:none;
+    transition:.15s;display:inline-block;}
+  .btn-ghost:hover{color:var(--text);border-color:rgba(255,255,255,.2);}
 
-  /* Main layout */
-  #main{flex:1;display:flex;overflow:hidden;gap:12px;padding:12px;min-height:0;}
+  /* Stage scrubber — the signature element */
+  .stage{margin-top:64px;}
+  .stage-frame{position:relative;border-radius:20px;overflow:hidden;border:1px solid var(--glass-border);
+    box-shadow:0 30px 80px rgba(0,0,0,.5), inset 0 1px 0 var(--glass-highlight);aspect-ratio:16/9.6;background:#05070a;}
+  .stage-frame img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;transition:opacity .55s ease;}
+  .stage-frame img.active{opacity:1;}
+  .stage-frame::after{content:"";position:absolute;inset:0;background:linear-gradient(0deg, rgba(5,7,10,.7) 0%, rgba(5,7,10,0) 34%);pointer-events:none;}
+  .stage-caption{position:absolute;left:24px;bottom:20px;z-index:2;}
+  .stage-caption .num{font-family:'Playfair Display',serif;color:var(--gold);font-size:13px;letter-spacing:.08em;text-transform:uppercase;}
+  .stage-caption h3{font-size:22px;color:#fff;margin-top:2px;}
+  .stage-caption p{font-size:13.5px;color:rgba(255,255,255,.75);margin-top:2px;max-width:38ch;}
 
-  /* Item Bank */
-  #itembank{width:270px;flex-shrink:0;display:flex;flex-direction:column;border-radius:var(--radius-lg);overflow:hidden;}
-  #itembank .ib-head{padding:14px;border-bottom:1px solid var(--glass-border);}
-  #itembank h2{font-size:16px;letter-spacing:.02em;}
-  #ib-search{width:100%;margin-top:8px;background:var(--input-bg);border:1px solid var(--glass-border);border-radius:var(--radius-sm);padding:7px 10px;color:var(--text);font-size:13px;}
-  #ib-search::placeholder{color:var(--text-dim);}
-  #ib-list{flex:1;overflow-y:auto;padding:10px 8px;}
-  .ib-category{margin-bottom:4px;}
-  .ib-cat-toggle{width:100%;background:none;border:none;color:var(--text-dim);font-size:11px;text-transform:uppercase;letter-spacing:.08em;padding:8px 6px;display:flex;justify-content:space-between;align-items:center;}
-  .ib-cat-toggle:hover{color:var(--text);}
-  .ib-cat-items{display:grid;grid-template-columns:1fr 1fr;gap:8px;padding:0 4px 12px;}
-  .ib-card{background:var(--input-bg);border:1px solid var(--glass-border);border-radius:var(--radius-sm);padding:8px;text-align:center;cursor:grab;transition:.15s;}
-  .ib-card:hover{border-color:rgba(232,201,122,.6);background:var(--hover-bg);transform:translateY(-1px);box-shadow:var(--shadow-sm);}
-  .ib-card img{height:60px;width:100%;object-fit:contain;pointer-events:none;filter:var(--icon-filter);}
-  .ib-card span{display:block;font-size:10.5px;line-height:1.25;margin-top:4px;color:var(--text-dim);}
-  #ib-empty{font-size:12px;color:var(--text-dim);text-align:center;padding:30px 10px;}
-  #ib-upload-wrap{padding:12px;border-top:1px solid var(--glass-border);}
-  #ib-category-select{width:100%;margin-bottom:8px;background:var(--input-bg);border:1px solid var(--glass-border);border-radius:var(--radius-sm);padding:6px 8px;color:var(--text);font-size:12px;}
-  #ib-upload-btn{width:100%;border:1px solid rgba(232,201,122,.4);color:var(--gold);border-radius:999px;padding:9px;font-size:12px;font-weight:600;background:rgba(232,201,122,.08);}
-  #ib-upload-btn:hover{background:rgba(232,201,122,.16);}
+  .stage-controls{display:flex;align-items:center;gap:18px;margin-top:22px;}
+  .stage-track{position:relative;flex:1;height:4px;border-radius:99px;background:rgba(255,255,255,.1);cursor:pointer;}
+  .stage-track-fill{position:absolute;left:0;top:0;height:100%;border-radius:99px;background:linear-gradient(90deg,var(--gold),var(--teal));
+    width:0%;transition:width .5s ease;}
+  .stage-stops{display:flex;justify-content:space-between;margin-top:12px;}
+  .stage-stop{background:none;border:none;color:var(--text-faint);font-size:12.5px;cursor:pointer;padding:4px 2px;transition:color .2s;
+    display:flex;flex-direction:column;align-items:flex-start;gap:2px;}
+  .stage-stop span.dot{width:8px;height:8px;border-radius:50%;background:rgba(255,255,255,.2);transition:.2s;}
+  .stage-stop.active{color:var(--gold);}
+  .stage-stop.active span.dot{background:var(--gold);box-shadow:0 0 8px var(--gold-dim);}
+  .stage-stop:hover{color:var(--text);}
+  .stage-nav-btn{width:38px;height:38px;border-radius:50%;border:1px solid var(--glass-border);background:var(--glass-bg);color:var(--text-dim);
+    display:flex;align-items:center;justify-content:center;cursor:pointer;flex-shrink:0;transition:.15s;}
+  .stage-nav-btn:hover{color:var(--gold);border-color:var(--gold-dim);}
 
-  /* Canvas */
-  #canvas-area{flex:1;overflow:auto;padding:8px;display:flex;align-items:flex-start;justify-content:center;min-width:0;}
-  #stage-container{background:var(--canvas-bg);border:1px solid var(--glass-border);border-radius:var(--radius-md);overflow:hidden;position:relative;box-shadow:var(--shadow);}
-  #canvas-hint{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;color:var(--text-dim);font-size:13px;pointer-events:none;}
+  /* Sections */
+  section{padding:96px 0;}
+  .section-head{max-width:46ch;margin-bottom:52px;}
+  .section-head .kicker{font-size:11.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--teal);margin-bottom:12px;display:block;}
+  .section-head h2{font-size:clamp(28px,3.4vw,38px);line-height:1.14;}
+  .section-head p{margin-top:14px;color:var(--text-dim);font-size:15.5px;line-height:1.6;}
 
-  /* BOM panel */
-  #bom{width:270px;flex-shrink:0;border-radius:var(--radius-lg);padding:16px;overflow-y:auto;}
-  #bom h3{font-size:14px;margin-bottom:10px;}
-  #bom table{width:100%;border-collapse:collapse;font-size:12.5px;}
-  #bom th{text-align:left;font-size:10.5px;text-transform:uppercase;letter-spacing:.06em;color:var(--text-dim);border-bottom:1px solid var(--glass-border);padding-bottom:6px;font-weight:500;}
-  #bom td{padding:6px 0;border-bottom:1px solid var(--glass-border);}
-  #bom-empty{font-size:12px;color:var(--text-dim);}
+  .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;}
+  @media (max-width:860px){.grid{grid-template-columns:1fr 1fr;}}
+  @media (max-width:560px){.grid{grid-template-columns:1fr;}}
+  .card{background:var(--glass-bg);-webkit-backdrop-filter:blur(20px) saturate(170%);backdrop-filter:blur(20px) saturate(170%);
+    border:1px solid var(--glass-border);border-radius:16px;padding:26px 24px;transition:transform .18s, border-color .18s;
+    box-shadow:inset 0 1px 0 var(--glass-highlight);}
+  .card:hover{transform:translateY(-3px);border-color:rgba(232,201,122,.3);}
+  .card .icon{width:38px;height:38px;border-radius:10px;background:rgba(232,201,122,.1);border:1px solid rgba(232,201,122,.25);
+    display:flex;align-items:center;justify-content:center;margin-bottom:16px;color:var(--gold);font-size:17px;}
+  .card h3{font-family:'DM Sans',sans-serif;font-weight:600;font-size:15.5px;color:var(--text);}
+  .card p{margin-top:8px;font-size:13.5px;line-height:1.55;color:var(--text-dim);}
 
-  /* Modal */
-  .modal-overlay{position:fixed;inset:0;background:rgba(10,12,16,.5);-webkit-backdrop-filter:blur(4px);backdrop-filter:blur(4px);display:flex;align-items:center;justify-content:center;z-index:50;}
-  .modal{width:420px;background:var(--glass-bg-strong);-webkit-backdrop-filter:blur(28px) saturate(180%);backdrop-filter:blur(28px) saturate(180%);
-    border:1px solid var(--glass-border);border-radius:var(--radius-lg);box-shadow:0 24px 70px rgba(0,0,0,.4), inset 0 1px 0 var(--glass-highlight);}
-  .modal-head{display:flex;justify-content:space-between;align-items:center;padding:16px 20px;border-bottom:1px solid var(--glass-border);}
-  .modal-head h3{font-size:17px;}
-  .modal-close{background:none;border:none;color:var(--text-dim);font-size:16px;}
-  .modal-close:hover{color:var(--text);}
-  .modal-body{padding:16px 20px;display:flex;flex-direction:column;gap:14px;}
-  .field label{display:block;font-size:11px;text-transform:uppercase;letter-spacing:.06em;color:var(--text-dim);margin-bottom:5px;}
-  .field input[type=text],.field textarea,.field select{width:100%;background:var(--input-bg);border:1px solid var(--glass-border);border-radius:var(--radius-sm);padding:8px 10px;color:var(--text);font-size:13px;font-family:inherit;}
-  .toggle-row{display:flex;align-items:center;gap:8px;font-size:13px;padding-top:8px;border-top:1px solid var(--glass-border);}
-  .toggle-row input{accent-color:var(--gold);}
-  .modal-foot{display:flex;justify-content:flex-end;gap:8px;padding:14px 20px;border-top:1px solid var(--glass-border);}
+  /* CTA band */
+  .cta-band{border-radius:24px;background:linear-gradient(135deg, rgba(232,201,122,.1), rgba(79,209,197,.07));
+    border:1px solid var(--glass-border);padding:56px;text-align:center;box-shadow:inset 0 1px 0 var(--glass-highlight);}
+  .cta-band h2{font-size:clamp(26px,3.2vw,36px);max-width:24ch;margin:0 auto;}
+  .cta-band p{margin-top:14px;color:var(--text-dim);font-size:15px;}
+  .cta-band .hero-ctas{justify-content:center;margin-top:28px;}
 
-  #toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:var(--glass-bg-strong);-webkit-backdrop-filter:blur(20px) saturate(180%);backdrop-filter:blur(20px) saturate(180%);
-    border:1px solid var(--glass-border);border-radius:999px;padding:10px 18px;font-size:12.5px;color:var(--text);opacity:0;transition:opacity .25s;pointer-events:none;z-index:100;box-shadow:var(--shadow);}
-  #toast.show{opacity:1;}
+  footer{border-top:1px solid var(--glass-border);padding:36px 0;margin-top:20px;}
+  footer .wrap{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;}
+  footer .fnote{font-size:12.5px;color:var(--text-faint);}
+
+  @keyframes riseIn{from{opacity:0;transform:translateY(14px);}to{opacity:1;transform:translateY(0);}}
+  .rise{animation:riseIn .7s ease both;}
+  .rise-delay-1{animation-delay:.08s;}
+  .rise-delay-2{animation-delay:.16s;}
+  .rise-delay-3{animation-delay:.24s;}
 </style>
 </head>
 <body>
-<script>
-  // Applied before first paint to avoid a flash of the wrong theme.
-  (function(){
-    var saved = localStorage.getItem("aimav-theme"); // "light" | "dark" | null (= system)
-    var effective = saved || (window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
-    document.documentElement.setAttribute("data-theme", effective);
-  })();
-</script>
-<div id="app">
 
-  <div id="topbar" class="glass">
-    <h1>AIM AV — Booth Designer</h1>
-    <div class="btn-row">
-      <label class="btn">Load Floor Plan<input type="file" id="base-image-input" accept="image/*" hidden></label>
-      <button class="btn" id="undo-btn" disabled>Undo</button>
-      <button class="btn" id="redo-btn" disabled>Redo</button>
-      <span style="width:1px;height:20px;background:var(--glass-border);"></span>
-      <button class="btn" id="flip-h-btn" title="Flip selected item horizontally">Flip ↔</button>
-      <button class="btn" id="flip-v-btn" title="Flip selected item vertically">Flip ↕</button>
-      <button class="btn" id="rotate-ccw-btn" title="Rotate -90°">⟲ 90°</button>
-      <button class="btn" id="rotate-cw-btn" title="Rotate +90°">⟳ 90°</button>
-      <input type="number" id="rotation-input" placeholder="°" title="Exact rotation in degrees"
-        style="width:56px;background:var(--input-bg);border:1px solid var(--glass-border);border-radius:var(--radius-sm);color:var(--text);font-size:12px;padding:6px 4px;text-align:center;">
-      <span style="width:1px;height:20px;background:var(--glass-border);"></span>
-      <button class="btn" id="settings-btn">Settings</button>
-      <button class="btn primary" id="export-btn">Export PNG</button>
-      <button class="btn" id="ai-notes-btn" title="Extra instructions for the AI render (colors, added props, staffing, etc.)">📝 Render Notes</button>
-      <button class="btn" id="ai-render-btn" style="border-color:rgba(79,209,197,.5);color:var(--teal);">✨ Render with AI</button>
-      <button class="btn" id="backup-btn">Backup</button>
-      <label class="btn">Restore<input type="file" id="restore-input" accept="application/json" hidden></label>
-      <span id="autosave-status">Loading…</span>
-      <div id="theme-toggle" title="Theme">
-        <button data-theme-choice="system" title="Match system">🖥️</button>
-        <button data-theme-choice="light" title="Light">☀️</button>
-        <button data-theme-choice="dark" title="Dark">🌙</button>
+<header>
+  <nav>
+    <div class="brand">
+      <span class="brand-mark">
+        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <rect x="3" y="3" width="18" height="13" rx="2" stroke="#E8C97A" stroke-width="1.6"/>
+          <path d="M9 20h6M12 16v4" stroke="#E8C97A" stroke-width="1.6" stroke-linecap="round"/>
+        </svg>
+      </span>
+      AIM AV
+    </div>
+    <a class="nav-cta" href="./app/">Open the Designer</a>
+  </nav>
+</header>
+
+<main>
+  <div class="wrap hero">
+    <span class="eyebrow rise">Local-first booth designer</span>
+    <h1 class="headline rise rise-delay-1">From empty floor to <em>finished booth.</em></h1>
+    <p class="sub rise rise-delay-2">
+      AIM AV turns a booth photo and a few dragged icons into a photorealistic render your client can
+      actually picture — built for AV rental teams who quote fast and need to show, not just tell.
+    </p>
+    <div class="hero-ctas rise rise-delay-3">
+      <a class="btn-primary" href="./app/">Open the Designer</a>
+      <a class="btn-ghost" href="#how-it-works">See how it works</a>
+    </div>
+
+    <div class="stage rise rise-delay-3" id="how-it-works">
+      <div class="stage-frame">
+        <img src="assets/images/workflow-1-load.jpg" alt="Original empty booth structure" data-stage="1">
+        <img src="assets/images/workflow-2-placement.jpg" alt="AV equipment icons placed on the booth layout" data-stage="2">
+        <img src="assets/images/workflow-3-render.jpg" alt="Final AI-rendered photorealistic booth" data-stage="3">
+        <div class="stage-caption">
+          <div class="num" id="stage-num">Stage 1 / 3</div>
+          <h3 id="stage-title">Load your booth</h3>
+          <p id="stage-desc">Start from a floor plan, an empty booth photo, or nothing at all.</p>
+        </div>
+      </div>
+
+      <div class="stage-controls">
+        <button class="stage-nav-btn" id="stage-prev" aria-label="Previous stage">‹</button>
+        <div class="stage-track" id="stage-track"><div class="stage-track-fill" id="stage-fill"></div></div>
+        <button class="stage-nav-btn" id="stage-next" aria-label="Next stage">›</button>
+      </div>
+      <div class="stage-stops">
+        <button class="stage-stop" data-stage="1"><span class="dot"></span>01 — Load</button>
+        <button class="stage-stop" data-stage="2"><span class="dot"></span>02 — Place</button>
+        <button class="stage-stop" data-stage="3"><span class="dot"></span>03 — Render</button>
       </div>
     </div>
   </div>
 
-  <div id="main">
-    <aside id="itembank" class="glass">
-      <div class="ib-head">
-        <h2>Item Bank</h2>
-        <input id="ib-search" type="text" placeholder="Search items…">
+  <section>
+    <div class="wrap">
+      <div class="section-head">
+        <span class="kicker">Why teams use it</span>
+        <h2>Everything runs in your browser.</h2>
+        <p>No account, no install, no server. Your projects, your library, and your API key all stay local — the only thing that ever leaves your machine is the render request you trigger yourself.</p>
       </div>
-      <div id="ib-list"></div>
-      <div id="ib-upload-wrap">
-        <select id="ib-category-select">
-          <option>Display Systems</option>
-          <option>Kiosks</option>
-          <option>Projection</option>
-          <option>Audio</option>
-          <option>Computers</option>
-          <option>Networking</option>
-          <option>Mobile Devices</option>
-          <option>Furniture</option>
-          <option>Staging</option>
-          <option>Truss</option>
-          <option>Lighting</option>
-          <option>Accessories</option>
-          <option>Custom</option>
-        </select>
-        <button id="ib-upload-btn">+ Upload PNG to Library</button>
-        <input type="file" id="ib-file-input" accept="image/png" multiple hidden>
-      </div>
-    </aside>
-
-    <div id="canvas-area">
-      <div id="stage-container">
-        <div id="canvas-hint">Drag items from the bank onto the canvas</div>
+      <div class="grid">
+        <div class="card">
+          <div class="icon">▦</div>
+          <h3>40+ item library</h3>
+          <p>Generic displays, kiosks, staging, lighting, and furniture — freely resizable, so one icon covers every real-world size instead of a fixed SKU.</p>
+        </div>
+        <div class="card">
+          <div class="icon">✨</div>
+          <h3>One-click AI render</h3>
+          <p>Send the layout to Gemini and get back a photorealistic booth photo with correct shadows, materials, and lighting — while your placement stays exact.</p>
+        </div>
+        <div class="card">
+          <div class="icon">☰</div>
+          <h3>Auto bill of materials</h3>
+          <p>Every item on the canvas is tallied by name and category automatically. No manual counting, no separate spreadsheet.</p>
+        </div>
+        <div class="card">
+          <div class="icon">⌘</div>
+          <h3>Drag, resize, rotate, flip</h3>
+          <p>Full 360° rotation, mirroring on either axis, and undo/redo — the canvas behaves like a real design tool, not a static mockup.</p>
+        </div>
+        <div class="card">
+          <div class="icon">◧</div>
+          <h3>Autosaves as you work</h3>
+          <p>Every change is saved to your browser automatically. Close the tab, come back later, and your project is exactly where you left it.</p>
+        </div>
+        <div class="card">
+          <div class="icon">⇩</div>
+          <h3>Installable, works offline</h3>
+          <p>Add it to your home screen or desktop. Once loaded, the layout tool keeps working without a connection.</p>
+        </div>
       </div>
     </div>
+  </section>
 
-    <aside id="bom" class="glass">
-      <h3>Bill of Materials</h3>
-      <div id="bom-content"><p id="bom-empty">No items placed yet.</p></div>
-    </aside>
+  <section>
+    <div class="wrap">
+      <div class="cta-band">
+        <h2>Show the client the booth before it's built.</h2>
+        <p>Free to use — bring your own Gemini API key for AI renders.</p>
+        <div class="hero-ctas">
+          <a class="btn-primary" href="./app/">Open the Designer</a>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="fnote">AIM AV — part of the TRS AV toolkit.</div>
+    <div class="fnote">Built local-first. No account required.</div>
   </div>
-</div>
-
-<div id="toast"></div>
+</footer>
 
 <script>
 (function(){
-"use strict";
-
-/* ---------------------------------------------------------------------
-   THEME — defaults to system preference; user choice persists locally
-   and overrides system until they pick "system" again.
---------------------------------------------------------------------- */
-function applyTheme(choice){
-  const effective = choice === "system"
-    ? (window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light")
-    : choice;
-  document.documentElement.setAttribute("data-theme", effective);
-  document.querySelectorAll("#theme-toggle button").forEach(b =>
-    b.classList.toggle("active", b.dataset.themeChoice === choice));
-}
-function currentThemeChoice(){
-  return localStorage.getItem("aimav-theme") || "system";
-}
-document.querySelectorAll("#theme-toggle button").forEach(btn => {
-  btn.addEventListener("click", () => {
-    const choice = btn.dataset.themeChoice;
-    if (choice === "system") localStorage.removeItem("aimav-theme");
-    else localStorage.setItem("aimav-theme", choice);
-    applyTheme(choice);
-  });
-});
-applyTheme(currentThemeChoice());
-window.matchMedia("(prefers-color-scheme: dark)").addEventListener("change", () => {
-  if (currentThemeChoice() === "system") applyTheme("system");
-});
-
-/* ---------------------------------------------------------------------
-   CDN LOAD GUARD — fail loud instead of silently leaving the UI blank
---------------------------------------------------------------------- */
-const missing = [];
-if (typeof Dexie === "undefined") missing.push("Dexie");
-if (typeof Konva === "undefined") missing.push("Konva");
-if (typeof html2canvas === "undefined") missing.push("html2canvas");
-if (missing.length) {
-  document.body.innerHTML =
-    '<div style="padding:40px;font-family:sans-serif;color:#CBD5D9;background:#0B0F14;height:100vh;">' +
-    '<h2 style="color:#E8C97A;">Couldn\u2019t load required libraries</h2>' +
-    '<p>' + missing.join(", ") + ' failed to load from the CDN. Check your internet connection and refresh. ' +
-    'If this keeps happening, the CDN may be blocked on this network.</p></div>';
-  throw new Error("Missing dependencies: " + missing.join(", "));
-}
-
-/* ---------------------------------------------------------------------
-   DATABASE
---------------------------------------------------------------------- */
-const db = new Dexie("AimAvDB");
-db.version(1).stores({
-  assets: "++id, name, category, source, createdAt",
-  projects: "++id, name, updatedAt",
-  settings: "id"
-});
-db.on("populate", () => {
-  db.settings.put({ id: "app", defaultCompanyName: "", lastProjectId: 1 });
-});
-
-const PROJECT_ID = 1; // single always-on project for the local-first MVP
-const STAGE_W = 1400, STAGE_H = 900;
-const HISTORY_LIMIT = 50;
-
-/* ---------------------------------------------------------------------
-   STATE
---------------------------------------------------------------------- */
-const state = {
-  baseImageBlob: null,
-  layout: [],                 // [{instanceId, assetId, x, y, width, height, rotation, zIndex}]
-  meta: { companyName:"", clientName:"", notes:"", showMetadata:true, showWatermark:false, aiNotes:"" },
-  history: [], historyIndex: -1,
-  dirty: false,
-  selectedInstanceId: null,
-};
-
-let saveTimer = null;
-function markDirty(){
-  state.dirty = true;
-  setStatus("Unsaved changes…");
-  clearTimeout(saveTimer);
-  saveTimer = setTimeout(saveProject, 500); // debounced autosave
-}
-
-function pushHistory(){
-  const snapshot = JSON.parse(JSON.stringify(state.layout));
-  state.history = state.history.slice(0, state.historyIndex + 1);
-  state.history.push(snapshot);
-  if (state.history.length > HISTORY_LIMIT) state.history.shift();
-  state.historyIndex = state.history.length - 1;
-  updateUndoRedoButtons();
-}
-
-function undo(){
-  if (state.historyIndex <= 0) return;
-  state.historyIndex--;
-  restoreLayoutSnapshot(state.history[state.historyIndex]);
-}
-function redo(){
-  if (state.historyIndex >= state.history.length - 1) return;
-  state.historyIndex++;
-  restoreLayoutSnapshot(state.history[state.historyIndex]);
-}
-function restoreLayoutSnapshot(snapshot){
-  state.layout = JSON.parse(JSON.stringify(snapshot));
-  rebuildCanvasNodes();
-  renderBOM();
-  updateUndoRedoButtons();
-  markDirty();
-}
-function updateUndoRedoButtons(){
-  document.getElementById("undo-btn").disabled = state.historyIndex <= 0;
-  document.getElementById("redo-btn").disabled = state.historyIndex >= state.history.length - 1;
-}
-
-/* ---------------------------------------------------------------------
-   PERSISTENCE (autosave / load)
---------------------------------------------------------------------- */
-async function saveProject(){
-  await db.projects.put({
-    id: PROJECT_ID,
-    name: "Active Project",
-    baseImage: state.baseImageBlob || null,
-    layout: state.layout,
-    meta: state.meta,
-    updatedAt: Date.now()
-  });
-  state.dirty = false;
-  setStatus("Saved " + new Date().toLocaleTimeString());
-}
-
-async function loadProject(){
-  const proj = await db.projects.get(PROJECT_ID);
-  if (!proj) { setStatus("Ready"); return; }
-  state.baseImageBlob = proj.baseImage || null;
-  state.layout = proj.layout || [];
-  state.meta = proj.meta || state.meta;
-  if (state.baseImageBlob) await setBaseImage(state.baseImageBlob, false);
-  await rebuildCanvasNodes();
-  pushHistory();
-  renderBOM();
-  setStatus("Loaded");
-}
-
-function setStatus(text){
-  document.getElementById("autosave-status").textContent = text;
-}
-
-/* ---------------------------------------------------------------------
-   UNSAVED CHANGES GUARD
---------------------------------------------------------------------- */
-window.addEventListener("beforeunload", (e) => {
-  if (!state.dirty) return;
-  e.preventDefault();
-  e.returnValue = "";
-});
-
-/* ---------------------------------------------------------------------
-   KONVA STAGE
---------------------------------------------------------------------- */
-const stageContainer = document.getElementById("stage-container");
-stageContainer.style.width = STAGE_W + "px";
-stageContainer.style.height = STAGE_H + "px";
-
-const stage = new Konva.Stage({ container: "stage-container", width: STAGE_W, height: STAGE_H });
-const baseLayer = new Konva.Layer();
-const itemLayer = new Konva.Layer();
-stage.add(baseLayer);
-stage.add(itemLayer);
-
-const transformer = new Konva.Transformer({ rotateEnabled:true, keepRatio:false,
-  boundBoxFunc:(oldBox,newBox)=> (newBox.width<20||newBox.height<20) ? oldBox : newBox });
-itemLayer.add(transformer);
-
-let baseImageNode = null;
-const konvaNodesByInstanceId = new Map();
-
-stage.on("mousedown touchstart", (e) => {
-  if (e.target === stage) {
-    transformer.nodes([]);
-    state.selectedInstanceId = null;
-    itemLayer.draw();
-    syncRotationInput();
-  }
-});
-
-async function setBaseImage(blob, autosave = true){
-  state.baseImageBlob = blob;
-  const img = await loadHtmlImage(blob);
-  if (baseImageNode) baseImageNode.destroy();
-  baseImageNode = new Konva.Image({ image: img, x:0, y:0, width: STAGE_W, height: STAGE_H, listening:false });
-  baseLayer.destroyChildren();
-  baseLayer.add(baseImageNode);
-  baseLayer.draw();
-  document.getElementById("canvas-hint").style.display = "none";
-  if (autosave) markDirty();
-}
-
-function loadHtmlImage(blob){
-  return new Promise((resolve, reject) => {
-    const url = URL.createObjectURL(blob);
-    const img = new Image();
-    img.onload = () => { resolve(img); };
-    img.onerror = reject;
-    img.src = url;
-  });
-}
-
-async function addPlacedItem(asset, x, y){
-  const instanceId = (crypto.randomUUID ? crypto.randomUUID() : String(Date.now()+Math.random()));
-  const item = {
-    instanceId, assetId: asset.id,
-    x, y,
-    width: asset.defaultWidth || 160, height: asset.defaultHeight || 160,
-    rotation: 0, flipX: false, flipY: false, zIndex: state.layout.length
-  };
-  state.layout.push(item);
-  await addKonvaNodeForItem(item, asset.image);
-  pushHistory();
-  renderBOM();
-  markDirty();
-}
-
-// Mirroring is done by pre-drawing a flipped copy of the source image onto a
-// canvas, rather than using Konva's scaleX/scaleY(-1). Keeping flip separate
-// from the Transformer's own scale-based resize math avoids the handle and
-// bounding-box glitches that negative scale values tend to cause.
-function applyFlip(img, flipX, flipY){
-  if (!flipX && !flipY) return img;
-  const w = img.naturalWidth || img.width, h = img.naturalHeight || img.height;
-  const canvas = document.createElement("canvas");
-  canvas.width = w; canvas.height = h;
-  const ctx = canvas.getContext("2d");
-  ctx.translate(flipX ? w : 0, flipY ? h : 0);
-  ctx.scale(flipX ? -1 : 1, flipY ? -1 : 1);
-  ctx.drawImage(img, 0, 0);
-  return canvas;
-}
-
-async function addKonvaNodeForItem(item, imageBlob){
-  let blob = imageBlob;
-  if (!blob) {
-    const asset = await db.assets.get(item.assetId);
-    if (!asset) return;
-    blob = asset.image;
-  }
-  const img = await loadHtmlImage(blob);
-  const node = new Konva.Image({
-    image: applyFlip(img, item.flipX, item.flipY),
-    x:item.x, y:item.y, width:item.width, height:item.height,
-    rotation:item.rotation, draggable:true
-  });
-  node._sourceImg = img; // keep the unflipped original so we can re-flip on toggle
-  node.on("click tap", () => selectNode(node, item.instanceId));
-  node.on("dragend", () => {
-    item.x = node.x(); item.y = node.y();
-    pushHistory(); markDirty();
-  });
-  node.on("transformend", () => {
-    const sx = node.scaleX(), sy = node.scaleY();
-    node.scaleX(1); node.scaleY(1);
-    item.width = Math.max(20, node.width()*sx);
-    item.height = Math.max(20, node.height()*sy);
-    item.rotation = node.rotation();
-    node.width(item.width); node.height(item.height);
-    syncRotationInput();
-    pushHistory(); markDirty();
-  });
-  konvaNodesByInstanceId.set(item.instanceId, node);
-  itemLayer.add(node);
-  transformer.moveToTop();
-  itemLayer.draw();
-}
-
-function selectNode(node, instanceId){
-  state.selectedInstanceId = instanceId;
-  transformer.nodes([node]);
-  transformer.moveToTop();
-  itemLayer.draw();
-  syncRotationInput();
-}
-
-/* Flip / rotate actions on the current selection ----------------------- */
-function getSelected(){
-  const id = state.selectedInstanceId;
-  if (!id) return null;
-  const node = konvaNodesByInstanceId.get(id);
-  const item = state.layout.find(it => it.instanceId === id);
-  return node && item ? { node, item } : null;
-}
-
-function flipSelected(axis){
-  const sel = getSelected();
-  if (!sel) { showToast("Select an item first"); return; }
-  const { node, item } = sel;
-  if (axis === "x") item.flipX = !item.flipX; else item.flipY = !item.flipY;
-  node.image(applyFlip(node._sourceImg, item.flipX, item.flipY));
-  itemLayer.draw();
-  pushHistory(); markDirty();
-}
-
-function rotateSelectedBy(deg){
-  const sel = getSelected();
-  if (!sel) { showToast("Select an item first"); return; }
-  const { node, item } = sel;
-  const next = ((node.rotation() + deg) % 360 + 360) % 360;
-  node.rotation(next);
-  item.rotation = next;
-  itemLayer.draw();
-  syncRotationInput();
-  pushHistory(); markDirty();
-}
-
-function setSelectedRotation(deg){
-  const sel = getSelected();
-  if (!sel) return;
-  const { node, item } = sel;
-  const next = ((deg % 360) + 360) % 360;
-  node.rotation(next);
-  item.rotation = next;
-  itemLayer.draw();
-  pushHistory(); markDirty();
-}
-
-function syncRotationInput(){
-  const input = document.getElementById("rotation-input");
-  if (!input) return;
-  const sel = getSelected();
-  input.value = sel ? Math.round(sel.node.rotation()) : "";
-}
-
-async function rebuildCanvasNodes(){
-  konvaNodesByInstanceId.forEach(n => n.destroy());
-  konvaNodesByInstanceId.clear();
-  transformer.nodes([]);
-  for (const item of state.layout) {
-    await addKonvaNodeForItem(item);
-  }
-  itemLayer.draw();
-}
-
-// Drag from Item Bank onto the stage container
-stageContainer.addEventListener("dragover", (e) => e.preventDefault());
-stageContainer.addEventListener("drop", async (e) => {
-  e.preventDefault();
-  const assetId = Number(e.dataTransfer.getData("application/x-asset-id"));
-  if (!assetId) return;
-  const asset = await db.assets.get(assetId);
-  if (!asset) return;
-  const rect = stageContainer.getBoundingClientRect();
-  const x = e.clientX - rect.left;
-  const y = e.clientY - rect.top;
-  addPlacedItem(asset, x - (asset.defaultWidth||160)/2, y - (asset.defaultHeight||160)/2);
-});
-
-/* ---------------------------------------------------------------------
-   SEED CATALOG — generic, resolution-independent AV icon library.
-   These are simple vector shapes (not fixed-aspect photos), so every item
-   drags in at a sensible default size and then scales freely to whatever
-   the booth actually needs — a "monitor" here is just a rectangle, not a
-   specific model.
---------------------------------------------------------------------- */
-const GOLD = "#E8C97A", TEAL = "#4FD1C5", GLASS = `${TEAL}" fill-opacity="0.18`;
-
-function ports(n, startX, y, w, h, gap){
-  return Array.from({length:n}).map((_,i) =>
-    `<rect x="${startX + i*(w+gap)}" y="${y}" width="${w}" height="${h}" rx="2" fill="${GOLD}"/>`
-  ).join("");
-}
-
-const SEED_LIBRARY = [
-  // ---- v1 (original set) --------------------------------------------
-  { version: 1, name: "Flat Panel Display", category: "Display Systems", defaultWidth: 180, defaultHeight: 118,
-    aiHint: "a generic flat-panel LCD/LED display monitor, no visible mount — used as a base display before a mount type is chosen",
-    svg: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 130">
-      <rect x="10" y="10" width="180" height="100" rx="8" fill="none" stroke="${GOLD}" stroke-width="6"/>
-      <rect x="22" y="22" width="156" height="76" fill="${GLASS}"/>
-      <rect x="92" y="112" width="16" height="10" fill="${GOLD}"/>
-      <rect x="60" y="122" width="80" height="7" rx="3.5" fill="${GOLD}"/>
-    </svg>` },
-
-  { version: 1, name: "55\" Touch Kiosk Display", category: "Kiosks", defaultWidth: 110, defaultHeight: 200,
-    aiHint: "an interactive touchscreen kiosk: a large vertical touch display mounted on a slim pedestal arm/stand with a stable weighted floor base — NOT an art pedestal or plinth, the screen is the dominant element and must show a UI (buttons/menu), the stand is a slender support arm, not a solid tapering block",
-    svg: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 140 260">
-      <rect x="20" y="10" width="100" height="150" rx="6" fill="none" stroke="${GOLD}" stroke-width="6"/>
-      <rect x="32" y="22" width="76" height="126" fill="${GLASS}"/>
-      <rect x="42" y="34" width="56" height="14" rx="3" fill="${GOLD}" fill-opacity="0.7"/>
-      <rect x="42" y="54" width="24" height="18" rx="3" fill="${TEAL}" fill-opacity="0.4" stroke="${GOLD}" stroke-width="2"/>
-      <rect x="74" y="54" width="24" height="18" rx="3" fill="${TEAL}" fill-opacity="0.4" stroke="${GOLD}" stroke-width="2"/>
-      <circle cx="70" cy="130" r="10" fill="none" stroke="${GOLD}" stroke-width="3"/>
-      <path d="M70 130 l10 10" stroke="${GOLD}" stroke-width="3" stroke-linecap="round"/>
-      <rect x="63" y="160" width="14" height="66" fill="${GOLD}"/>
-      <ellipse cx="70" cy="234" rx="46" ry="10" fill="none" stroke="${GOLD}" stroke-width="6"/>
-    </svg>` },
-
-  { version: 1, name: "Vertical Wayfinding Kiosk", category: "Kiosks", defaultWidth: 78, defaultHeight: 200,
-    aiHint: "a slim tall freestanding directory/wayfinding kiosk with a narrow touchscreen at the top and a slender enclosed column base, sign-post style",
-    svg: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 260">
-      <rect x="15" y="10" width="70" height="185" rx="10" fill="none" stroke="${GOLD}" stroke-width="6"/>
-      <rect x="27" y="22" width="46" height="161" fill="${GLASS}"/>
-      <rect x="30" y="203" width="40" height="34" fill="none" stroke="${GOLD}" stroke-width="6"/>
-      <rect x="8" y="244" width="84" height="10" rx="5" fill="${GOLD}"/>
-    </svg>` },
-
-  { version: 1, name: "2x2 Video Wall Array", category: "Display Systems", defaultWidth: 240, defaultHeight: 175,
-    aiHint: "a 2x2 grid of large display panels mounted together on a truss frame to form one seamless video wall",
-    svg: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 260 190">
-      <rect x="8" y="8" width="244" height="10" fill="${GOLD}"/>
-      <rect x="8" y="172" width="244" height="10" fill="${GOLD}"/>
-      <rect x="8" y="8" width="10" height="174" fill="${GOLD}"/>
-      <rect x="242" y="8" width="10" height="174" fill="${GOLD}"/>
-      <rect x="30" y="28" width="94" height="64" fill="${GLASS}" stroke="${GOLD}" stroke-width="4"/>
-      <rect x="136" y="28" width="94" height="64" fill="${GLASS}" stroke="${GOLD}" stroke-width="4"/>
-      <rect x="30" y="102" width="94" height="64" fill="${GLASS}" stroke="${GOLD}" stroke-width="4"/>
-      <rect x="136" y="102" width="94" height="64" fill="${GLASS}" stroke="${GOLD}" stroke-width="4"/>
-    </svg>` },
-
-  { version: 1, name: "Digital Lectern / Data Input", category: "Kiosks", defaultWidth: 140, defaultHeight: 140,
-    aiHint: "an angled podium-style lectern with a built-in tilted touchscreen data-entry panel on top, used for sign-in or registration",
-    svg: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
-      <path d="M40 188 L58 62 L142 62 L160 188 Z" fill="none" stroke="${GOLD}" stroke-width="6" stroke-linejoin="round"/>
-      <rect x="52" y="28" width="96" height="46" rx="6" fill="${GLASS}" stroke="${GOLD}" stroke-width="5" transform="rotate(-7 100 51)"/>
-    </svg>` },
-
-  { version: 1, name: "Transparent Product Case", category: "Display Systems", defaultWidth: 170, defaultHeight: 130,
-    aiHint: "a museum-style glass display case with a dark base and clear glass sides/lid for showcasing a physical product",
-    svg: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 220 180">
-      <polygon points="20,80 58,42 200,42 162,80" fill="${GLASS}" stroke="${GOLD}" stroke-width="5"/>
-      <rect x="20" y="80" width="142" height="88" fill="${TEAL}" fill-opacity="0.08" stroke="${GOLD}" stroke-width="5"/>
-      <polygon points="162,80 200,42 200,130 162,168" fill="${GLASS}" stroke="${GOLD}" stroke-width="5"/>
-    </svg>` },
-
-  { version: 1, name: "Mobile PA System", category: "Audio", defaultWidth: 100, defaultHeight: 160,
-    aiHint: "a freestanding portable PA speaker column/cabinet on a pole stand",
-    svg: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 140 220">
-      <rect x="20" y="10" width="100" height="190" rx="10" fill="none" stroke="${GOLD}" stroke-width="6"/>
-      <circle cx="70" cy="60" r="28" fill="${GLASS}" stroke="${GOLD}" stroke-width="5"/>
-      <circle cx="70" cy="142" r="44" fill="${GLASS}" stroke="${GOLD}" stroke-width="5"/>
-    </svg>` },
-
-  { version: 1, name: "Compact Line Array Element", category: "Audio", defaultWidth: 160, defaultHeight: 90,
-    aiHint: "a curved line-array speaker cabinet module, the kind rigged/flown in stacked rows above a stage",
-    svg: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 220 120">
-      <path d="M20 20 Q110 -6 200 20 L200 58 Q110 34 20 58 Z" fill="${GLASS}" stroke="${GOLD}" stroke-width="5"/>
-      <path d="M20 58 Q110 34 200 58 L200 96 Q110 72 20 96 Z" fill="${TEAL}" fill-opacity="0.08" stroke="${GOLD}" stroke-width="5"/>
-    </svg>` },
-
-  { version: 1, name: "Network & Media Hub", category: "Networking", defaultWidth: 180, defaultHeight: 74,
-    aiHint: "a rack-mount network switch / AV media hub with visible port rows, sits on a shelf or in a rack, not user-facing",
-    svg: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 220 90">
-      <rect x="10" y="14" width="200" height="62" rx="6" fill="none" stroke="${GOLD}" stroke-width="6"/>
-      ${ports(10, 22, 30, 14, 14, 4.6)}
-      ${ports(10, 22, 52, 14, 14, 4.6)}
-    </svg>` },
-
-  // ---- v2 (expanded set) ----------------------------------------------
-  { version: 2, name: "Wall Mounted Display", category: "Display Systems", defaultWidth: 170, defaultHeight: 110,
-    aiHint: "a flat-panel display flush-mounted directly against a wall on a thin low-profile bracket, no visible legs or floor stand",
-    svg: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 130">
-      <rect x="6" y="6" width="188" height="118" fill="${TEAL}" fill-opacity="0.05"/>
-      <rect x="18" y="16" width="164" height="94" rx="6" fill="none" stroke="${GOLD}" stroke-width="6"/>
-      <rect x="28" y="26" width="144" height="74" fill="${GLASS}"/>
-      <rect x="90" y="112" width="20" height="6" fill="${GOLD}"/>
-    </svg>` },
-
-  { version: 2, name: "Table Top Display", category: "Display Systems", defaultWidth: 130, defaultHeight: 100,
-    aiHint: "a small monitor sitting on a short countertop stand/foot, meant to rest on a table or counter surface rather than the floor",
-    svg: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 180 150">
-      <rect x="18" y="10" width="144" height="92" rx="7" fill="none" stroke="${GOLD}" stroke-width="6"/>
-      <rect x="30" y="22" width="120" height="68" fill="${GLASS}"/>
-      <rect x="80" y="102" width="20" height="14" fill="${GOLD}"/>
-      <rect x="50" y="116" width="80" height="10" rx="5" fill="${GOLD}"/>
-      <rect x="30" y="132" width="120" height="8" rx="4" fill="none" stroke="${GOLD}" stroke-width="3"/>
-    </svg>` },
-
-  { version: 2, name: "Display on Floor Stand", category: "Display Systems", defaultWidth: 130, defaultHeight: 200,
-    aiHint: "a flat-panel display mounted on a tall freestanding mobile floor stand/cart with a wide weighted base, passive (non-touch) — distinct from a kiosk because it has no interactive UI or enclosure, just a screen on a pole",
-    svg: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 260">
-      <rect x="20" y="10" width="120" height="80" rx="6" fill="none" stroke="${GOLD}" stroke-width="6"/>
-      <rect x="30" y="20" width="100" height="60" fill="${GLASS}"/>
-      <rect x="72" y="90" width="16" height="120" fill="${GOLD}"/>
-      <ellipse cx="80" cy="228" rx="56" ry="12" fill="none" stroke="${GOLD}" stroke-width="6"/>
-    </svg>` },
-
-  { version: 2, name: "Display Mount / Stand (Accessory)", category: "Accessories", defaultWidth: 80, defaultHeight: 190,
-    aiHint: "a bare mounting pole/stand accessory with no screen attached — used underneath a separately-placed Flat Panel Display to compose a custom display-on-stand configuration",
-    svg: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 230">
-      <rect x="42" y="10" width="16" height="180" fill="${GOLD}"/>
-      <rect x="20" y="0" width="60" height="14" rx="4" fill="none" stroke="${GOLD}" stroke-width="4"/>
-      <ellipse cx="50" cy="204" rx="42" ry="10" fill="none" stroke="${GOLD}" stroke-width="6"/>
-    </svg>` },
-
-  { version: 2, name: "Cable Ramp / Floor Cover", category: "Accessories", defaultWidth: 140, defaultHeight: 40,
-    aiHint: "a low rubber cable-management ramp laid flat on the floor, ADA-compliant cable cover strip",
-    svg: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 60">
-      <rect x="4" y="20" width="192" height="20" rx="6" fill="${GLASS}" stroke="${GOLD}" stroke-width="4"/>
-      <line x1="20" y1="20" x2="20" y2="40" stroke="${GOLD}" stroke-width="2"/>
-      <line x1="60" y1="20" x2="60" y2="40" stroke="${GOLD}" stroke-width="2"/>
-      <line x1="100" y1="20" x2="100" y2="40" stroke="${GOLD}" stroke-width="2"/>
-      <line x1="140" y1="20" x2="140" y2="40" stroke="${GOLD}" stroke-width="2"/>
-      <line x1="180" y1="20" x2="180" y2="40" stroke="${GOLD}" stroke-width="2"/>
-    </svg>` },
-
-  { version: 2, name: "Road Case / Equipment Case", category: "Accessories", defaultWidth: 120, defaultHeight: 90,
-    aiHint: "a black rectangular flight/road case with metal corner reinforcements, used as backstage equipment storage or a low platform",
-    svg: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 170 130">
-      <rect x="8" y="8" width="154" height="114" rx="6" fill="${TEAL}" fill-opacity="0.06" stroke="${GOLD}" stroke-width="6"/>
-      <rect x="8" y="8" width="20" height="20" fill="${GOLD}"/>
-      <rect x="142" y="8" width="20" height="20" fill="${GOLD}"/>
-      <rect x="8" y="102" width="20" height="20" fill="${GOLD}"/>
-      <rect x="142" y="102" width="20" height="20" fill="${GOLD}"/>
-      <rect x="60" y="50" width="50" height="10" rx="5" fill="${GOLD}"/>
-    </svg>` },
-
-  { version: 2, name: "Portable Projection Screen (Tripod)", category: "Projection", defaultWidth: 130, defaultHeight: 200,
-    aiHint: "a fabric projection screen stretched on a frame, supported by a folding tripod stand on each side, portable trade-show style",
-    svg: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 240">
-      <rect x="20" y="10" width="120" height="160" fill="${TEAL}" fill-opacity="0.06" stroke="${GOLD}" stroke-width="6"/>
-      <path d="M30 170 L20 220 M30 170 L45 220" stroke="${GOLD}" stroke-width="5" fill="none"/>
-      <path d="M130 170 L120 220 M130 170 L145 220" stroke="${GOLD}" stroke-width="5" fill="none"/>
-    </svg>` },
-
-  { version: 2, name: "Fixed Frame Projection Screen", category: "Projection", defaultWidth: 200, defaultHeight: 130,
-    aiHint: "a large wall-mounted fixed-frame projection screen with a rigid velvet-edged border, flush against a wall, no visible stand",
-    svg: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 160">
-      <rect x="6" y="6" width="228" height="148" fill="none" stroke="${GOLD}" stroke-width="10"/>
-      <rect x="20" y="20" width="200" height="120" fill="${TEAL}" fill-opacity="0.06"/>
-    </svg>` },
-
-  { version: 2, name: "Stage Platform / Riser", category: "Staging", defaultWidth: 220, defaultHeight: 100,
-    aiHint: "a raised modular stage deck platform/riser panel, flat rectangular elevated stage surface with visible skirt on the front face",
-    svg: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 120">
-      <polygon points="20,20 220,20 240,50 40,50" fill="${GLASS}" stroke="${GOLD}" stroke-width="5"/>
-      <rect x="40" y="50" width="200" height="55" fill="${TEAL}" fill-opacity="0.05" stroke="${GOLD}" stroke-width="5"/>
-    </svg>` },
-
-  { version: 2, name: "Stage Steps", category: "Staging", defaultWidth: 110, defaultHeight: 90,
-    aiHint: "a short set of stairs/steps used to access a raised stage platform",
-    svg: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 140 110">
-      <path d="M10 100 L10 80 L45 80 L45 55 L80 55 L80 30 L115 30 L115 10 L130 10 L130 100 Z"
-        fill="${GLASS}" stroke="${GOLD}" stroke-width="5" stroke-linejoin="round"/>
-    </svg>` },
-
-  { version: 2, name: "Truss Support Tower", category: "Truss", defaultWidth: 60, defaultHeight: 220,
-    aiHint: "a vertical box-truss ground support tower that holds up a horizontal truss span or lighting rig",
-    svg: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 70 260">
-      <line x1="12" y1="10" x2="12" y2="250" stroke="${GOLD}" stroke-width="6"/>
-      <line x1="58" y1="10" x2="58" y2="250" stroke="${GOLD}" stroke-width="6"/>
-      <path d="M12 10 L58 40 L12 70 L58 100 L12 130 L58 160 L12 190 L58 220 L12 250"
-        fill="none" stroke="${GOLD}" stroke-width="3.5"/>
-      <rect x="4" y="250" width="62" height="10" rx="3" fill="${GOLD}"/>
-    </svg>` },
-
-  { version: 2, name: "LED Uplight", category: "Lighting", defaultWidth: 55, defaultHeight: 70,
-    aiHint: "a small battery-powered LED uplight/par can, a compact low box light placed on the floor to wash color up a wall or truss leg",
-    svg: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 70 90">
-      <rect x="10" y="30" width="50" height="50" rx="8" fill="none" stroke="${GOLD}" stroke-width="6"/>
-      <ellipse cx="35" cy="30" rx="25" ry="8" fill="${GLASS}" stroke="${GOLD}" stroke-width="4"/>
-      <circle cx="35" cy="55" r="12" fill="${TEAL}" fill-opacity="0.3"/>
-    </svg>` },
-
-  { version: 2, name: "Leko / Ellipsoidal Spotlight", category: "Lighting", defaultWidth: 90, defaultHeight: 70,
-    aiHint: "a theatrical ellipsoidal (leko) spotlight fixture — a barrel-shaped lens housing angled on a yoke mount, typically rigged pointing down from truss",
-    svg: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 100">
-      <path d="M20 20 L80 40 L80 65 L20 45 Z" fill="none" stroke="${GOLD}" stroke-width="6" stroke-linejoin="round"/>
-      <circle cx="20" cy="32" r="14" fill="${GLASS}" stroke="${GOLD}" stroke-width="4"/>
-      <path d="M50 15 Q50 0 65 5 M50 68 Q50 83 65 78" stroke="${GOLD}" stroke-width="5" fill="none"/>
-    </svg>` },
-
-  { version: 2, name: "Lighting Tree", category: "Lighting", defaultWidth: 90, defaultHeight: 220,
-    aiHint: "a vertical freestanding lighting stand/T-bar tree with several small par light fixtures mounted along its crossbar, used when no truss is present",
-    svg: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 110 260">
-      <line x1="55" y1="10" x2="55" y2="230" stroke="${GOLD}" stroke-width="6"/>
-      <line x1="15" y1="30" x2="95" y2="30" stroke="${GOLD}" stroke-width="6"/>
-      <rect x="8" y="20" width="16" height="20" rx="3" fill="${GLASS}" stroke="${GOLD}" stroke-width="3"/>
-      <rect x="47" y="20" width="16" height="20" rx="3" fill="${GLASS}" stroke="${GOLD}" stroke-width="3"/>
-      <rect x="86" y="20" width="16" height="20" rx="3" fill="${GLASS}" stroke="${GOLD}" stroke-width="3"/>
-      <ellipse cx="55" cy="240" rx="40" ry="10" fill="none" stroke="${GOLD}" stroke-width="6"/>
-    </svg>` },
-
-  { version: 2, name: "Staging Truss Segment", category: "Truss", defaultWidth: 220, defaultHeight: 70,
-    aiHint: "a straight horizontal box-truss segment, used to span between towers or frame a video wall/booth header",
-    svg: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 80">
-      <line x1="10" y1="14" x2="230" y2="14" stroke="${GOLD}" stroke-width="6"/>
-      <line x1="10" y1="66" x2="230" y2="66" stroke="${GOLD}" stroke-width="6"/>
-      <path d="M10 14 L30 66 L50 14 L70 66 L90 14 L110 66 L130 14 L150 66 L170 14 L190 66 L210 14 L230 66"
-        fill="none" stroke="${GOLD}" stroke-width="4"/>
-    </svg>` },
-
-  { version: 2, name: "Large Venue Laser Projector", category: "Projection", defaultWidth: 170, defaultHeight: 110,
-    aiHint: "a large ceiling or truss-mounted laser projector unit with a visible lens, typically projecting onto a screen or wall",
-    svg: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 220 140">
-      <rect x="18" y="32" width="150" height="66" rx="14" fill="none" stroke="${GOLD}" stroke-width="6"/>
-      <circle cx="176" cy="65" r="30" fill="${GLASS}" stroke="${GOLD}" stroke-width="6"/>
-      <circle cx="176" cy="65" r="12" fill="${GOLD}"/>
-      <rect x="38" y="14" width="10" height="20" fill="${GOLD}"/>
-    </svg>` },
-
-  // ---- v3 (computers, furniture, and TRS AV real-inventory categories) ----
-  { version: 3, name: "Desktop Computer Workstation", category: "Computers", defaultWidth: 160, defaultHeight: 120,
-    aiHint: "a complete desktop computer workstation: a CPU tower case next to a monitor and keyboard, sitting on a desk/counter surface",
-    svg: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 220 160">
-      <rect x="10" y="30" width="42" height="110" rx="6" fill="${GLASS}" stroke="${GOLD}" stroke-width="5"/>
-      <circle cx="31" cy="48" r="4" fill="${GOLD}"/>
-      <rect x="70" y="18" width="130" height="82" rx="6" fill="none" stroke="${GOLD}" stroke-width="6"/>
-      <rect x="80" y="28" width="110" height="62" fill="${GLASS}"/>
-      <rect x="120" y="100" width="20" height="10" fill="${GOLD}"/>
-      <rect x="70" y="114" width="130" height="16" rx="4" fill="none" stroke="${GOLD}" stroke-width="4"/>
-    </svg>` },
-
-  { version: 3, name: "Laptop Computer", category: "Computers", defaultWidth: 150, defaultHeight: 100,
-    aiHint: "a single open clamshell laptop sitting flat on a table, screen tilted up",
-    svg: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 140">
-      <path d="M40 110 L50 30 L150 30 L160 110 Z" fill="none" stroke="${GOLD}" stroke-width="6" stroke-linejoin="round"/>
-      <path d="M52 40 L146 40 L152 100 L46 100 Z" fill="${GLASS}"/>
-      <path d="M20 110 L180 110 L190 128 L10 128 Z" fill="none" stroke="${GOLD}" stroke-width="5" stroke-linejoin="round"/>
-    </svg>` },
-
-  { version: 3, name: "Chair (Top-Down)", category: "Furniture", defaultWidth: 70, defaultHeight: 70,
-    aiHint: "a single event/conference chair, shown top-down for floor-plan placement — render as a realistic upholstered or stacking event chair viewed from the appropriate angle for the scene",
-    svg: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
-      <rect x="15" y="15" width="70" height="70" rx="14" fill="${GLASS}" stroke="${GOLD}" stroke-width="6"/>
-      <rect x="15" y="15" width="70" height="16" rx="8" fill="${GOLD}" fill-opacity="0.5"/>
-    </svg>` },
-
-  { version: 3, name: "Rectangular Table (Top-Down)", category: "Furniture", defaultWidth: 180, defaultHeight: 100,
-    aiHint: "a rectangular event/meeting table, shown top-down for floor-plan placement — render as a realistic draped or laminate event table from the appropriate angle for the scene",
-    svg: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 220 130">
-      <rect x="10" y="10" width="200" height="110" rx="10" fill="${GLASS}" stroke="${GOLD}" stroke-width="6"/>
-    </svg>` },
-
-  { version: 3, name: "Round Table (Top-Down)", category: "Furniture", defaultWidth: 140, defaultHeight: 140,
-    aiHint: "a round event/cocktail table, shown top-down for floor-plan placement — render as a realistic round event table from the appropriate angle for the scene",
-    svg: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 160">
-      <circle cx="80" cy="80" r="70" fill="${GLASS}" stroke="${GOLD}" stroke-width="6"/>
-    </svg>` },
-
-  { version: 3, name: "Wireless Microphone & Stand", category: "Audio", defaultWidth: 60, defaultHeight: 190,
-    aiHint: "a handheld wireless microphone mounted on a slim floor stand with a tripod base",
-    svg: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 230">
-      <ellipse cx="40" cy="26" rx="16" ry="22" fill="${GLASS}" stroke="${GOLD}" stroke-width="5"/>
-      <line x1="40" y1="48" x2="40" y2="190" stroke="${GOLD}" stroke-width="5"/>
-      <path d="M40 190 L10 220 M40 190 L70 220 M40 190 L40 226" stroke="${GOLD}" stroke-width="5" fill="none" stroke-linecap="round"/>
-    </svg>` },
-
-  { version: 3, name: "LED Tile Wall", category: "Display Systems", defaultWidth: 260, defaultHeight: 160,
-    aiHint: "a large seamless modular LED video wall built from many small LED tiles, no visible truss framing (unlike the 2x2 Video Wall Array) — a single continuous bright display surface",
-    svg: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 280 180">
-      <rect x="8" y="8" width="264" height="164" fill="${GLASS}" stroke="${GOLD}" stroke-width="5"/>
-      ${Array.from({length:6}).map((_,i)=>`<line x1="${8+i*44}" y1="8" x2="${8+i*44}" y2="172" stroke="${GOLD}" stroke-opacity="0.25" stroke-width="1.5"/>`).join("")}
-      ${Array.from({length:4}).map((_,i)=>`<line x1="8" y1="${8+i*41}" x2="272" y2="${8+i*41}" stroke="${GOLD}" stroke-opacity="0.25" stroke-width="1.5"/>`).join("")}
-    </svg>` },
-
-  { version: 3, name: "Horizontal Touch Kiosk (Tabletop)", category: "Kiosks", defaultWidth: 180, defaultHeight: 120,
-    aiHint: "a large flat interactive touch table — the screen is mostly horizontal like a tabletop surface, low profile base underneath, multiple users can interact from around it — distinct from the vertical 55\" Touch Kiosk which stands upright",
-    svg: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 220 150">
-      <polygon points="20,50 170,50 200,90 50,90" fill="${GLASS}" stroke="${GOLD}" stroke-width="5"/>
-      <rect x="50" y="90" width="150" height="40" fill="${TEAL}" fill-opacity="0.06" stroke="${GOLD}" stroke-width="5"/>
-    </svg>` },
-
-  { version: 3, name: "Mobile WiFi / Internet Hotspot", category: "Networking", defaultWidth: 55, defaultHeight: 55,
-    aiHint: "a small compact mobile WiFi/cellular hotspot device, pocket-sized, sitting on a table or counter",
-    svg: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 90 90">
-      <rect x="22" y="34" width="46" height="46" rx="10" fill="${GLASS}" stroke="${GOLD}" stroke-width="5"/>
-      <circle cx="45" cy="57" r="6" fill="${GOLD}"/>
-      <path d="M28 30 Q45 8 62 30" stroke="${GOLD}" stroke-width="4" fill="none"/>
-      <path d="M34 30 Q45 16 56 30" stroke="${GOLD}" stroke-width="4" fill="none"/>
-    </svg>` },
-
-  { version: 3, name: "Tablet on Countertop Stand", category: "Mobile Devices", defaultWidth: 70, defaultHeight: 100,
-    aiHint: "a small tablet/iPad mounted upright on a short countertop stand, used for surveys, registration, or quick interactions",
-    svg: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 140">
-      <rect x="22" y="8" width="56" height="86" rx="8" fill="none" stroke="${GOLD}" stroke-width="5"/>
-      <rect x="30" y="16" width="40" height="70" fill="${GLASS}"/>
-      <path d="M50 94 L30 124 L70 124 Z" fill="none" stroke="${GOLD}" stroke-width="5" stroke-linejoin="round"/>
-    </svg>` },
-];
-
-function svgToDataUrl(svg){
-  return "data:image/svg+xml;charset=utf-8," + encodeURIComponent(svg);
-}
-
-async function rasterizeSvg(svg, targetW){
-  const img = await loadImageFromSrc(svgToDataUrl(svg));
-  const aspect = img.naturalHeight / img.naturalWidth || 1;
-  const w = targetW, h = Math.round(targetW * aspect);
-  const canvas = document.createElement("canvas");
-  canvas.width = w; canvas.height = h;
-  canvas.getContext("2d").drawImage(img, 0, 0, w, h);
-  const image = await new Promise(res => canvas.toBlob(res, "image/png"));
-
-  const tW = 160, tH = Math.round(160 * aspect);
-  const tCanvas = document.createElement("canvas");
-  tCanvas.width = tW; tCanvas.height = tH;
-  tCanvas.getContext("2d").drawImage(img, 0, 0, tW, tH);
-  const thumbnail = await new Promise(res => tCanvas.toBlob(res, "image/png"));
-
-  return { image, thumbnail };
-}
-
-async function seedCatalogIfNeeded(){
-  const settingsRow = await db.settings.get("app");
-  // Migrate from the old boolean flag: anyone already seeded had v1 items only.
-  let appliedVersion = (settingsRow && settingsRow.catalogSeedVersion) || 0;
-  if (!appliedVersion && settingsRow && settingsRow.catalogSeeded) appliedVersion = 1;
-
-  const pending = SEED_LIBRARY.filter(def => def.version > appliedVersion);
-  if (!pending.length) {
-    if (appliedVersion !== (settingsRow && settingsRow.catalogSeedVersion)) {
-      await db.settings.put({ ...(settingsRow || { id: "app" }), catalogSeedVersion: appliedVersion });
-    }
-    return;
+  "use strict";
+  const stages = [
+    { title: "Load your booth", desc: "Start from a floor plan, an empty booth photo, or nothing at all." },
+    { title: "Place your equipment", desc: "Drag items from the library onto the canvas, resize and rotate to fit." },
+    { title: "Render with AI", desc: "One click turns the placeholder layout into a photorealistic preview." },
+  ];
+
+  let current = 1;
+  const images = document.querySelectorAll(".stage-frame img");
+  const stops = document.querySelectorAll(".stage-stop");
+  const fill = document.getElementById("stage-fill");
+  const numEl = document.getElementById("stage-num");
+  const titleEl = document.getElementById("stage-title");
+  const descEl = document.getElementById("stage-desc");
+  const track = document.getElementById("stage-track");
+
+  function setStage(n){
+    current = Math.min(3, Math.max(1, n));
+    images.forEach(img => img.classList.toggle("active", Number(img.dataset.stage) === current));
+    stops.forEach(s => s.classList.toggle("active", Number(s.dataset.stage) === current));
+    fill.style.width = ((current - 1) / 2 * 100) + "%";
+    numEl.textContent = `Stage ${current} / 3`;
+    const s = stages[current - 1];
+    titleEl.textContent = s.title;
+    descEl.textContent = s.desc;
   }
 
-  for (const def of pending) {
-    const { image, thumbnail } = await rasterizeSvg(def.svg, 320);
-    await db.assets.add({
-      name: def.name, category: def.category, source: "catalog",
-      aiHint: def.aiHint || "",
-      image, thumbnail,
-      defaultWidth: def.defaultWidth, defaultHeight: def.defaultHeight,
-      createdAt: Date.now()
-    });
-  }
-  const maxVersion = Math.max(...SEED_LIBRARY.map(d => d.version));
-  await db.settings.put({ ...(settingsRow || { id: "app" }), catalogSeedVersion: maxVersion });
-}
+  stops.forEach(btn => btn.addEventListener("click", () => setStage(Number(btn.dataset.stage))));
+  document.getElementById("stage-prev").addEventListener("click", () => setStage(current - 1));
+  document.getElementById("stage-next").addEventListener("click", () => setStage(current + 1));
 
-/* ---------------------------------------------------------------------
-   ITEM BANK
---------------------------------------------------------------------- */
-let ibSearchTerm = "";
-
-async function renderItemBank(){
-  const list = document.getElementById("ib-list");
-  const assets = await db.assets.toArray();
-  const filtered = ibSearchTerm
-    ? assets.filter(a => a.name.toLowerCase().includes(ibSearchTerm.toLowerCase()))
-    : assets;
-
-  const groups = {};
-  filtered.forEach(a => { (groups[a.category] ??= []).push(a); });
-
-  list.innerHTML = "";
-  const catNames = Object.keys(groups);
-  if (catNames.length === 0) {
-    list.innerHTML = '<p id="ib-empty">No items yet. Upload one below to start your library.</p>';
-    return;
-  }
-
-  catNames.forEach(cat => {
-    const wrap = document.createElement("div");
-    wrap.className = "ib-category";
-    const toggle = document.createElement("button");
-    toggle.className = "ib-cat-toggle";
-    toggle.innerHTML = `<span>${escapeHtml(cat)}</span><span>›</span>`;
-    const itemsWrap = document.createElement("div");
-    itemsWrap.className = "ib-cat-items";
-    toggle.addEventListener("click", () => {
-      itemsWrap.style.display = itemsWrap.style.display === "none" ? "grid" : "none";
-    });
-
-    groups[cat].forEach(asset => {
-      const card = document.createElement("div");
-      card.className = "ib-card";
-      card.draggable = true;
-      card.title = asset.name;
-      const img = document.createElement("img");
-      img.src = URL.createObjectURL(asset.thumbnail);
-      const label = document.createElement("span");
-      label.textContent = asset.name;
-      card.appendChild(img);
-      card.appendChild(label);
-      card.addEventListener("dragstart", (e) => {
-        e.dataTransfer.setData("application/x-asset-id", String(asset.id));
-      });
-      itemsWrap.appendChild(card);
-    });
-
-    wrap.appendChild(toggle);
-    wrap.appendChild(itemsWrap);
-    list.appendChild(wrap);
-  });
-}
-
-document.getElementById("ib-search").addEventListener("input", (e) => {
-  ibSearchTerm = e.target.value;
-  renderItemBank();
-});
-
-document.getElementById("ib-upload-btn").addEventListener("click", () => {
-  document.getElementById("ib-file-input").click();
-});
-document.getElementById("ib-file-input").addEventListener("change", async (e) => {
-  const files = Array.from(e.target.files || []);
-  const category = document.getElementById("ib-category-select").value;
-  for (const file of files) {
-    if (!file.type.startsWith("image/")) continue;
-    const { width, height } = await getImageDimensions(file);
-    const thumbnail = await makeThumbnail(file, 160);
-    await db.assets.add({
-      name: file.name.replace(/\.[^/.]+$/, ""),
-      category, source: "custom",
-      image: file, thumbnail,
-      defaultWidth: Math.min(width, 240),
-      defaultHeight: Math.min(height, 240 * (height / width || 1)),
-      createdAt: Date.now()
-    });
-  }
-  e.target.value = "";
-  renderItemBank();
-  showToast(`Added ${files.length} item(s) to the library`);
-});
-
-function getImageDimensions(file){
-  return new Promise((resolve) => {
-    const url = URL.createObjectURL(file);
-    const img = new Image();
-    img.onload = () => { resolve({width:img.naturalWidth, height:img.naturalHeight}); URL.revokeObjectURL(url); };
-    img.src = url;
-  });
-}
-function makeThumbnail(file, maxSize){
-  return new Promise((resolve) => {
-    const url = URL.createObjectURL(file);
-    const img = new Image();
-    img.onload = () => {
-      const scale = Math.min(maxSize/img.naturalWidth, maxSize/img.naturalHeight, 1);
-      const w = Math.round(img.naturalWidth*scale), h = Math.round(img.naturalHeight*scale);
-      const canvas = document.createElement("canvas");
-      canvas.width = w; canvas.height = h;
-      canvas.getContext("2d").drawImage(img, 0, 0, w, h);
-      canvas.toBlob(blob => { URL.revokeObjectURL(url); resolve(blob); }, "image/png");
-    };
-    img.src = url;
-  });
-}
-
-/* ---------------------------------------------------------------------
-   BILL OF MATERIALS
---------------------------------------------------------------------- */
-async function renderBOM(){
-  const el = document.getElementById("bom-content");
-  if (!state.layout.length) {
-    el.innerHTML = '<p id="bom-empty">No items placed yet.</p>';
-    return;
-  }
-  const counts = new Map();
-  state.layout.forEach(item => counts.set(item.assetId, (counts.get(item.assetId)||0)+1));
-  const assetIds = [...counts.keys()];
-  const assets = await db.assets.bulkGet(assetIds);
-  const rows = assets.map((a,i) => a ? ({name:a.name, category:a.category, qty:counts.get(assetIds[i])}) : null)
-    .filter(Boolean)
-    .sort((a,b) => a.category.localeCompare(b.category) || a.name.localeCompare(b.name));
-
-  if (!rows.length) { el.innerHTML = '<p id="bom-empty">No items placed yet.</p>'; return; }
-
-  let html = '<table><thead><tr><th>Qty</th><th>Item</th><th>Category</th></tr></thead><tbody>';
-  rows.forEach(r => {
-    html += `<tr><td>${r.qty}x</td><td>${escapeHtml(r.name)}</td><td style="color:rgba(255,255,255,.5)">${escapeHtml(r.category)}</td></tr>`;
-  });
-  html += "</tbody></table>";
-  el.innerHTML = html;
-}
-
-/* ---------------------------------------------------------------------
-   EXPORT (Konva -> composite header/footer/watermark -> PNG download)
---------------------------------------------------------------------- */
-document.getElementById("export-btn").addEventListener("click", async () => {
-  transformer.nodes([]); itemLayer.draw(); // hide selection handles for the export
-  const layoutDataUrl = stage.toDataURL({ pixelRatio: 2, mimeType: "image/png" });
-  const layoutImg = await loadImageFromSrc(layoutDataUrl);
-  const finalDataUrl = compositeWithHeaderFooter(layoutImg, state.meta, { width: layoutImg.width, height: layoutImg.height });
-  downloadDataUrl(finalDataUrl, `${(state.meta.companyName||"aim-av").replace(/\s+/g,"-")}-booth-layout.png`);
-});
-
-/* ---------------------------------------------------------------------
-   AI RENDER (Gemini 2.5 Flash Image / "Nano Banana")
-   Sends a flattened snapshot of the current layout as a reference image
-   and asks Gemini to re-render it as a photorealistic booth photo while
-   preserving item positions, proportions, and counts. This is a
-   presentation output — the vector layout stays the source of truth for
-   the BOM and exact placement, since generative renders can drift slightly
-   run to run.
---------------------------------------------------------------------- */
-const GEMINI_MODEL = "gemini-3.1-flash-image"; // default / fallback — actual model used is read from Settings
-
-const AI_RENDER_PROMPT = `This image is a flat 2D schematic mockup of a trade show / AV booth layout,
-built from simple placeholder icons on a floor plan or booth photo background.
-
-Re-render this as a single photorealistic, professional trade show booth photograph:
-- Keep every item in the exact same position, scale, and proportion as shown
-- Do not add, remove, duplicate, or move any items
-- An "ITEM LEGEND" is provided below identifying exactly what each placeholder icon
-  represents, roughly where it sits in the frame, and its drawn size. Use these
-  identities directly — do NOT guess an item's type from its silhouette alone, since
-  several placeholder icons look visually similar (e.g. a touch kiosk's pedestal is
-  NOT an art/museum pedestal — render it as an interactive touchscreen kiosk on a
-  slim support stand)
-- CRITICAL — SIZE: the user has deliberately drawn each item at the exact footprint
-  they want it to occupy in the final booth. The size given for each item in the
-  legend (as a percentage of the frame) is authoritative. Do NOT default to a
-  "standard" or "typical" real-world size for that equipment category — if the user
-  drew a display larger or smaller than a standard unit, render it at that drawn
-  size, scaled consistently against the other items and the background
-- Replace each flat icon with a realistic version of its labeled equipment type, using
-  neutral modern materials (matte black, brushed aluminum, dark glass) unless the
-  background image implies a different finish
-- Add realistic contact shadows, soft ambient occlusion, and reflections appropriate
-  to a well-lit indoor trade show hall
-- Match the perspective and lighting of the background/floor plan if one is visible
-- Professional product photography quality, sharp focus, no text or watermarks`;
-
-/** Builds a per-item "what is this, where, and how big" legend so Gemini doesn't
- *  have to guess an item's identity or scale from icon shape alone (source of
- *  prior misreads, e.g. a kiosk pedestal read as an art pedestal). */
-async function buildItemLegend(){
-  const rows = await Promise.all(state.layout.map(async (item, i) => {
-    const asset = await db.assets.get(item.assetId);
-    if (!asset) return null;
-    const cx = Math.round(((item.x + item.width / 2) / STAGE_W) * 100);
-    const cy = Math.round(((item.y + item.height / 2) / STAGE_H) * 100);
-    const wPct = Math.round((item.width / STAGE_W) * 100);
-    const hPct = Math.round((item.height / STAGE_H) * 100);
-    const hint = asset.aiHint ? ` — ${asset.aiHint}` : "";
-    return `${i + 1}. "${asset.name}" (${asset.category})${hint}\n   Position: ~${cx}% from left, ~${cy}% from top. Size: ~${wPct}% of frame width × ${hPct}% of frame height. Rotation: ${Math.round(item.rotation)}°.`;
-  }));
-  return rows.filter(Boolean).join("\n");
-}
-
-document.getElementById("ai-notes-btn").addEventListener("click", openAiNotesModal);
-
-function openAiNotesModal(){
-  const overlay = document.createElement("div");
-  overlay.className = "modal-overlay";
-  overlay.innerHTML = `
-    <div class="modal">
-      <div class="modal-head"><h3>Render Notes</h3><button class="modal-close">✕</button></div>
-      <div class="modal-body">
-        <div class="field">
-          <label>Extra instructions for the AI render</label>
-          <textarea id="m-ai-notes" rows="6" placeholder="e.g. Uplights should be blue. Put a rifle scope in the transparent case. Add a few people walking near the booth. Carpet should be dark gray, not black."></textarea>
-        </div>
-        <p style="font-size:11.5px;color:var(--text-dim);">
-          These apply to every AI render of this project until you change or clear them —
-          they're saved alongside your other project settings.
-        </p>
-      </div>
-      <div class="modal-foot">
-        <button class="btn" id="m-ai-notes-cancel">Cancel</button>
-        <button class="btn primary" id="m-ai-notes-save">Save</button>
-      </div>
-    </div>`;
-  document.body.appendChild(overlay);
-  overlay.querySelector("#m-ai-notes").value = state.meta.aiNotes || "";
-
-  const close = () => overlay.remove();
-  overlay.querySelector(".modal-close").addEventListener("click", close);
-  overlay.querySelector("#m-ai-notes-cancel").addEventListener("click", close);
-  overlay.addEventListener("click", (e) => { if (e.target === overlay) close(); });
-  overlay.querySelector("#m-ai-notes-save").addEventListener("click", () => {
-    state.meta.aiNotes = overlay.querySelector("#m-ai-notes").value;
-    markDirty();
-    close();
-  });
-}
-
-document.getElementById("ai-render-btn").addEventListener("click", async () => {
-  const btn = document.getElementById("ai-render-btn");
-  const settingsRow = await db.settings.get("app");
-  const apiKey = settingsRow && settingsRow.geminiApiKey;
-  const model = (settingsRow && settingsRow.geminiModel) || GEMINI_MODEL;
-  const endpoint = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent`;
-
-  if (!apiKey) {
-    showToast("Add a Gemini API key in Settings first");
-    openSettingsModal();
-    return;
-  }
-  if (!state.layout.length) {
-    showToast("Place at least one item before rendering");
-    return;
-  }
-
-  transformer.nodes([]); itemLayer.draw();
-  const layoutDataUrl = stage.toDataURL({ pixelRatio: 2, mimeType: "image/png" });
-  const base64 = layoutDataUrl.split(",")[1];
-  const legend = await buildItemLegend();
-  let fullPrompt = `${AI_RENDER_PROMPT}\n\nITEM LEGEND:\n${legend}`;
-  if (state.meta.aiNotes && state.meta.aiNotes.trim()) {
-    fullPrompt += `\n\nADDITIONAL INSTRUCTIONS FROM THE USER (apply these on top of everything above):\n${state.meta.aiNotes.trim()}`;
-  }
-
-  btn.disabled = true;
-  const originalLabel = btn.textContent;
-  btn.textContent = "Rendering… (10–30s)";
-
-  try {
-    const res = await fetch(endpoint, {
-      method: "POST",
-      headers: { "Content-Type": "application/json", "x-goog-api-key": apiKey },
-      body: JSON.stringify({
-        contents: [{
-          parts: [
-            { text: fullPrompt },
-            { inline_data: { mime_type: "image/png", data: base64 } }
-          ]
-        }],
-        generationConfig: { responseModalities: ["TEXT", "IMAGE"] }
-      })
-    });
-
-    if (res.status === 429) {
-      showToast("Quota/billing limit hit on this model — open Settings to try a different one, or enable billing at aistudio.google.com");
-      return;
-    }
-    if (!res.ok) {
-      const errText = await res.text();
-      throw new Error(`Gemini API error (${res.status}): ${errText.slice(0, 200)}`);
-    }
-
-    const data = await res.json();
-    const parts = data?.candidates?.[0]?.content?.parts || [];
-    const imagePart = parts.find(p => p.inlineData || p.inline_data);
-    const inline = imagePart && (imagePart.inlineData || imagePart.inline_data);
-
-    if (!inline) {
-      const textPart = parts.find(p => p.text);
-      throw new Error(textPart ? `No image returned: ${textPart.text.slice(0,200)}` : "No image returned by Gemini");
-    }
-
-    const mime = inline.mimeType || inline.mime_type || "image/png";
-    const renderedDataUrl = `data:${mime};base64,${inline.data}`;
-    showAiRenderResult(renderedDataUrl);
-  } catch (err) {
-    console.error(err);
-    showToast("AI render failed — " + err.message);
-  } finally {
-    btn.disabled = false;
-    btn.textContent = originalLabel;
-  }
-});
-
-function showAiRenderResult(dataUrl){
-  const overlay = document.createElement("div");
-  overlay.className = "modal-overlay";
-  overlay.innerHTML = `
-    <div class="modal" style="width:min(90vw, 800px);">
-      <div class="modal-head"><h3>AI Rendered Preview</h3><button class="modal-close">✕</button></div>
-      <div class="modal-body">
-        <img src="${dataUrl}" style="width:100%;border-radius:12px;border:1px solid var(--glass-border);">
-        <p style="font-size:11.5px;color:var(--text-dim);">
-          Generative render — verify item count and placement against the layout before sending to a client.
-        </p>
-      </div>
-      <div class="modal-foot">
-        <button class="btn" id="ai-close">Close</button>
-        <button class="btn primary" id="ai-download">Download PNG</button>
-      </div>
-    </div>`;
-  document.body.appendChild(overlay);
-  const close = () => overlay.remove();
-  overlay.querySelector(".modal-close").addEventListener("click", close);
-  overlay.querySelector("#ai-close").addEventListener("click", close);
-  overlay.addEventListener("click", (e) => { if (e.target === overlay) close(); });
-  overlay.querySelector("#ai-download").addEventListener("click", () => {
-    downloadDataUrl(dataUrl, `${(state.meta.companyName||"aim-av").replace(/\s+/g,"-")}-ai-render.png`);
-  });
-}
-
-function loadImageFromSrc(src){
-  return new Promise((resolve, reject) => {
-    const img = new Image();
-    img.onload = () => resolve(img);
-    img.onerror = reject;
-    img.src = src;
-  });
-}
-
-function compositeWithHeaderFooter(layoutImg, meta, size){
-  const HEADER_H = meta.showMetadata ? 130 : 0;
-  const FOOTER_H = (meta.showMetadata && meta.notes) ? 90 : 0;
-  const PAD = 40;
-  const canvas = document.createElement("canvas");
-  canvas.width = size.width;
-  canvas.height = size.height + HEADER_H + FOOTER_H;
-  const ctx = canvas.getContext("2d");
-
-  ctx.fillStyle = "#ffffff";
-  ctx.fillRect(0,0,canvas.width,canvas.height);
-
-  if (HEADER_H) {
-    ctx.fillStyle = "#0B0F14";
-    ctx.fillRect(0,0,canvas.width,HEADER_H);
-    ctx.fillStyle = "#E8C97A";
-    ctx.font = "bold 40px 'Playfair Display', serif";
-    ctx.fillText(meta.companyName || "AIM AV", PAD, HEADER_H/2 - 6);
-    ctx.fillStyle = "#CBD5D9";
-    ctx.font = "22px 'DM Sans', sans-serif";
-    ctx.fillText(`Client: ${meta.clientName || "—"}    ${new Date().toLocaleDateString()}`, PAD, HEADER_H/2 + 34);
-  }
-
-  ctx.drawImage(layoutImg, 0, HEADER_H, size.width, size.height);
-
-  if (FOOTER_H) {
-    ctx.fillStyle = "#0B0F14";
-    ctx.fillRect(0, HEADER_H+size.height, canvas.width, FOOTER_H);
-    ctx.fillStyle = "#CBD5D9";
-    ctx.font = "18px 'DM Sans', sans-serif";
-    wrapText(ctx, meta.notes, PAD, HEADER_H+size.height+30, canvas.width-PAD*2, 24);
-  }
-
-  if (meta.showWatermark) {
-    ctx.save();
-    ctx.globalAlpha = 0.12;
-    ctx.fillStyle = "#000000";
-    ctx.font = "bold 90px 'DM Sans', sans-serif";
-    ctx.translate(canvas.width/2, canvas.height/2);
-    ctx.rotate(-Math.PI/8);
-    ctx.textAlign = "center";
-    ctx.fillText(meta.companyName || "AIM AV DRAFT", 0, 0);
-    ctx.restore();
-  }
-  return canvas.toDataURL("image/png");
-}
-function wrapText(ctx, text, x, y, maxWidth, lineHeight){
-  const words = (text||"").split(" ");
-  let line = "", curY = y;
-  words.forEach(word => {
-    const test = line + word + " ";
-    if (ctx.measureText(test).width > maxWidth && line) {
-      ctx.fillText(line, x, curY); line = word + " "; curY += lineHeight;
-    } else line = test;
-  });
-  ctx.fillText(line, x, curY);
-}
-function downloadDataUrl(dataUrl, filename){
-  const a = document.createElement("a");
-  a.href = dataUrl; a.download = filename;
-  document.body.appendChild(a); a.click(); a.remove();
-}
-
-/* ---------------------------------------------------------------------
-   SETTINGS MODAL
---------------------------------------------------------------------- */
-document.getElementById("settings-btn").addEventListener("click", openSettingsModal);
-
-function openSettingsModal(){
-  const overlay = document.createElement("div");
-  overlay.className = "modal-overlay";
-  overlay.innerHTML = `
-    <div class="modal">
-      <div class="modal-head"><h3>Project Settings</h3><button class="modal-close">✕</button></div>
-      <div class="modal-body">
-        <div class="field"><label>Company Name</label><input type="text" id="m-company"></div>
-        <div class="field"><label>Client Name</label><input type="text" id="m-client"></div>
-        <div class="field"><label>Notes (printed in footer)</label><textarea id="m-notes" rows="3"></textarea></div>
-        <label class="toggle-row"><input type="checkbox" id="m-metadata"> Show header/footer metadata on export</label>
-        <label class="toggle-row" style="border-top:none;padding-top:0;"><input type="checkbox" id="m-watermark"> Show watermark on export</label>
-        <div class="field" style="border-top:1px solid var(--glass-border);padding-top:14px;">
-          <label>Gemini API Key (for AI Render)</label>
-          <input type="text" id="m-gemini-key" placeholder="Stored locally in this browser only">
-        </div>
-        <div class="field">
-          <label>AI Render Model</label>
-          <select id="m-gemini-model" style="width:100%;background:var(--input-bg);border:1px solid var(--glass-border);border-radius:8px;padding:8px 10px;color:var(--text);font-size:13px;">
-            <option value="gemini-3.1-flash-image">Nano Banana 2 (gemini-3.1-flash-image) — recommended</option>
-            <option value="gemini-3.1-flash-lite-image">Nano Banana 2 Lite — fastest / cheapest</option>
-            <option value="gemini-3-pro-image">Nano Banana Pro — highest quality, slower/pricier</option>
-            <option value="gemini-2.5-flash-image">Nano Banana (legacy 2.5) — being phased out by Google</option>
-          </select>
-        </div>
-      </div>
-      <div class="modal-foot">
-        <button class="btn" id="m-cancel">Cancel</button>
-        <button class="btn primary" id="m-save">Save</button>
-      </div>
-    </div>`;
-  document.body.appendChild(overlay);
-
-  overlay.querySelector("#m-company").value = state.meta.companyName;
-  overlay.querySelector("#m-client").value = state.meta.clientName;
-  overlay.querySelector("#m-notes").value = state.meta.notes;
-  overlay.querySelector("#m-metadata").checked = state.meta.showMetadata;
-  overlay.querySelector("#m-watermark").checked = state.meta.showWatermark;
-  db.settings.get("app").then(s => {
-    overlay.querySelector("#m-gemini-key").value = (s && s.geminiApiKey) || "";
-    overlay.querySelector("#m-gemini-model").value = (s && s.geminiModel) || GEMINI_MODEL;
+  track.addEventListener("click", (e) => {
+    const rect = track.getBoundingClientRect();
+    const pct = (e.clientX - rect.left) / rect.width;
+    setStage(Math.round(pct * 2) + 1);
   });
 
-  const close = () => overlay.remove();
-  overlay.querySelector(".modal-close").addEventListener("click", close);
-  overlay.querySelector("#m-cancel").addEventListener("click", close);
-  overlay.addEventListener("click", (e) => { if (e.target === overlay) close(); });
-  overlay.querySelector("#m-save").addEventListener("click", async () => {
-    state.meta = {
-      companyName: overlay.querySelector("#m-company").value,
-      clientName: overlay.querySelector("#m-client").value,
-      notes: overlay.querySelector("#m-notes").value,
-      showMetadata: overlay.querySelector("#m-metadata").checked,
-      showWatermark: overlay.querySelector("#m-watermark").checked,
-    };
-    const existing = await db.settings.get("app");
-    await db.settings.put({
-      ...(existing || { id: "app" }),
-      geminiApiKey: overlay.querySelector("#m-gemini-key").value.trim(),
-      geminiModel: overlay.querySelector("#m-gemini-model").value,
-    });
-    markDirty();
-    close();
-  });
-}
-
-/* ---------------------------------------------------------------------
-   BACKUP / RESTORE (entire Dexie DB <-> single JSON file)
---------------------------------------------------------------------- */
-const BLOB_FIELDS = { assets: ["thumbnail","image"], projects: ["baseImage"] };
-
-function blobToBase64(blob){
-  return new Promise((resolve, reject) => {
-    const reader = new FileReader();
-    reader.onloadend = () => resolve(reader.result);
-    reader.onerror = reject;
-    reader.readAsDataURL(blob);
-  });
-}
-async function base64ToBlob(dataUrl){
-  const res = await fetch(dataUrl);
-  return res.blob();
-}
-
-document.getElementById("backup-btn").addEventListener("click", async () => {
-  const dump = { version: db.verno, exportedAt: Date.now(), tables: {} };
-  for (const table of db.tables) {
-    const rows = await table.toArray();
-    const blobFields = BLOB_FIELDS[table.name] || [];
-    dump.tables[table.name] = await Promise.all(rows.map(async row => {
-      const copy = { ...row };
-      for (const field of blobFields) {
-        if (copy[field] instanceof Blob) {
-          copy[field] = await blobToBase64(copy[field]);
-          copy["__" + field + "IsBlob"] = true;
-        }
+  // Auto-advance once, gently, so first-time visitors notice it's interactive — then stops.
+  let autoplayed = false;
+  const stageEl = document.querySelector(".stage");
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting && !autoplayed) {
+        autoplayed = true;
+        let step = 1;
+        const iv = setInterval(() => {
+          step++;
+          if (step > 3) { clearInterval(iv); return; }
+          setStage(step);
+        }, 1400);
       }
-      return copy;
-    }));
-  }
-  const json = JSON.stringify(dump, null, 2);
-  const blob = new Blob([json], { type: "application/json" });
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement("a");
-  a.href = url; a.download = `aim-av-backup-${new Date().toISOString().slice(0,10)}.json`;
-  document.body.appendChild(a); a.click(); a.remove();
-  URL.revokeObjectURL(url);
-  showToast("Backup downloaded");
-});
-
-document.getElementById("restore-input").addEventListener("change", async (e) => {
-  const file = e.target.files?.[0];
-  if (!file) return;
-  const text = await file.text();
-  const dump = JSON.parse(text);
-  await db.transaction("rw", db.tables, async () => {
-    for (const table of db.tables) {
-      const rows = dump.tables[table.name] || [];
-      const blobFields = BLOB_FIELDS[table.name] || [];
-      const restored = await Promise.all(rows.map(async row => {
-        const copy = { ...row };
-        for (const field of blobFields) {
-          if (copy["__" + field + "IsBlob"]) {
-            copy[field] = await base64ToBlob(copy[field]);
-            delete copy["__" + field + "IsBlob"];
-          }
-        }
-        return copy;
-      }));
-      await table.clear();
-      if (restored.length) await table.bulkPut(restored);
-    }
-  });
-  e.target.value = "";
-  showToast("Restore complete — reloading…");
-  setTimeout(() => location.reload(), 800);
-});
-
-/* ---------------------------------------------------------------------
-   BASE IMAGE UPLOAD
---------------------------------------------------------------------- */
-document.getElementById("base-image-input").addEventListener("change", async (e) => {
-  const file = e.target.files?.[0];
-  if (file) await setBaseImage(file);
-  e.target.value = "";
-});
-
-/* ---------------------------------------------------------------------
-   UNDO / REDO buttons + keyboard shortcuts
---------------------------------------------------------------------- */
-document.getElementById("undo-btn").addEventListener("click", undo);
-document.getElementById("redo-btn").addEventListener("click", redo);
-document.getElementById("flip-h-btn").addEventListener("click", () => flipSelected("x"));
-document.getElementById("flip-v-btn").addEventListener("click", () => flipSelected("y"));
-document.getElementById("rotate-ccw-btn").addEventListener("click", () => rotateSelectedBy(-90));
-document.getElementById("rotate-cw-btn").addEventListener("click", () => rotateSelectedBy(90));
-document.getElementById("rotation-input").addEventListener("change", (e) => {
-  const val = parseFloat(e.target.value);
-  if (!isNaN(val)) setSelectedRotation(val);
-});
-
-window.addEventListener("keydown", (e) => {
-  const typing = document.activeElement.tagName === "INPUT" || document.activeElement.tagName === "TEXTAREA";
-  if ((e.ctrlKey || e.metaKey) && e.key === "z" && !e.shiftKey) { e.preventDefault(); undo(); }
-  if ((e.ctrlKey || e.metaKey) && (e.key === "y" || (e.key === "z" && e.shiftKey))) { e.preventDefault(); redo(); }
-  if (typing) return;
-  if (e.key === "Delete" || e.key === "Backspace") { if (state.selectedInstanceId) deleteSelected(); }
-  if (e.key === "[") rotateSelectedBy(-15);   // fine rotation, counterclockwise
-  if (e.key === "]") rotateSelectedBy(15);    // fine rotation, clockwise
-  if (e.key.toLowerCase() === "h") flipSelected("x");
-  if (e.key.toLowerCase() === "v") flipSelected("y");
-});
-function deleteSelected(){
-  const id = state.selectedInstanceId;
-  if (!id) return;
-  state.layout = state.layout.filter(it => it.instanceId !== id);
-  const node = konvaNodesByInstanceId.get(id);
-  if (node) node.destroy();
-  konvaNodesByInstanceId.delete(id);
-  transformer.nodes([]);
-  state.selectedInstanceId = null;
-  itemLayer.draw();
-  syncRotationInput();
-  pushHistory();
-  renderBOM();
-  markDirty();
-}
-
-/* ---------------------------------------------------------------------
-   MISC HELPERS
---------------------------------------------------------------------- */
-function escapeHtml(s){
-  return String(s).replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
-}
-let toastTimer = null;
-function showToast(msg){
-  const el = document.getElementById("toast");
-  el.textContent = msg;
-  el.classList.add("show");
-  clearTimeout(toastTimer);
-  toastTimer = setTimeout(() => el.classList.remove("show"), 5000);
-}
-
-/* ---------------------------------------------------------------------
-   INIT
---------------------------------------------------------------------- */
-(async function init(){
-  await seedCatalogIfNeeded();
-  await renderItemBank();
-  await loadProject();
-})();
-
-})();
-</script>
-
-<script>
-  // Service worker requires http(s) — silently skips on file:// or unsupported browsers.
-  if ("serviceWorker" in navigator && location.protocol.startsWith("http")) {
-    window.addEventListener("load", () => {
-      navigator.serviceWorker.register("sw.js").catch((err) => {
-        console.warn("Service worker registration failed:", err);
-      });
     });
-  }
+  }, { threshold: 0.5 });
+  observer.observe(stageEl);
+
+  setStage(1);
+})();
 </script>
 </body>
 </html>
