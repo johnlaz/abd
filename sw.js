@@ -5,19 +5,6 @@ const CACHE_VERSION = "aimav-v1";
 const APP_SHELL = [
   "./aim-av.html",
   "./manifest.json",
-  "./icons/icon-16.png",
-  "./icons/icon-32.png",
-  "./icons/icon-72.png",
-  "./icons/icon-96.png",
-  "./icons/icon-128.png",
-  "./icons/icon-144.png",
-  "./icons/icon-152.png",
-  "./icons/icon-180.png",
-  "./icons/icon-192.png",
-  "./icons/icon-512.png",
-  "./icons/icon-192-maskable.png",
-  "./icons/icon-512-maskable.png",
-  "./icons/apple-touch-icon.png",
 ];
 
 // Pinned CDN libraries the app depends on — safe to cache aggressively since
@@ -79,7 +66,7 @@ self.addEventListener("fetch", (event) => {
     return;
   }
 
-  if (isCdnLib || APP_SHELL.includes(request.url) || request.url.includes("/icons/")) {
+  if (isCdnLib || APP_SHELL.includes(request.url)) {
     // Cache-first for pinned libs and static assets.
     event.respondWith(
       caches.match(request).then((cached) => cached || fetch(request))

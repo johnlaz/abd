@@ -71,15 +71,16 @@ Use **Backup** in the toolbar periodically if you want a portable copy — it's 
 
 ## File structure
 
-Now a small static bundle instead of one file (still zero build tools — everything is deployable as-is):
+Three files, still zero build tools:
 
 ```
-aim-av.html         — the app itself: all HTML, CSS, and JS
-manifest.json        — PWA manifest (installable, app icons, theme color)
-sw.js                 — service worker: caches the app shell + pinned CDN libs for offline use
-icons/                — generated icon set (16px–512px, maskable variants, apple-touch-icon, favicon)
+aim-av.html    — the app itself: all HTML, CSS, JS, and the app icon (embedded as base64)
+manifest.json  — PWA manifest (installable, icons embedded as base64, theme color)
+sw.js          — service worker: caches the app shell + pinned CDN libs for offline use
 ```
 
-Deploy the whole folder together — the manifest and service worker reference relative paths, so they need to sit alongside `aim-av.html`, not be separated from it. On GitHub Pages, push the folder as-is; if you want the app at the repo root URL, rename `aim-av.html` to `index.html` and update `start_url` in `manifest.json` and `APP_SHELL[0]` in `sw.js` to match.
+Icons are embedded directly as base64 data URIs in both `aim-av.html` (favicon/apple-touch-icon) and `manifest.json` (install icons) — no separate `icons/` folder to keep track of.
+
+Deploy all three files together — the manifest and service worker reference relative paths, so they need to sit alongside `aim-av.html`. On GitHub Pages, push them as-is; if you want the app at the repo root URL, rename `aim-av.html` to `index.html` and update `start_url` in `manifest.json` and `APP_SHELL[0]` in `sw.js` to match.
 
 **Note:** the service worker only registers over `http(s)` — opening the file directly via `file://` (e.g. double-clicking it locally) still works fine as an app, it just won't install as a PWA or cache for offline use. Deploy it to GitHub Pages (or any static host) to get the full installable/offline experience.
