@@ -146,7 +146,7 @@
   .section-label{display:block;font-family:'Playfair Display',serif;color:var(--gold);font-size:13px;letter-spacing:.02em;
     padding-top:12px;border-top:1px solid var(--glass-border);margin-top:2px;}
   .modal-body>.section-label:first-child{border-top:none;padding-top:0;margin-top:0;}
-  .field input[type=text],.field textarea,.field select{width:100%;background:var(--input-bg);border:1px solid var(--glass-border);border-radius:var(--radius-sm);padding:8px 10px;color:var(--text);font-size:13px;font-family:inherit;}
+  .field input[type=text],.field input[type=number],.field textarea,.field select{width:100%;background:var(--input-bg);border:1px solid var(--glass-border);border-radius:var(--radius-sm);padding:8px 10px;color:var(--text);font-size:13px;font-family:inherit;}
   .toggle-row{display:flex;align-items:center;gap:8px;font-size:13px;padding-top:8px;border-top:1px solid var(--glass-border);}
   .toggle-row input{accent-color:var(--gold);}
   .modal-foot{display:flex;justify-content:flex-end;gap:8px;padding:14px 20px;border-top:1px solid var(--glass-border);}
@@ -163,16 +163,20 @@
   .panel-collapse-btn:hover{color:var(--text);background:var(--hover-bg);}
   .panel-collapse-btn-right{right:auto;left:8px;}
 
-  /* Overflow "more" menu */
+  /* Toolbar dropdown groups (File / Transform / AI, etc.) */
   .menu-wrap{position:relative;}
-  .dropdown-menu{position:absolute;top:calc(100% + 8px);right:0;min-width:200px;background:var(--glass-bg-strong);
+  .dropdown-menu{position:absolute;top:calc(100% + 8px);left:0;min-width:220px;background:var(--glass-bg-strong);
     -webkit-backdrop-filter:blur(24px) saturate(180%);backdrop-filter:blur(24px) saturate(180%);
     border:1px solid var(--glass-border);border-radius:var(--radius-md);box-shadow:0 16px 40px rgba(0,0,0,.35), inset 0 1px 0 var(--glass-highlight);
-    padding:6px;display:none;flex-direction:column;gap:2px;z-index:30;}
+    padding:8px;display:none;flex-direction:column;gap:2px;z-index:30;}
   .dropdown-menu.open{display:flex;}
+  .dropdown-menu.align-right{left:auto;right:0;}
   .dropdown-menu button, .dropdown-menu label{background:none;border:none;color:var(--text);font-size:13px;text-align:left;
-    padding:9px 10px;border-radius:var(--radius-sm);cursor:pointer;display:block;font-family:inherit;}
+    padding:9px 10px;border-radius:var(--radius-sm);cursor:pointer;display:block;font-family:inherit;width:100%;}
   .dropdown-menu button:hover, .dropdown-menu label:hover{background:var(--hover-bg);}
+  .dropdown-menu .field{padding:2px 4px;}
+  .dropdown-btn-grid{display:grid;grid-template-columns:1fr 1fr;gap:2px;}
+  .dropdown-btn-grid button{text-align:center;}
 
   #toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:var(--glass-bg-strong);-webkit-backdrop-filter:blur(20px) saturate(180%);backdrop-filter:blur(20px) saturate(180%);
     border:1px solid var(--glass-border);border-radius:999px;padding:10px 18px;font-size:12.5px;color:var(--text);opacity:0;transition:opacity .25s;pointer-events:none;z-index:100;box-shadow:var(--shadow);}
@@ -193,16 +197,32 @@
   <div id="topbar" class="glass">
     <h1>AIM AV — Booth Designer</h1>
     <div class="btn-row">
-      <label class="btn">Load Floor Plan<input type="file" id="base-image-input" accept="image/*" hidden></label>
+      <div class="menu-wrap">
+        <button class="btn" id="file-menu-btn">File ▾</button>
+        <div class="dropdown-menu" id="file-menu">
+          <label>📂 Load Floor Plan<input type="file" id="base-image-input" accept="image/*" hidden></label>
+          <button id="backup-btn">⇩ Backup Full Suite</button>
+          <label>⇧ Restore from backup<input type="file" id="restore-input" accept="application/json" hidden></label>
+        </div>
+      </div>
       <button class="btn" id="undo-btn" disabled>Undo</button>
       <button class="btn" id="redo-btn" disabled>Redo</button>
       <span class="divider"></span>
-      <button class="btn" id="flip-h-btn" title="Flip selected item horizontally">Flip ↔</button>
-      <button class="btn" id="flip-v-btn" title="Flip selected item vertically">Flip ↕</button>
-      <button class="btn" id="rotate-ccw-btn" title="Rotate -90°">⟲ 90°</button>
-      <button class="btn" id="rotate-cw-btn" title="Rotate +90°">⟳ 90°</button>
-      <input type="number" id="rotation-input" placeholder="°" title="Exact rotation in degrees"
-        style="width:56px;background:var(--input-bg);border:1px solid var(--glass-border);border-radius:var(--radius-sm);color:var(--text);font-size:12px;padding:6px 4px;text-align:center;">
+      <div class="menu-wrap">
+        <button class="btn" id="transform-menu-btn">Transform ▾</button>
+        <div class="dropdown-menu" id="transform-menu">
+          <div class="dropdown-btn-grid">
+            <button id="flip-h-btn" title="Flip selected item horizontally">Flip ↔</button>
+            <button id="flip-v-btn" title="Flip selected item vertically">Flip ↕</button>
+            <button id="rotate-ccw-btn" title="Rotate -90°">⟲ 90°</button>
+            <button id="rotate-cw-btn" title="Rotate +90°">⟳ 90°</button>
+          </div>
+          <div class="field" style="margin-top:8px;">
+            <label>Exact rotation (°)</label>
+            <input type="number" id="rotation-input" placeholder="0–360">
+          </div>
+        </div>
+      </div>
       <span class="divider"></span>
       <div id="zoom-controls">
         <button id="zoom-out-btn" title="Zoom out">−</button>
@@ -212,17 +232,15 @@
       </div>
       <button class="btn" id="toggle-itembank-btn" title="Show/hide the Item Bank">◧ Bank</button>
       <button class="btn" id="toggle-bom-btn" title="Show/hide the Bill of Materials">▤ BOM</button>
+      <button class="btn" id="renders-library-btn" title="Browse saved AI renders">🖼 Renders</button>
       <span class="divider"></span>
       <button class="btn primary" id="export-btn">Export PNG</button>
+      <button class="btn" id="render-options-btn" title="Quick notes and BOM legend text for the next render only">📝 Render Notes</button>
+      <label class="btn" id="bom-overlay-toggle" title="Add a numbered equipment legend to the next render" style="display:flex;align-items:center;gap:6px;cursor:pointer;">
+        <input type="checkbox" id="inline-bom-overlay" style="accent-color:var(--gold);margin:0;"> Add BOM legend
+      </label>
       <button class="btn" id="ai-render-btn" style="border-color:rgba(79,209,197,.5);color:var(--teal);">✨ Render with AI</button>
       <button class="btn" id="settings-btn">Settings</button>
-      <div class="menu-wrap">
-        <button class="btn" id="more-menu-btn" title="More">⋯</button>
-        <div class="dropdown-menu" id="more-menu">
-          <button id="backup-btn">⇩ Backup project data</button>
-          <label>⇧ Restore from backup<input type="file" id="restore-input" accept="application/json" hidden></label>
-        </div>
-      </div>
       <span id="autosave-status">Loading…</span>
       <div id="theme-toggle" title="Theme">
         <button data-theme-choice="system" title="Match system">🖥️</button>
@@ -335,6 +353,12 @@ db.version(1).stores({
   projects: "++id, name, updatedAt",
   settings: "id"
 });
+db.version(2).stores({
+  assets: "++id, name, category, source, createdAt",
+  projects: "++id, name, updatedAt",
+  settings: "id",
+  renders: "++id, name, createdAt"
+});
 db.on("populate", () => {
   db.settings.put({ id: "app", defaultCompanyName: "", lastProjectId: 1 });
 });
@@ -349,10 +373,10 @@ const HISTORY_LIMIT = 50;
 const state = {
   baseImageBlob: null,
   layout: [],                 // [{instanceId, assetId, x, y, width, height, rotation, zIndex}]
-  meta: { companyName:"", clientName:"", notes:"", showMetadata:true, showWatermark:false, aiNotes:"" },
+  meta: { companyName:"", clientName:"", notes:"", showMetadata:true, showWatermark:false, aiNotes:"", quickRenderNotes:"", includeBomOverlay:false },
   history: [], historyIndex: -1,
   dirty: false,
-  selectedInstanceId: null,
+  selectedInstanceIds: new Set(),
 };
 
 let saveTimer = null;
@@ -384,6 +408,7 @@ function redo(){
 }
 function restoreLayoutSnapshot(snapshot){
   state.layout = JSON.parse(JSON.stringify(snapshot));
+  state.selectedInstanceIds.clear();
   rebuildCanvasNodes();
   renderBOM();
   updateUndoRedoButtons();
@@ -412,14 +437,15 @@ async function saveProject(){
 
 async function loadProject(){
   const proj = await db.projects.get(PROJECT_ID);
-  if (!proj) { setStatus("Ready"); return; }
+  if (!proj) { setStatus("Ready"); syncBomOverlayUI(); return; }
   state.baseImageBlob = proj.baseImage || null;
   state.layout = proj.layout || [];
-  state.meta = proj.meta || state.meta;
+  state.meta = proj.meta ? { ...state.meta, ...proj.meta } : state.meta;
   if (state.baseImageBlob) await setBaseImage(state.baseImageBlob, false);
   await rebuildCanvasNodes();
   pushHistory();
   renderBOM();
+  syncBomOverlayUI();
   setStatus("Loaded");
 }
 
@@ -456,13 +482,55 @@ itemLayer.add(transformer);
 let baseImageNode = null;
 const konvaNodesByInstanceId = new Map();
 
+/* Marquee (rubber-band) select: drag on empty canvas to select multiple
+   items at once. Plain click-and-release with no drag just clears selection. */
+const selectionRect = new Konva.Rect({
+  fill: "rgba(232,201,122,0.15)", stroke: "#E8C97A", strokeWidth: 1, visible: false, listening: false
+});
+itemLayer.add(selectionRect);
+let marqueeActive = false;
+let marqueeStart = null;
+let marqueeMoved = false;
+
 stage.on("mousedown touchstart", (e) => {
-  if (e.target === stage) {
-    transformer.nodes([]);
-    state.selectedInstanceId = null;
-    itemLayer.draw();
-    syncRotationInput();
+  if (e.target !== stage) return; // clicked an item — its own click handler deals with selection
+  marqueeStart = stage.getRelativePointerPosition();
+  marqueeActive = true;
+  marqueeMoved = false;
+  selectionRect.setAttrs({ x: marqueeStart.x, y: marqueeStart.y, width: 0, height: 0, visible: false });
+});
+stage.on("mousemove touchmove", () => {
+  if (!marqueeActive) return;
+  const pos = stage.getRelativePointerPosition();
+  if (!marqueeMoved && (Math.abs(pos.x - marqueeStart.x) > 3 || Math.abs(pos.y - marqueeStart.y) > 3)) {
+    marqueeMoved = true;
+    selectionRect.visible(true);
   }
+  if (!marqueeMoved) return;
+  selectionRect.setAttrs({
+    x: Math.min(marqueeStart.x, pos.x), y: Math.min(marqueeStart.y, pos.y),
+    width: Math.abs(pos.x - marqueeStart.x), height: Math.abs(pos.y - marqueeStart.y)
+  });
+  itemLayer.batchDraw();
+});
+stage.on("mouseup touchend", (e) => {
+  if (!marqueeActive) return;
+  marqueeActive = false;
+  selectionRect.visible(false);
+  if (!marqueeMoved) {
+    // plain click on empty canvas — clear selection
+    clearSelection();
+    itemLayer.batchDraw();
+    return;
+  }
+  const box = selectionRect.getClientRect();
+  const hit = [];
+  konvaNodesByInstanceId.forEach((node, id) => {
+    if (Konva.Util.haveIntersection(box, node.getClientRect())) hit.push(id);
+  });
+  state.selectedInstanceIds = new Set(hit);
+  refreshTransformerSelection();
+  itemLayer.batchDraw();
 });
 
 /* ---------------------------------------------------------------------
@@ -527,16 +595,37 @@ toggleBomBtn.addEventListener("click", () =>
 document.getElementById("collapse-itembank-btn").addEventListener("click", () => toggleItembankBtn.click());
 document.getElementById("collapse-bom-btn").addEventListener("click", () => toggleBomBtn.click());
 
-/* Overflow "more" menu (Backup / Restore) */
-const moreMenu = document.getElementById("more-menu");
-document.getElementById("more-menu-btn").addEventListener("click", (e) => {
-  e.stopPropagation();
-  moreMenu.classList.toggle("open");
+/* Toolbar dropdown groups: File / Transform / AI. Opening one closes the others;
+   clicking outside any of them closes whichever is open. */
+const toolbarMenus = [
+  { btn: "file-menu-btn", menu: "file-menu" },
+  { btn: "transform-menu-btn", menu: "transform-menu" },
+];
+toolbarMenus.forEach(({ btn, menu }) => {
+  const btnEl = document.getElementById(btn);
+  const menuEl = document.getElementById(menu);
+  btnEl.addEventListener("click", (e) => {
+    e.stopPropagation();
+    const wasOpen = menuEl.classList.contains("open");
+    toolbarMenus.forEach(m => document.getElementById(m.menu).classList.remove("open"));
+    menuEl.classList.toggle("open", !wasOpen);
+  });
+  menuEl.addEventListener("click", (e) => e.stopPropagation()); // don't close on the file-picker click, etc.
 });
-document.addEventListener("click", (e) => {
-  if (!moreMenu.contains(e.target)) moreMenu.classList.remove("open");
+document.addEventListener("click", () => {
+  toolbarMenus.forEach(m => document.getElementById(m.menu).classList.remove("open"));
 });
-moreMenu.addEventListener("click", (e) => e.stopPropagation()); // don't close on the Restore file-picker click
+
+document.getElementById("renders-library-btn").addEventListener("click", openRendersLibraryModal);
+
+document.getElementById("inline-bom-overlay").addEventListener("change", (e) => {
+  state.meta.includeBomOverlay = e.target.checked;
+  markDirty();
+});
+function syncBomOverlayUI(){
+  const cb = document.getElementById("inline-bom-overlay");
+  if (cb) cb.checked = !!state.meta.includeBomOverlay;
+}
 
 // Ctrl/Cmd + wheel to zoom; plain wheel keeps the normal scroll/pan behavior.
 stageContainer.addEventListener("wheel", (e) => {
@@ -613,9 +702,41 @@ async function addKonvaNodeForItem(item, imageBlob){
     rotation:item.rotation, draggable:true
   });
   node._sourceImg = img; // keep the unflipped original so we can re-flip on toggle
-  node.on("click tap", () => selectNode(node, item.instanceId));
+  node.on("click tap", (e) => selectNode(node, item.instanceId, e.evt.shiftKey));
+
+  // Group drag: when this node is part of a multi-selection, dragging it moves
+  // every other selected item by the same delta. Positions are snapshotted at
+  // dragstart so the delta is computed relative to that, not accumulated error.
+  let dragStartSnapshot = null;
+  node.on("dragstart", () => {
+    if (state.selectedInstanceIds.size > 1 && state.selectedInstanceIds.has(item.instanceId)) {
+      dragStartSnapshot = { selfX: node.x(), selfY: node.y(), others: [] };
+      state.selectedInstanceIds.forEach(id => {
+        if (id === item.instanceId) return;
+        const otherNode = konvaNodesByInstanceId.get(id);
+        if (otherNode) dragStartSnapshot.others.push({ node: otherNode, startX: otherNode.x(), startY: otherNode.y() });
+      });
+    } else {
+      dragStartSnapshot = null;
+    }
+  });
+  node.on("dragmove", () => {
+    if (!dragStartSnapshot) return;
+    const dx = node.x() - dragStartSnapshot.selfX;
+    const dy = node.y() - dragStartSnapshot.selfY;
+    dragStartSnapshot.others.forEach(o => { o.node.x(o.startX + dx); o.node.y(o.startY + dy); });
+  });
   node.on("dragend", () => {
     item.x = node.x(); item.y = node.y();
+    if (dragStartSnapshot) {
+      // sync every moved sibling's stored position
+      state.selectedInstanceIds.forEach(id => {
+        const n = konvaNodesByInstanceId.get(id);
+        const it = state.layout.find(x => x.instanceId === id);
+        if (n && it) { it.x = n.x(); it.y = n.y(); }
+      });
+      dragStartSnapshot = null;
+    }
     pushHistory(); markDirty();
   });
   node.on("transformend", () => {
@@ -624,6 +745,7 @@ async function addKonvaNodeForItem(item, imageBlob){
     item.width = Math.max(20, node.width()*sx);
     item.height = Math.max(20, node.height()*sy);
     item.rotation = node.rotation();
+    item.x = node.x(); item.y = node.y();
     node.width(item.width); node.height(item.height);
     syncRotationInput();
     pushHistory(); markDirty();
@@ -634,52 +756,73 @@ async function addKonvaNodeForItem(item, imageBlob){
   itemLayer.draw();
 }
 
-function selectNode(node, instanceId){
-  state.selectedInstanceId = instanceId;
-  transformer.nodes([node]);
+/* ---------------------------------------------------------------------
+   SELECTION — supports multiple items so they can be resized/rotated/
+   moved together. Shift-click toggles one item in/out of the selection;
+   plain click replaces it; drag-marquee on empty canvas selects everything
+   inside the rubber-band box.
+--------------------------------------------------------------------- */
+function selectNode(node, instanceId, additive){
+  if (additive) {
+    if (state.selectedInstanceIds.has(instanceId)) state.selectedInstanceIds.delete(instanceId);
+    else state.selectedInstanceIds.add(instanceId);
+  } else {
+    state.selectedInstanceIds = new Set([instanceId]);
+  }
+  refreshTransformerSelection();
+}
+
+function refreshTransformerSelection(){
+  const nodes = [...state.selectedInstanceIds]
+    .map(id => konvaNodesByInstanceId.get(id))
+    .filter(Boolean);
+  transformer.nodes(nodes);
   transformer.moveToTop();
   itemLayer.draw();
   syncRotationInput();
 }
 
-/* Flip / rotate actions on the current selection ----------------------- */
-function getSelected(){
-  const id = state.selectedInstanceId;
-  if (!id) return null;
-  const node = konvaNodesByInstanceId.get(id);
-  const item = state.layout.find(it => it.instanceId === id);
-  return node && item ? { node, item } : null;
+function clearSelection(){
+  state.selectedInstanceIds.clear();
+  refreshTransformerSelection();
+}
+
+/* Flip / rotate / delete act on every currently selected item ---------- */
+function getSelectedList(){
+  return [...state.selectedInstanceIds]
+    .map(id => ({ node: konvaNodesByInstanceId.get(id), item: state.layout.find(it => it.instanceId === id) }))
+    .filter(sel => sel.node && sel.item);
 }
 
 function flipSelected(axis){
-  const sel = getSelected();
-  if (!sel) { showToast("Select an item first"); return; }
-  const { node, item } = sel;
-  if (axis === "x") item.flipX = !item.flipX; else item.flipY = !item.flipY;
-  node.image(applyFlip(node._sourceImg, item.flipX, item.flipY));
+  const sel = getSelectedList();
+  if (!sel.length) { showToast("Select an item first"); return; }
+  sel.forEach(({ node, item }) => {
+    if (axis === "x") item.flipX = !item.flipX; else item.flipY = !item.flipY;
+    node.image(applyFlip(node._sourceImg, item.flipX, item.flipY));
+  });
   itemLayer.draw();
   pushHistory(); markDirty();
 }
 
 function rotateSelectedBy(deg){
-  const sel = getSelected();
-  if (!sel) { showToast("Select an item first"); return; }
-  const { node, item } = sel;
-  const next = ((node.rotation() + deg) % 360 + 360) % 360;
-  node.rotation(next);
-  item.rotation = next;
+  const sel = getSelectedList();
+  if (!sel.length) { showToast("Select an item first"); return; }
+  sel.forEach(({ node, item }) => {
+    const next = ((node.rotation() + deg) % 360 + 360) % 360;
+    node.rotation(next);
+    item.rotation = next;
+  });
   itemLayer.draw();
   syncRotationInput();
   pushHistory(); markDirty();
 }
 
 function setSelectedRotation(deg){
-  const sel = getSelected();
-  if (!sel) return;
-  const { node, item } = sel;
+  const sel = getSelectedList();
+  if (!sel.length) return;
   const next = ((deg % 360) + 360) % 360;
-  node.rotation(next);
-  item.rotation = next;
+  sel.forEach(({ node, item }) => { node.rotation(next); item.rotation = next; });
   itemLayer.draw();
   pushHistory(); markDirty();
 }
@@ -687,8 +830,8 @@ function setSelectedRotation(deg){
 function syncRotationInput(){
   const input = document.getElementById("rotation-input");
   if (!input) return;
-  const sel = getSelected();
-  input.value = sel ? Math.round(sel.node.rotation()) : "";
+  const sel = getSelectedList();
+  input.value = sel.length === 1 ? Math.round(sel[0].node.rotation()) : "";
 }
 
 async function rebuildCanvasNodes(){
@@ -1346,7 +1489,34 @@ Re-render this as a single photorealistic, professional trade show booth photogr
 - Add realistic contact shadows, soft ambient occlusion, and reflections appropriate
   to a well-lit indoor trade show hall
 - Match the perspective and lighting of the background/floor plan if one is visible
-- Professional product photography quality, sharp focus, no text or watermarks`;
+- Professional product photography quality, sharp focus
+- CRITICAL — DO NOT add any numbers, circular badges, callouts, legends, labels, price
+  tags, or any other text/graphic overlays to the image, and do not add a watermark.
+  The output should be a clean photograph with nothing overlaid on it, UNLESS a section
+  below titled "INCLUDE A NUMBERED BOM LEGEND OVERLAY" is present — that is the one
+  and only exception to this rule.`;
+
+function buildBomOverlayInstructions(legendText){
+  return `
+
+INCLUDE A NUMBERED BOM LEGEND OVERLAY:
+The user has explicitly requested a numbered equipment legend on this render, like a
+professional inventory/spec diagram. Use this exact numbered list as the legend text —
+it may use different wording than the ITEM LEGEND above (e.g. more specific model names
+or notes); use THIS wording for the visible legend, matched to items in the same order:
+
+${legendText}
+
+- Add a small numbered circular badge next to each corresponding item in the rendered
+  image (badge "1" next to the first item in the list above, etc.)
+- Add a clean text legend reproducing the list above — place it along the bottom or a
+  side margin, in columns if there are many items, wherever it fits without covering
+  the booth itself
+- Keep badges and legend text legible and professional (clean sans-serif, high-contrast
+  circular badges), similar to an equipment placement diagram used for client sign-off`;
+}
+
+const REFINE_PROMPT_BASE = `This is an existing photorealistic trade show booth render. Apply this specific change and nothing else:\n\n`;
 
 /** Builds a per-item "what is this, where, and how big" legend so Gemini doesn't
  *  have to guess an item's identity or scale from icon shape alone (source of
@@ -1365,18 +1535,85 @@ async function buildItemLegend(){
   return rows.filter(Boolean).join("\n");
 }
 
-document.getElementById("ai-render-btn").addEventListener("click", async () => {
-  const btn = document.getElementById("ai-render-btn");
+/** Plain "1. Name" list, same numbering/order as buildItemLegend(), used as the
+ *  editable text for the numbered BOM legend overlay — separate from the full
+ *  grounding legend since the user may want different/more specific wording
+ *  here without touching the actual item names or the AI's identification cues. */
+async function buildBomLegendPlainText(){
+  const rows = await Promise.all(state.layout.map(async (item, i) => {
+    const asset = await db.assets.get(item.assetId);
+    return asset ? `${i + 1}. ${asset.name}` : null;
+  }));
+  return rows.filter(Boolean).join("\n");
+}
+
+/**
+ * Sends a reference image + prompt to Gemini and returns a raw base64 PNG data URL.
+ * Shared by the main "Render with AI" flow (schematic layout -> photoreal) and the
+ * "Refine" flow (existing render -> further-edited render). Throws on failure;
+ * callers handle the 429/other-error UX.
+ */
+async function callGeminiRender(imageBase64, promptText){
   const settingsRow = await db.settings.get("app");
   const apiKey = settingsRow && settingsRow.geminiApiKey;
   const model = (settingsRow && settingsRow.geminiModel) || GEMINI_MODEL;
+  if (!apiKey) {
+    const err = new Error("NO_API_KEY");
+    err.code = "NO_API_KEY";
+    throw err;
+  }
   const endpoint = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent`;
 
-  if (!apiKey) {
+  const res = await fetch(endpoint, {
+    method: "POST",
+    headers: { "Content-Type": "application/json", "x-goog-api-key": apiKey },
+    body: JSON.stringify({
+      contents: [{
+        parts: [
+          { text: promptText },
+          { inline_data: { mime_type: "image/png", data: imageBase64 } }
+        ]
+      }],
+      generationConfig: { responseModalities: ["TEXT", "IMAGE"] }
+    })
+  });
+
+  if (res.status === 429) {
+    const err = new Error("QUOTA");
+    err.code = "QUOTA";
+    throw err;
+  }
+  if (!res.ok) {
+    const errText = await res.text();
+    throw new Error(`Gemini API error (${res.status}): ${errText.slice(0, 200)}`);
+  }
+
+  const data = await res.json();
+  const parts = data?.candidates?.[0]?.content?.parts || [];
+  const imagePart = parts.find(p => p.inlineData || p.inline_data);
+  const inline = imagePart && (imagePart.inlineData || imagePart.inline_data);
+  if (!inline) {
+    const textPart = parts.find(p => p.text);
+    throw new Error(textPart ? `No image returned: ${textPart.text.slice(0,200)}` : "No image returned by Gemini");
+  }
+  const mime = inline.mimeType || inline.mime_type || "image/png";
+  return `data:${mime};base64,${inline.data}`;
+}
+
+function handleRenderError(err){
+  console.error(err);
+  if (err.code === "NO_API_KEY") {
     showToast("Add a Gemini API key in Settings first");
     openSettingsModal();
-    return;
+  } else if (err.code === "QUOTA") {
+    showToast("Quota/billing limit hit on this model — open Settings to try a different one, or enable billing at aistudio.google.com");
+  } else {
+    showToast("AI render failed — " + err.message);
   }
+}
+
+document.getElementById("ai-render-btn").addEventListener("click", async () => {
+  const btn = document.getElementById("ai-render-btn");
   if (!state.layout.length) {
     showToast("Place at least one item before rendering");
     return;
@@ -1387,8 +1624,19 @@ document.getElementById("ai-render-btn").addEventListener("click", async () => {
   const base64 = layoutDataUrl.split(",")[1];
   const legend = await buildItemLegend();
   let fullPrompt = `${AI_RENDER_PROMPT}\n\nITEM LEGEND:\n${legend}`;
-  if (state.meta.aiNotes && state.meta.aiNotes.trim()) {
-    fullPrompt += `\n\nADDITIONAL INSTRUCTIONS FROM THE USER (apply these on top of everything above):\n${state.meta.aiNotes.trim()}`;
+
+  const standingNotes = (state.meta.aiNotes || "").trim();
+  const quickNotes = (state.meta.quickRenderNotes || "").trim();
+  if (standingNotes || quickNotes) {
+    fullPrompt += `\n\nADDITIONAL INSTRUCTIONS FROM THE USER (apply these on top of everything above):`;
+    if (standingNotes) fullPrompt += `\n- Standing project notes: ${standingNotes}`;
+    if (quickNotes) fullPrompt += `\n- Notes for this render only: ${quickNotes}`;
+  }
+  if (state.meta.includeBomOverlay) {
+    const legendText = (state.meta.bomLegendText && state.meta.bomLegendText.trim())
+      ? state.meta.bomLegendText.trim()
+      : await buildBomLegendPlainText();
+    fullPrompt += buildBomOverlayInstructions(legendText);
   }
 
   btn.disabled = true;
@@ -1396,45 +1644,12 @@ document.getElementById("ai-render-btn").addEventListener("click", async () => {
   btn.textContent = "Rendering… (10–30s)";
 
   try {
-    const res = await fetch(endpoint, {
-      method: "POST",
-      headers: { "Content-Type": "application/json", "x-goog-api-key": apiKey },
-      body: JSON.stringify({
-        contents: [{
-          parts: [
-            { text: fullPrompt },
-            { inline_data: { mime_type: "image/png", data: base64 } }
-          ]
-        }],
-        generationConfig: { responseModalities: ["TEXT", "IMAGE"] }
-      })
-    });
-
-    if (res.status === 429) {
-      showToast("Quota/billing limit hit on this model — open Settings to try a different one, or enable billing at aistudio.google.com");
-      return;
-    }
-    if (!res.ok) {
-      const errText = await res.text();
-      throw new Error(`Gemini API error (${res.status}): ${errText.slice(0, 200)}`);
-    }
-
-    const data = await res.json();
-    const parts = data?.candidates?.[0]?.content?.parts || [];
-    const imagePart = parts.find(p => p.inlineData || p.inline_data);
-    const inline = imagePart && (imagePart.inlineData || imagePart.inline_data);
-
-    if (!inline) {
-      const textPart = parts.find(p => p.text);
-      throw new Error(textPart ? `No image returned: ${textPart.text.slice(0,200)}` : "No image returned by Gemini");
-    }
-
-    const mime = inline.mimeType || inline.mime_type || "image/png";
-    const renderedDataUrl = `data:${mime};base64,${inline.data}`;
-    showAiRenderResult(renderedDataUrl);
+    const rawDataUrl = await callGeminiRender(base64, fullPrompt);
+    const rawImg = await loadImageFromSrc(rawDataUrl);
+    const finalDataUrl = compositeWithHeaderFooter(rawImg, state.meta, { width: rawImg.width, height: rawImg.height });
+    showAiRenderResult(finalDataUrl);
   } catch (err) {
-    console.error(err);
-    showToast("AI render failed — " + err.message);
+    handleRenderError(err);
   } finally {
     btn.disabled = false;
     btn.textContent = originalLabel;
@@ -1453,8 +1668,11 @@ function showAiRenderResult(dataUrl){
           Generative render — verify item count and placement against the layout before sending to a client.
         </p>
       </div>
-      <div class="modal-foot">
+      <div class="modal-foot" style="flex-wrap:wrap;">
         <button class="btn" id="ai-close">Close</button>
+        <button class="btn" id="ai-save-library">💾 Save to Library</button>
+        <button class="btn" id="ai-add-bom" title="Adds a numbered equipment legend to this exact image">🔢 Add BOM Legend</button>
+        <button class="btn" id="ai-refine">🔁 Refine this</button>
         <button class="btn primary" id="ai-download">Download PNG</button>
       </div>
     </div>`;
@@ -1465,6 +1683,261 @@ function showAiRenderResult(dataUrl){
   overlay.addEventListener("click", (e) => { if (e.target === overlay) close(); });
   overlay.querySelector("#ai-download").addEventListener("click", () => {
     downloadDataUrl(dataUrl, `${(state.meta.companyName||"aim-av").replace(/\s+/g,"-")}-ai-render.png`);
+  });
+  overlay.querySelector("#ai-add-bom").addEventListener("click", async () => {
+    const btn = overlay.querySelector("#ai-add-bom");
+    btn.disabled = true;
+    btn.textContent = "Adding legend… (10–30s)";
+    try {
+      const legendText = (state.meta.bomLegendText && state.meta.bomLegendText.trim())
+        ? state.meta.bomLegendText.trim()
+        : await buildBomLegendPlainText();
+      const prompt = `This is an existing photorealistic trade show booth render. Do not change the booth, items, camera angle, or composition in any way.${buildBomOverlayInstructions(legendText)}`;
+      const base64 = dataUrl.split(",")[1];
+      const rawDataUrl = await callGeminiRender(base64, prompt);
+      const rawImg = await loadImageFromSrc(rawDataUrl);
+      const finalDataUrl = compositeWithHeaderFooter(rawImg, state.meta, { width: rawImg.width, height: rawImg.height });
+      close();
+      showAiRenderResult(finalDataUrl);
+    } catch (err) {
+      handleRenderError(err);
+      btn.disabled = false;
+      btn.textContent = "🔢 Add BOM Legend";
+    }
+  });
+  overlay.querySelector("#ai-save-library").addEventListener("click", () => {
+    openSaveRenderModal(dataUrl);
+  });
+  overlay.querySelector("#ai-refine").addEventListener("click", () => {
+    close();
+    openRefineModal(dataUrl);
+  });
+}
+
+/* ---------------------------------------------------------------------
+   RENDERS LIBRARY — save finished AI renders locally, browse them later,
+   and feed a saved render back into Gemini with new instructions ("refine")
+   instead of starting over from the flat layout each time.
+--------------------------------------------------------------------- */
+function dataUrlToBlob(dataUrl){
+  return fetch(dataUrl).then(r => r.blob());
+}
+
+async function makeRenderThumbnail(blob, maxW = 320){
+  const img = await loadHtmlImage(blob);
+  const scale = Math.min(maxW / img.naturalWidth, 1);
+  const w = Math.round(img.naturalWidth * scale), h = Math.round(img.naturalHeight * scale);
+  const canvas = document.createElement("canvas");
+  canvas.width = w; canvas.height = h;
+  canvas.getContext("2d").drawImage(img, 0, 0, w, h);
+  return new Promise(res => canvas.toBlob(res, "image/jpeg", 0.85));
+}
+
+function openSaveRenderModal(dataUrl){
+  const overlay = document.createElement("div");
+  overlay.className = "modal-overlay";
+  const defaultName = `${state.meta.companyName || "Booth"} — ${new Date().toLocaleDateString()}`;
+  overlay.innerHTML = `
+    <div class="modal">
+      <div class="modal-head"><h3>Save to Renders Library</h3><button class="modal-close">✕</button></div>
+      <div class="modal-body">
+        <div class="field"><label>Name</label><input type="text" id="m-render-name" value="${defaultName.replace(/"/g,'&quot;')}"></div>
+      </div>
+      <div class="modal-foot">
+        <button class="btn" id="m-rn-cancel">Cancel</button>
+        <button class="btn primary" id="m-rn-save">Save</button>
+      </div>
+    </div>`;
+  document.body.appendChild(overlay);
+  const close = () => overlay.remove();
+  overlay.querySelector(".modal-close").addEventListener("click", close);
+  overlay.querySelector("#m-rn-cancel").addEventListener("click", close);
+  overlay.addEventListener("click", (e) => { if (e.target === overlay) close(); });
+  overlay.querySelector("#m-rn-save").addEventListener("click", async () => {
+    const name = overlay.querySelector("#m-render-name").value.trim() || defaultName;
+    const image = await dataUrlToBlob(dataUrl);
+    const thumbnail = await makeRenderThumbnail(image);
+    await db.renders.add({ name, image, thumbnail, createdAt: Date.now() });
+    showToast("Saved to Renders Library");
+    close();
+  });
+}
+
+function openRefineModal(sourceDataUrl){
+  const overlay = document.createElement("div");
+  overlay.className = "modal-overlay";
+  overlay.innerHTML = `
+    <div class="modal">
+      <div class="modal-head"><h3>Refine This Render</h3><button class="modal-close">✕</button></div>
+      <div class="modal-body">
+        <img src="${sourceDataUrl}" style="width:100%;border-radius:10px;border:1px solid var(--glass-border);max-height:180px;object-fit:cover;">
+        <div class="field">
+          <label>What should change?</label>
+          <textarea id="m-refine-notes" rows="5" placeholder="e.g. Make the carpet dark gray instead of black. Add more overhead lighting. Remove the reflection on the floor."></textarea>
+        </div>
+      </div>
+      <div class="modal-foot">
+        <button class="btn" id="m-refine-cancel">Cancel</button>
+        <button class="btn primary" id="m-refine-go">Refine</button>
+      </div>
+    </div>`;
+  document.body.appendChild(overlay);
+  const close = () => overlay.remove();
+  overlay.querySelector(".modal-close").addEventListener("click", close);
+  overlay.querySelector("#m-refine-cancel").addEventListener("click", close);
+  overlay.addEventListener("click", (e) => { if (e.target === overlay) close(); });
+  overlay.querySelector("#m-refine-go").addEventListener("click", async () => {
+    const notes = overlay.querySelector("#m-refine-notes").value.trim();
+    if (!notes) { showToast("Describe what should change first"); return; }
+    const btn = overlay.querySelector("#m-refine-go");
+    btn.disabled = true;
+    btn.textContent = "Refining… (10–30s)";
+    try {
+      const base64 = sourceDataUrl.split(",")[1];
+      const prompt = `${REFINE_PROMPT_BASE}${notes}\n\nDo not change anything else about the image — same items, same positions, same camera angle and composition. Do not add any text, numbers, or watermarks unless specifically asked above.`;
+      const rawDataUrl = await callGeminiRender(base64, prompt);
+      const rawImg = await loadImageFromSrc(rawDataUrl);
+      const finalDataUrl = compositeWithHeaderFooter(rawImg, state.meta, { width: rawImg.width, height: rawImg.height });
+      close();
+      showAiRenderResult(finalDataUrl);
+    } catch (err) {
+      handleRenderError(err);
+      btn.disabled = false;
+      btn.textContent = "Refine";
+    }
+  });
+}
+
+async function openRendersLibraryModal(){
+  const overlay = document.createElement("div");
+  overlay.className = "modal-overlay";
+  overlay.innerHTML = `
+    <div class="modal" style="width:min(92vw, 720px);">
+      <div class="modal-head"><h3>Renders Library</h3><button class="modal-close">✕</button></div>
+      <div class="modal-body" id="renders-lib-body" style="max-height:60vh;overflow-y:auto;">
+        <p style="font-size:12.5px;color:var(--text-dim);">Loading…</p>
+      </div>
+      <div class="modal-foot"><button class="btn" id="rl-close">Close</button></div>
+    </div>`;
+  document.body.appendChild(overlay);
+  const close = () => overlay.remove();
+  overlay.querySelector(".modal-close").addEventListener("click", close);
+  overlay.querySelector("#rl-close").addEventListener("click", close);
+  overlay.addEventListener("click", (e) => { if (e.target === overlay) close(); });
+
+  await renderRendersLibraryGrid(overlay.querySelector("#renders-lib-body"), close);
+}
+
+async function renderRendersLibraryGrid(container, closeParent){
+  const all = await db.renders.orderBy("createdAt").reverse().toArray();
+  if (!all.length) {
+    container.innerHTML = '<p style="font-size:12.5px;color:var(--text-dim);">No saved renders yet — save one from an AI render preview to build your library.</p>';
+    return;
+  }
+  container.innerHTML = "";
+  const grid = document.createElement("div");
+  grid.style.cssText = "display:grid;grid-template-columns:1fr 1fr;gap:14px;";
+  all.forEach(rec => {
+    const card = document.createElement("div");
+    card.style.cssText = "background:var(--input-bg);border:1px solid var(--glass-border);border-radius:12px;overflow:hidden;";
+    const img = document.createElement("img");
+    img.src = URL.createObjectURL(rec.thumbnail || rec.image);
+    img.style.cssText = "width:100%;height:120px;object-fit:cover;display:block;";
+    const body = document.createElement("div");
+    body.style.cssText = "padding:10px;";
+    body.innerHTML = `
+      <div style="font-size:12.5px;font-weight:600;margin-bottom:2px;">${escapeHtml(rec.name)}</div>
+      <div style="font-size:10.5px;color:var(--text-dim);margin-bottom:8px;">${new Date(rec.createdAt).toLocaleString()}</div>
+      <div style="display:flex;gap:6px;flex-wrap:wrap;">
+        <button class="btn" data-act="refine" style="font-size:11px;padding:5px 9px;">Refine</button>
+        <button class="btn" data-act="download" style="font-size:11px;padding:5px 9px;">Download</button>
+        <button class="btn" data-act="delete" style="font-size:11px;padding:5px 9px;color:#e08a8a;">Delete</button>
+      </div>`;
+    body.querySelector('[data-act="refine"]').addEventListener("click", async () => {
+      const url = URL.createObjectURL(rec.image);
+      const img2 = await loadImageFromSrc(url);
+      const canvas = document.createElement("canvas");
+      canvas.width = img2.naturalWidth; canvas.height = img2.naturalHeight;
+      canvas.getContext("2d").drawImage(img2, 0, 0);
+      closeParent();
+      openRefineModal(canvas.toDataURL("image/png"));
+    });
+    body.querySelector('[data-act="download"]').addEventListener("click", () => {
+      downloadDataUrl(URL.createObjectURL(rec.image), `${rec.name.replace(/\s+/g,"-")}.png`);
+    });
+    body.querySelector('[data-act="delete"]').addEventListener("click", async () => {
+      await db.renders.delete(rec.id);
+      renderRendersLibraryGrid(container, closeParent);
+    });
+    card.appendChild(img);
+    card.appendChild(body);
+    grid.appendChild(card);
+  });
+  container.appendChild(grid);
+}
+
+document.getElementById("render-options-btn").addEventListener("click", openRenderOptionsModal);
+
+async function openRenderOptionsModal(){
+  const overlay = document.createElement("div");
+  overlay.className = "modal-overlay";
+  overlay.innerHTML = `
+    <div class="modal" style="width:460px;">
+      <div class="modal-head"><h3>Render Options</h3><button class="modal-close">✕</button></div>
+      <div class="modal-body">
+        <div class="field">
+          <label>Notes for this render only</label>
+          <textarea id="m-quick-notes" rows="4" placeholder="e.g. Uplights should be blue. Put a rifle scope in the transparent case. Add a few people walking near the booth."></textarea>
+        </div>
+        <label class="toggle-row"><input type="checkbox" id="m-bom-overlay"> Include numbered BOM legend overlay on this render</label>
+        <div class="field" id="m-bom-text-wrap" style="border-top:none;padding-top:0;">
+          <label style="display:flex;justify-content:space-between;align-items:center;">
+            <span>Legend text (edit freely — only changes the overlay text, not your items)</span>
+            <button type="button" id="m-bom-regenerate" style="background:none;border:none;color:var(--teal);font-size:10.5px;cursor:pointer;text-decoration:underline;padding:0;">↻ Regenerate from layout</button>
+          </label>
+          <textarea id="m-bom-text" rows="6" placeholder="1. Item name&#10;2. Item name…" style="font-family:monospace;font-size:12px;"></textarea>
+        </div>
+        <p style="font-size:11.5px;color:var(--text-dim);">
+          These apply to the next render only. For notes that should apply to every
+          render of this project, use Settings → AI Render instead.
+        </p>
+      </div>
+      <div class="modal-foot">
+        <button class="btn" id="m-ro-clear">Clear</button>
+        <button class="btn primary" id="m-ro-save">Save</button>
+      </div>
+    </div>`;
+  document.body.appendChild(overlay);
+  overlay.querySelector("#m-quick-notes").value = state.meta.quickRenderNotes || "";
+  overlay.querySelector("#m-bom-overlay").checked = !!state.meta.includeBomOverlay;
+  overlay.querySelector("#m-bom-text").value = state.meta.bomLegendText || await buildBomLegendPlainText();
+
+  const textWrap = overlay.querySelector("#m-bom-text-wrap");
+  const syncBomTextVisibility = () => {
+    textWrap.style.display = overlay.querySelector("#m-bom-overlay").checked ? "block" : "none";
+  };
+  syncBomTextVisibility();
+  overlay.querySelector("#m-bom-overlay").addEventListener("change", syncBomTextVisibility);
+  overlay.querySelector("#m-bom-regenerate").addEventListener("click", async () => {
+    overlay.querySelector("#m-bom-text").value = await buildBomLegendPlainText();
+  });
+
+  const close = () => overlay.remove();
+  overlay.querySelector(".modal-close").addEventListener("click", close);
+  overlay.addEventListener("click", (e) => { if (e.target === overlay) close(); });
+  overlay.querySelector("#m-ro-clear").addEventListener("click", async () => {
+    overlay.querySelector("#m-quick-notes").value = "";
+    overlay.querySelector("#m-bom-overlay").checked = false;
+    overlay.querySelector("#m-bom-text").value = await buildBomLegendPlainText();
+    syncBomTextVisibility();
+  });
+  overlay.querySelector("#m-ro-save").addEventListener("click", () => {
+    state.meta.quickRenderNotes = overlay.querySelector("#m-quick-notes").value;
+    state.meta.includeBomOverlay = overlay.querySelector("#m-bom-overlay").checked;
+    state.meta.bomLegendText = overlay.querySelector("#m-bom-text").value;
+    syncBomOverlayUI();
+    markDirty();
+    close();
   });
 }
 
@@ -1512,7 +1985,7 @@ function compositeWithHeaderFooter(layoutImg, meta, size){
 
   if (meta.showWatermark) {
     ctx.save();
-    ctx.globalAlpha = 0.12;
+    ctx.globalAlpha = 0.22;
     ctx.fillStyle = "#000000";
     ctx.font = "bold 90px 'DM Sans', sans-serif";
     ctx.translate(canvas.width/2, canvas.height/2);
@@ -1602,6 +2075,7 @@ function openSettingsModal(){
   overlay.addEventListener("click", (e) => { if (e.target === overlay) close(); });
   overlay.querySelector("#m-save").addEventListener("click", async () => {
     state.meta = {
+      ...state.meta,
       companyName: overlay.querySelector("#m-company").value,
       clientName: overlay.querySelector("#m-client").value,
       notes: overlay.querySelector("#m-notes").value,
@@ -1623,7 +2097,7 @@ function openSettingsModal(){
 /* ---------------------------------------------------------------------
    BACKUP / RESTORE (entire Dexie DB <-> single JSON file)
 --------------------------------------------------------------------- */
-const BLOB_FIELDS = { assets: ["thumbnail","image"], projects: ["baseImage"] };
+const BLOB_FIELDS = { assets: ["thumbnail","image"], projects: ["baseImage"], renders: ["image","thumbnail"] };
 
 function blobToBase64(blob){
   return new Promise((resolve, reject) => {
@@ -1668,12 +2142,63 @@ document.getElementById("restore-input").addEventListener("change", async (e) =>
   const file = e.target.files?.[0];
   if (!file) return;
   const text = await file.text();
-  const dump = JSON.parse(text);
+  let dump;
+  try { dump = JSON.parse(text); } catch { showToast("That file doesn't look like a valid backup"); e.target.value = ""; return; }
+  e.target.value = "";
+  openRestoreChoiceModal(dump);
+});
+
+function openRestoreChoiceModal(dump){
+  const overlay = document.createElement("div");
+  overlay.className = "modal-overlay";
+  overlay.innerHTML = `
+    <div class="modal">
+      <div class="modal-head"><h3>Restore Backup</h3><button class="modal-close">✕</button></div>
+      <div class="modal-body">
+        <p style="font-size:13px;line-height:1.6;">How should this backup be applied?</p>
+        <div style="display:flex;flex-direction:column;gap:8px;">
+          <button class="btn" id="rc-merge" style="text-align:left;padding:12px 14px;">
+            <strong>Merge</strong><br>
+            <span style="font-size:11.5px;color:var(--text-dim);">Add anything from the backup you don't already have (items, saved renders). Existing items with the same name are skipped, not overwritten. Your current project and settings stay untouched.</span>
+          </button>
+          <button class="btn" id="rc-overwrite" style="text-align:left;padding:12px 14px;">
+            <strong>Overwrite</strong><br>
+            <span style="font-size:11.5px;color:var(--text-dim);">Replace everything — project, item library, saved renders, and settings — with exactly what's in the backup. Anything not in the backup file is lost.</span>
+          </button>
+        </div>
+      </div>
+      <div class="modal-foot"><button class="btn" id="rc-cancel">Cancel</button></div>
+    </div>`;
+  document.body.appendChild(overlay);
+  const close = () => overlay.remove();
+  overlay.querySelector(".modal-close").addEventListener("click", close);
+  overlay.querySelector("#rc-cancel").addEventListener("click", close);
+  overlay.addEventListener("click", (e) => { if (e.target === overlay) close(); });
+  overlay.querySelector("#rc-merge").addEventListener("click", async () => {
+    close();
+    await runRestore(dump, "merge");
+  });
+  overlay.querySelector("#rc-overwrite").addEventListener("click", async () => {
+    close();
+    await runRestore(dump, "overwrite");
+  });
+}
+
+function dedupeKeyFor(tableName, row){
+  if (tableName === "assets") return `${row.name}::${row.category}`;
+  if (tableName === "renders") return `${row.name}::${row.createdAt}`;
+  return null; // projects/settings aren't merged row-by-row — see runRestore
+}
+
+async function runRestore(dump, mode){
+  const MERGEABLE_TABLES = ["assets", "renders"];
+  let addedCount = 0, skippedCount = 0;
+
   await db.transaction("rw", db.tables, async () => {
     for (const table of db.tables) {
       const rows = dump.tables[table.name] || [];
       const blobFields = BLOB_FIELDS[table.name] || [];
-      const restored = await Promise.all(rows.map(async row => {
+      const decoded = await Promise.all(rows.map(async row => {
         const copy = { ...row };
         for (const field of blobFields) {
           if (copy["__" + field + "IsBlob"]) {
@@ -1683,14 +2208,33 @@ document.getElementById("restore-input").addEventListener("change", async (e) =>
         }
         return copy;
       }));
-      await table.clear();
-      if (restored.length) await table.bulkPut(restored);
+
+      if (mode === "overwrite") {
+        await table.clear();
+        if (decoded.length) await table.bulkPut(decoded);
+        continue;
+      }
+
+      // merge mode
+      if (!MERGEABLE_TABLES.includes(table.name)) continue; // leave projects/settings alone
+      const existing = await table.toArray();
+      const existingKeys = new Set(existing.map(r => dedupeKeyFor(table.name, r)));
+      const toAdd = decoded.filter(r => !existingKeys.has(dedupeKeyFor(table.name, r)));
+      toAdd.forEach(r => delete r.id); // let Dexie assign fresh ids to avoid collisions
+      skippedCount += decoded.length - toAdd.length;
+      addedCount += toAdd.length;
+      if (toAdd.length) await table.bulkAdd(toAdd);
     }
   });
-  e.target.value = "";
-  showToast("Restore complete — reloading…");
-  setTimeout(() => location.reload(), 800);
-});
+
+  if (mode === "overwrite") {
+    showToast("Restore complete — reloading…");
+    setTimeout(() => location.reload(), 800);
+  } else {
+    showToast(`Merge complete — added ${addedCount}, skipped ${skippedCount} duplicate${skippedCount === 1 ? "" : "s"}`);
+    await renderItemBank();
+  }
+}
 
 /* ---------------------------------------------------------------------
    BASE IMAGE UPLOAD
@@ -1720,21 +2264,23 @@ window.addEventListener("keydown", (e) => {
   if ((e.ctrlKey || e.metaKey) && e.key === "z" && !e.shiftKey) { e.preventDefault(); undo(); }
   if ((e.ctrlKey || e.metaKey) && (e.key === "y" || (e.key === "z" && e.shiftKey))) { e.preventDefault(); redo(); }
   if (typing) return;
-  if (e.key === "Delete" || e.key === "Backspace") { if (state.selectedInstanceId) deleteSelected(); }
+  if (e.key === "Delete" || e.key === "Backspace") { if (state.selectedInstanceIds.size) deleteSelected(); }
   if (e.key === "[") rotateSelectedBy(-15);   // fine rotation, counterclockwise
   if (e.key === "]") rotateSelectedBy(15);    // fine rotation, clockwise
   if (e.key.toLowerCase() === "h") flipSelected("x");
   if (e.key.toLowerCase() === "v") flipSelected("y");
 });
 function deleteSelected(){
-  const id = state.selectedInstanceId;
-  if (!id) return;
-  state.layout = state.layout.filter(it => it.instanceId !== id);
-  const node = konvaNodesByInstanceId.get(id);
-  if (node) node.destroy();
-  konvaNodesByInstanceId.delete(id);
+  const ids = [...state.selectedInstanceIds];
+  if (!ids.length) return;
+  state.layout = state.layout.filter(it => !ids.includes(it.instanceId));
+  ids.forEach(id => {
+    const node = konvaNodesByInstanceId.get(id);
+    if (node) node.destroy();
+    konvaNodesByInstanceId.delete(id);
+  });
   transformer.nodes([]);
-  state.selectedInstanceId = null;
+  state.selectedInstanceIds.clear();
   itemLayer.draw();
   syncRotationInput();
   pushHistory();
