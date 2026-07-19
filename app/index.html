@@ -200,6 +200,8 @@
       <div class="menu-wrap">
         <button class="btn" id="file-menu-btn">File ▾</button>
         <div class="dropdown-menu" id="file-menu">
+          <button id="new-project-btn">🆕 New Project</button>
+          <div style="height:1px;background:var(--glass-border);margin:4px 2px;"></div>
           <label>📂 Load Floor Plan<input type="file" id="base-image-input" accept="image/*" hidden></label>
           <button id="backup-btn">⇩ Backup Full Suite</button>
           <label>⇧ Restore from backup<input type="file" id="restore-input" accept="application/json" hidden></label>
@@ -1813,7 +1815,13 @@ async function openRendersLibraryModal(){
   overlay.className = "modal-overlay";
   overlay.innerHTML = `
     <div class="modal" style="width:min(92vw, 720px);">
-      <div class="modal-head"><h3>Renders Library</h3><button class="modal-close">✕</button></div>
+      <div class="modal-head">
+        <h3>Renders Library</h3>
+        <div style="display:flex;align-items:center;gap:8px;">
+          <label class="btn" style="font-size:12px;">⬆ Load Renders<input type="file" id="rl-upload-input" accept="image/*" multiple hidden></label>
+          <button class="modal-close">✕</button>
+        </div>
+      </div>
       <div class="modal-body" id="renders-lib-body" style="max-height:60vh;overflow-y:auto;">
         <p style="font-size:12.5px;color:var(--text-dim);">Loading…</p>
       </div>
@@ -1825,7 +1833,23 @@ async function openRendersLibraryModal(){
   overlay.querySelector("#rl-close").addEventListener("click", close);
   overlay.addEventListener("click", (e) => { if (e.target === overlay) close(); });
 
-  await renderRendersLibraryGrid(overlay.querySelector("#renders-lib-body"), close);
+  const bodyEl = overlay.querySelector("#renders-lib-body");
+  overlay.querySelector("#rl-upload-input").addEventListener("change", async (e) => {
+    const files = Array.from(e.target.files || []);
+    if (!files.length) return;
+    bodyEl.innerHTML = `<p style="font-size:12.5px;color:var(--text-dim);">Adding ${files.length} render(s)…</p>`;
+    for (const file of files) {
+      if (!file.type.startsWith("image/")) continue;
+      const thumbnail = await makeRenderThumbnail(file);
+      const name = file.name.replace(/\.[^/.]+$/, "");
+      await db.renders.add({ name, image: file, thumbnail, createdAt: Date.now() });
+    }
+    e.target.value = "";
+    showToast(`Added ${files.length} render(s) to the library`);
+    await renderRendersLibraryGrid(bodyEl, close);
+  });
+
+  await renderRendersLibraryGrid(bodyEl, close);
 }
 
 async function renderRendersLibraryGrid(container, closeParent){
@@ -1846,10 +1870,11 @@ async function renderRendersLibraryGrid(container, closeParent){
     const body = document.createElement("div");
     body.style.cssText = "padding:10px;";
     body.innerHTML = `
-      <div style="font-size:12.5px;font-weight:600;margin-bottom:2px;">${escapeHtml(rec.name)}</div>
+      <div style="font-size:12.5px;font-weight:600;margin-bottom:2px;" data-name-label>${escapeHtml(rec.name)}</div>
       <div style="font-size:10.5px;color:var(--text-dim);margin-bottom:8px;">${new Date(rec.createdAt).toLocaleString()}</div>
       <div style="display:flex;gap:6px;flex-wrap:wrap;">
         <button class="btn" data-act="refine" style="font-size:11px;padding:5px 9px;">Refine</button>
+        <button class="btn" data-act="edit" style="font-size:11px;padding:5px 9px;">Edit</button>
         <button class="btn" data-act="download" style="font-size:11px;padding:5px 9px;">Download</button>
         <button class="btn" data-act="delete" style="font-size:11px;padding:5px 9px;color:#e08a8a;">Delete</button>
       </div>`;
@@ -1862,10 +1887,15 @@ async function renderRendersLibraryGrid(container, closeParent){
       closeParent();
       openRefineModal(canvas.toDataURL("image/png"));
     });
+    body.querySelector('[data-act="edit"]').addEventListener("click", () => {
+      openEditRenderModal(rec, () => renderRendersLibraryGrid(container, closeParent));
+    });
     body.querySelector('[data-act="download"]').addEventListener("click", () => {
       downloadDataUrl(URL.createObjectURL(rec.image), `${rec.name.replace(/\s+/g,"-")}.png`);
     });
     body.querySelector('[data-act="delete"]').addEventListener("click", async () => {
+      const ok = await confirmDialog("Delete this render?", `"${rec.name}" will be permanently removed from your library. This can't be undone.`, "Delete", true);
+      if (!ok) return;
       await db.renders.delete(rec.id);
       renderRendersLibraryGrid(container, closeParent);
     });
@@ -1874,6 +1904,35 @@ async function renderRendersLibraryGrid(container, closeParent){
     grid.appendChild(card);
   });
   container.appendChild(grid);
+}
+
+function openEditRenderModal(rec, onSaved){
+  const overlay = document.createElement("div");
+  overlay.className = "modal-overlay";
+  overlay.innerHTML = `
+    <div class="modal">
+      <div class="modal-head"><h3>Edit Render</h3><button class="modal-close">✕</button></div>
+      <div class="modal-body">
+        <div class="field"><label>Name</label><input type="text" id="m-edit-render-name" value="${escapeHtml(rec.name)}"></div>
+      </div>
+      <div class="modal-foot">
+        <button class="btn" id="m-er-cancel">Cancel</button>
+        <button class="btn primary" id="m-er-save">Save</button>
+      </div>
+    </div>`;
+  document.body.appendChild(overlay);
+  const close = () => overlay.remove();
+  overlay.querySelector(".modal-close").addEventListener("click", close);
+  overlay.querySelector("#m-er-cancel").addEventListener("click", close);
+  overlay.addEventListener("click", (e) => { if (e.target === overlay) close(); });
+  overlay.querySelector("#m-er-save").addEventListener("click", async () => {
+    const name = overlay.querySelector("#m-edit-render-name").value.trim();
+    if (!name) { showToast("Name can't be empty"); return; }
+    await db.renders.update(rec.id, { name });
+    close();
+    showToast("Render updated");
+    onSaved();
+  });
 }
 
 document.getElementById("render-options-btn").addEventListener("click", openRenderOptionsModal);
@@ -2112,6 +2171,38 @@ async function base64ToBlob(dataUrl){
   return res.blob();
 }
 
+document.getElementById("new-project-btn").addEventListener("click", async () => {
+  const ok = await confirmDialog(
+    "Start a New Project?",
+    "This clears the current floor plan and every item placed on the canvas. Your Item Bank, Renders Library, and Settings are not affected — only the active project resets.",
+    "Start New Project",
+    true
+  );
+  if (ok) await startNewProject();
+});
+
+async function startNewProject(){
+  state.baseImageBlob = null;
+  state.layout = [];
+  state.meta = { companyName:"", clientName:"", notes:"", showMetadata:true, showWatermark:false,
+    aiNotes:"", quickRenderNotes:"", includeBomOverlay:false, bomLegendText:"" };
+  state.selectedInstanceIds.clear();
+  state.history = [];
+  state.historyIndex = -1;
+
+  if (baseImageNode) { baseImageNode.destroy(); baseImageNode = null; }
+  baseLayer.draw();
+  await rebuildCanvasNodes();
+  document.getElementById("canvas-hint").style.display = "flex";
+  renderBOM();
+  syncBomOverlayUI();
+  updateUndoRedoButtons();
+  pushHistory();
+  fitToScreen();
+  await saveProject();
+  showToast("New project started");
+}
+
 document.getElementById("backup-btn").addEventListener("click", async () => {
   const dump = { version: db.verno, exportedAt: Date.now(), tables: {} };
   for (const table of db.tables) {
@@ -2294,6 +2385,33 @@ function deleteSelected(){
 function escapeHtml(s){
   return String(s).replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
 }
+
+/** App-themed confirmation dialog (glass modal, matches the rest of the UI)
+ *  — used instead of the browser's native confirm() anywhere a destructive
+ *  or hard-to-undo action needs a check first. Resolves true/false. */
+function confirmDialog(title, message, confirmLabel = "Confirm", danger = false){
+  return new Promise((resolve) => {
+    const overlay = document.createElement("div");
+    overlay.className = "modal-overlay";
+    overlay.innerHTML = `
+      <div class="modal" style="width:420px;">
+        <div class="modal-head"><h3>${escapeHtml(title)}</h3><button class="modal-close">✕</button></div>
+        <div class="modal-body"><p style="font-size:13.5px;line-height:1.6;color:var(--text-dim);">${escapeHtml(message)}</p></div>
+        <div class="modal-foot">
+          <button class="btn" id="cd-cancel">Cancel</button>
+          <button class="btn ${danger ? "" : "primary"}" id="cd-confirm"
+            style="${danger ? "background:#c0524f;color:#fff;border-color:#c0524f;" : ""}">${escapeHtml(confirmLabel)}</button>
+        </div>
+      </div>`;
+    document.body.appendChild(overlay);
+    const finish = (result) => { overlay.remove(); resolve(result); };
+    overlay.querySelector(".modal-close").addEventListener("click", () => finish(false));
+    overlay.querySelector("#cd-cancel").addEventListener("click", () => finish(false));
+    overlay.addEventListener("click", (e) => { if (e.target === overlay) finish(false); });
+    overlay.querySelector("#cd-confirm").addEventListener("click", () => finish(true));
+  });
+}
+
 let toastTimer = null;
 function showToast(msg){
   const el = document.getElementById("toast");
