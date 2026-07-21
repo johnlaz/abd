@@ -1452,7 +1452,7 @@ document.getElementById("export-btn").addEventListener("click", async () => {
   transformer.nodes([]); itemLayer.draw(); // hide selection handles for the export
   const layoutDataUrl = stage.toDataURL({ pixelRatio: 2, mimeType: "image/png" });
   const layoutImg = await loadImageFromSrc(layoutDataUrl);
-  const finalDataUrl = compositeWithHeaderFooter(layoutImg, state.meta, { width: layoutImg.width, height: layoutImg.height });
+  const finalDataUrl = await compositeWithHeaderFooter(layoutImg, state.meta, { width: layoutImg.width, height: layoutImg.height });
   downloadDataUrl(finalDataUrl, `${(state.meta.companyName||"aim-av").replace(/\s+/g,"-")}-booth-layout.png`);
 });
 
@@ -1470,9 +1470,18 @@ const GEMINI_MODEL = "gemini-3.1-flash-image"; // default / fallback — actual 
 const AI_RENDER_PROMPT = `This image is a flat 2D schematic mockup of a trade show / AV booth layout,
 built from simple placeholder icons on a floor plan or booth photo background.
 
+The single most important constraint: treat the input image's composition as a literal,
+fixed template. Every item's position, size, and rotation in your output must match the
+input image as closely as pixel-tracing it would — this is not a loose creative reference,
+it is the ground truth for where things go. If you are unsure whether to adjust an item's
+placement or size "to look better," don't — leave it exactly as drawn, even if it looks
+unconventional for that equipment type in real life.
+
 Re-render this as a single photorealistic, professional trade show booth photograph:
-- Keep every item in the exact same position, scale, and proportion as shown
-- Do not add, remove, duplicate, or move any items
+- Match each item's position and footprint to the input image as precisely as possible —
+  same left/right position, same distance from the floor/back wall, same relative size
+  compared to neighboring items and to the background
+- Do not add, remove, duplicate, resize, or move any items relative to how they're drawn
 - An "ITEM LEGEND" is provided below identifying exactly what each placeholder icon
   represents, roughly where it sits in the frame, and its drawn size. Use these
   identities directly — do NOT guess an item's type from its silhouette alone, since
@@ -1494,29 +1503,8 @@ Re-render this as a single photorealistic, professional trade show booth photogr
 - Professional product photography quality, sharp focus
 - CRITICAL — DO NOT add any numbers, circular badges, callouts, legends, labels, price
   tags, or any other text/graphic overlays to the image, and do not add a watermark.
-  The output should be a clean photograph with nothing overlaid on it, UNLESS a section
-  below titled "INCLUDE A NUMBERED BOM LEGEND OVERLAY" is present — that is the one
-  and only exception to this rule.`;
-
-function buildBomOverlayInstructions(legendText){
-  return `
-
-INCLUDE A NUMBERED BOM LEGEND OVERLAY:
-The user has explicitly requested a numbered equipment legend on this render, like a
-professional inventory/spec diagram. Use this exact numbered list as the legend text —
-it may use different wording than the ITEM LEGEND above (e.g. more specific model names
-or notes); use THIS wording for the visible legend, matched to items in the same order:
-
-${legendText}
-
-- Add a small numbered circular badge next to each corresponding item in the rendered
-  image (badge "1" next to the first item in the list above, etc.)
-- Add a clean text legend reproducing the list above — place it along the bottom or a
-  side margin, in columns if there are many items, wherever it fits without covering
-  the booth itself
-- Keep badges and legend text legible and professional (clean sans-serif, high-contrast
-  circular badges), similar to an equipment placement diagram used for client sign-off`;
-}
+  The output must be a clean photograph with nothing overlaid on it — no exceptions.
+  (Any numbered legend the user wants is added separately afterward, not by you.)`;
 
 const REFINE_PROMPT_BASE = `This is an existing photorealistic trade show booth render. Apply this specific change and nothing else:\n\n`;
 
@@ -1634,12 +1622,9 @@ document.getElementById("ai-render-btn").addEventListener("click", async () => {
     if (standingNotes) fullPrompt += `\n- Standing project notes: ${standingNotes}`;
     if (quickNotes) fullPrompt += `\n- Notes for this render only: ${quickNotes}`;
   }
-  if (state.meta.includeBomOverlay) {
-    const legendText = (state.meta.bomLegendText && state.meta.bomLegendText.trim())
-      ? state.meta.bomLegendText.trim()
-      : await buildBomLegendPlainText();
-    fullPrompt += buildBomOverlayInstructions(legendText);
-  }
+  // Note: the numbered BOM legend is NOT requested from the AI — it's drawn by
+  // us afterward from the actual item coordinates (see compositeWithHeaderFooter),
+  // since generative models are unreliable at accurate small text/numbers.
 
   btn.disabled = true;
   const originalLabel = btn.textContent;
@@ -1647,9 +1632,7 @@ document.getElementById("ai-render-btn").addEventListener("click", async () => {
 
   try {
     const rawDataUrl = await callGeminiRender(base64, fullPrompt);
-    const rawImg = await loadImageFromSrc(rawDataUrl);
-    const finalDataUrl = compositeWithHeaderFooter(rawImg, state.meta, { width: rawImg.width, height: rawImg.height });
-    showAiRenderResult(finalDataUrl);
+    showAiRenderResult(rawDataUrl);
   } catch (err) {
     handleRenderError(err);
   } finally {
@@ -1658,14 +1641,20 @@ document.getElementById("ai-render-btn").addEventListener("click", async () => {
   }
 });
 
-function showAiRenderResult(dataUrl){
+async function showAiRenderResult(rawDataUrl){
+  const rawImg = await loadImageFromSrc(rawDataUrl);
+  let finalDataUrl = await compositeWithHeaderFooter(rawImg, state.meta, { width: rawImg.width, height: rawImg.height });
+
   const overlay = document.createElement("div");
   overlay.className = "modal-overlay";
   overlay.innerHTML = `
     <div class="modal" style="width:min(90vw, 800px);">
       <div class="modal-head"><h3>AI Rendered Preview</h3><button class="modal-close">✕</button></div>
       <div class="modal-body">
-        <img src="${dataUrl}" style="width:100%;border-radius:12px;border:1px solid var(--glass-border);">
+        <img id="ai-preview-img" src="${finalDataUrl}" style="width:100%;border-radius:12px;border:1px solid var(--glass-border);">
+        <label class="toggle-row" style="border-top:none;padding-top:2px;">
+          <input type="checkbox" id="ai-bom-toggle"> Show numbered BOM legend (instant, drawn from your actual layout — no re-render needed)
+        </label>
         <p style="font-size:11.5px;color:var(--text-dim);">
           Generative render — verify item count and placement against the layout before sending to a client.
         </p>
@@ -1673,7 +1662,6 @@ function showAiRenderResult(dataUrl){
       <div class="modal-foot" style="flex-wrap:wrap;">
         <button class="btn" id="ai-close">Close</button>
         <button class="btn" id="ai-save-library">💾 Save to Library</button>
-        <button class="btn" id="ai-add-bom" title="Adds a numbered equipment legend to this exact image">🔢 Add BOM Legend</button>
         <button class="btn" id="ai-refine">🔁 Refine this</button>
         <button class="btn primary" id="ai-download">Download PNG</button>
       </div>
@@ -1683,36 +1671,26 @@ function showAiRenderResult(dataUrl){
   overlay.querySelector(".modal-close").addEventListener("click", close);
   overlay.querySelector("#ai-close").addEventListener("click", close);
   overlay.addEventListener("click", (e) => { if (e.target === overlay) close(); });
-  overlay.querySelector("#ai-download").addEventListener("click", () => {
-    downloadDataUrl(dataUrl, `${(state.meta.companyName||"aim-av").replace(/\s+/g,"-")}-ai-render.png`);
+
+  const bomToggle = overlay.querySelector("#ai-bom-toggle");
+  bomToggle.checked = !!state.meta.includeBomOverlay;
+  bomToggle.addEventListener("change", async () => {
+    state.meta.includeBomOverlay = bomToggle.checked;
+    syncBomOverlayUI();
+    markDirty();
+    finalDataUrl = await compositeWithHeaderFooter(rawImg, state.meta, { width: rawImg.width, height: rawImg.height });
+    overlay.querySelector("#ai-preview-img").src = finalDataUrl;
   });
-  overlay.querySelector("#ai-add-bom").addEventListener("click", async () => {
-    const btn = overlay.querySelector("#ai-add-bom");
-    btn.disabled = true;
-    btn.textContent = "Adding legend… (10–30s)";
-    try {
-      const legendText = (state.meta.bomLegendText && state.meta.bomLegendText.trim())
-        ? state.meta.bomLegendText.trim()
-        : await buildBomLegendPlainText();
-      const prompt = `This is an existing photorealistic trade show booth render. Do not change the booth, items, camera angle, or composition in any way.${buildBomOverlayInstructions(legendText)}`;
-      const base64 = dataUrl.split(",")[1];
-      const rawDataUrl = await callGeminiRender(base64, prompt);
-      const rawImg = await loadImageFromSrc(rawDataUrl);
-      const finalDataUrl = compositeWithHeaderFooter(rawImg, state.meta, { width: rawImg.width, height: rawImg.height });
-      close();
-      showAiRenderResult(finalDataUrl);
-    } catch (err) {
-      handleRenderError(err);
-      btn.disabled = false;
-      btn.textContent = "🔢 Add BOM Legend";
-    }
+
+  overlay.querySelector("#ai-download").addEventListener("click", () => {
+    downloadDataUrl(finalDataUrl, `${(state.meta.companyName||"aim-av").replace(/\s+/g,"-")}-ai-render.png`);
   });
   overlay.querySelector("#ai-save-library").addEventListener("click", () => {
-    openSaveRenderModal(dataUrl);
+    openSaveRenderModal(finalDataUrl, rawDataUrl);
   });
   overlay.querySelector("#ai-refine").addEventListener("click", () => {
     close();
-    openRefineModal(dataUrl);
+    openRefineModal(rawDataUrl);
   });
 }
 
@@ -1720,6 +1698,12 @@ function showAiRenderResult(dataUrl){
    RENDERS LIBRARY — save finished AI renders locally, browse them later,
    and feed a saved render back into Gemini with new instructions ("refine")
    instead of starting over from the flat layout each time.
+
+   Each saved record keeps both the finished `image` (what you see/download)
+   and the clean `rawImage` the AI actually produced, before our own
+   header/footer/BOM-legend overlay was drawn on top. Refining always uses
+   the raw version — feeding an already-decorated image back into Gemini and
+   then decorating it again is what caused headers/footers to stack up.
 --------------------------------------------------------------------- */
 function dataUrlToBlob(dataUrl){
   return fetch(dataUrl).then(r => r.blob());
@@ -1735,7 +1719,7 @@ async function makeRenderThumbnail(blob, maxW = 320){
   return new Promise(res => canvas.toBlob(res, "image/jpeg", 0.85));
 }
 
-function openSaveRenderModal(dataUrl){
+function openSaveRenderModal(finalDataUrl, rawDataUrl){
   const overlay = document.createElement("div");
   overlay.className = "modal-overlay";
   const defaultName = `${state.meta.companyName || "Booth"} — ${new Date().toLocaleDateString()}`;
@@ -1757,22 +1741,23 @@ function openSaveRenderModal(dataUrl){
   overlay.addEventListener("click", (e) => { if (e.target === overlay) close(); });
   overlay.querySelector("#m-rn-save").addEventListener("click", async () => {
     const name = overlay.querySelector("#m-render-name").value.trim() || defaultName;
-    const image = await dataUrlToBlob(dataUrl);
+    const image = await dataUrlToBlob(finalDataUrl);
+    const rawImage = rawDataUrl ? await dataUrlToBlob(rawDataUrl) : null;
     const thumbnail = await makeRenderThumbnail(image);
-    await db.renders.add({ name, image, thumbnail, createdAt: Date.now() });
+    await db.renders.add({ name, image, rawImage, thumbnail, createdAt: Date.now() });
     showToast("Saved to Renders Library");
     close();
   });
 }
 
-function openRefineModal(sourceDataUrl){
+function openRefineModal(rawDataUrl){
   const overlay = document.createElement("div");
   overlay.className = "modal-overlay";
   overlay.innerHTML = `
     <div class="modal">
       <div class="modal-head"><h3>Refine This Render</h3><button class="modal-close">✕</button></div>
       <div class="modal-body">
-        <img src="${sourceDataUrl}" style="width:100%;border-radius:10px;border:1px solid var(--glass-border);max-height:180px;object-fit:cover;">
+        <img src="${rawDataUrl}" style="width:100%;border-radius:10px;border:1px solid var(--glass-border);max-height:180px;object-fit:cover;">
         <div class="field">
           <label>What should change?</label>
           <textarea id="m-refine-notes" rows="5" placeholder="e.g. Make the carpet dark gray instead of black. Add more overhead lighting. Remove the reflection on the floor."></textarea>
@@ -1795,13 +1780,11 @@ function openRefineModal(sourceDataUrl){
     btn.disabled = true;
     btn.textContent = "Refining… (10–30s)";
     try {
-      const base64 = sourceDataUrl.split(",")[1];
-      const prompt = `${REFINE_PROMPT_BASE}${notes}\n\nDo not change anything else about the image — same items, same positions, same camera angle and composition. Do not add any text, numbers, or watermarks unless specifically asked above.`;
-      const rawDataUrl = await callGeminiRender(base64, prompt);
-      const rawImg = await loadImageFromSrc(rawDataUrl);
-      const finalDataUrl = compositeWithHeaderFooter(rawImg, state.meta, { width: rawImg.width, height: rawImg.height });
+      const base64 = rawDataUrl.split(",")[1];
+      const prompt = `${REFINE_PROMPT_BASE}${notes}\n\nDo not change anything else about the image — same items, same positions, same camera angle and composition. Do not add any text, numbers, or watermarks.`;
+      const newRawDataUrl = await callGeminiRender(base64, prompt);
       close();
-      showAiRenderResult(finalDataUrl);
+      showAiRenderResult(newRawDataUrl);
     } catch (err) {
       handleRenderError(err);
       btn.disabled = false;
@@ -1866,20 +1849,24 @@ async function renderRendersLibraryGrid(container, closeParent){
     card.style.cssText = "background:var(--input-bg);border:1px solid var(--glass-border);border-radius:12px;overflow:hidden;";
     const img = document.createElement("img");
     img.src = URL.createObjectURL(rec.thumbnail || rec.image);
-    img.style.cssText = "width:100%;height:120px;object-fit:cover;display:block;";
+    img.style.cssText = "width:100%;height:120px;object-fit:cover;display:block;cursor:pointer;";
+    img.addEventListener("click", () => openRenderViewer(rec));
     const body = document.createElement("div");
     body.style.cssText = "padding:10px;";
     body.innerHTML = `
       <div style="font-size:12.5px;font-weight:600;margin-bottom:2px;" data-name-label>${escapeHtml(rec.name)}</div>
       <div style="font-size:10.5px;color:var(--text-dim);margin-bottom:8px;">${new Date(rec.createdAt).toLocaleString()}</div>
       <div style="display:flex;gap:6px;flex-wrap:wrap;">
+        <button class="btn" data-act="view" style="font-size:11px;padding:5px 9px;">View</button>
         <button class="btn" data-act="refine" style="font-size:11px;padding:5px 9px;">Refine</button>
         <button class="btn" data-act="edit" style="font-size:11px;padding:5px 9px;">Edit</button>
         <button class="btn" data-act="download" style="font-size:11px;padding:5px 9px;">Download</button>
         <button class="btn" data-act="delete" style="font-size:11px;padding:5px 9px;color:#e08a8a;">Delete</button>
       </div>`;
+    body.querySelector('[data-act="view"]').addEventListener("click", () => openRenderViewer(rec));
     body.querySelector('[data-act="refine"]').addEventListener("click", async () => {
-      const url = URL.createObjectURL(rec.image);
+      const source = rec.rawImage || rec.image; // prefer the clean pre-overlay version if we have it
+      const url = URL.createObjectURL(source);
       const img2 = await loadImageFromSrc(url);
       const canvas = document.createElement("canvas");
       canvas.width = img2.naturalWidth; canvas.height = img2.naturalHeight;
@@ -1904,6 +1891,28 @@ async function renderRendersLibraryGrid(container, closeParent){
     grid.appendChild(card);
   });
   container.appendChild(grid);
+}
+
+function openRenderViewer(rec){
+  const overlay = document.createElement("div");
+  overlay.style.cssText = `position:fixed;inset:0;z-index:80;background:radial-gradient(circle at 50% 40%, #1a1f28, #05070a 75%);
+    display:flex;flex-direction:column;align-items:center;justify-content:center;padding:40px;`;
+  const url = URL.createObjectURL(rec.image);
+  overlay.innerHTML = `
+    <button id="rv-close" style="position:absolute;top:22px;right:26px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.15);
+      color:#fff;width:38px;height:38px;border-radius:50%;font-size:16px;cursor:pointer;">✕</button>
+    <div style="font-family:'Playfair Display',serif;color:#E8C97A;font-size:15px;margin-bottom:16px;letter-spacing:.02em;">${escapeHtml(rec.name)}</div>
+    <img src="${url}" style="max-width:88vw;max-height:78vh;object-fit:contain;border-radius:10px;box-shadow:0 40px 100px rgba(0,0,0,.6);">
+    <button id="rv-download" style="margin-top:20px;background:#E8C97A;color:#1a1508;border:none;font-weight:600;font-size:13px;
+      padding:11px 22px;border-radius:999px;cursor:pointer;">Download PNG</button>
+  `;
+  document.body.appendChild(overlay);
+  const close = () => { URL.revokeObjectURL(url); overlay.remove(); };
+  overlay.querySelector("#rv-close").addEventListener("click", close);
+  overlay.querySelector("#rv-download").addEventListener("click", () => downloadDataUrl(url, `${rec.name.replace(/\s+/g,"-")}.png`));
+  overlay.addEventListener("click", (e) => { if (e.target === overlay) close(); });
+  const onEsc = (e) => { if (e.key === "Escape") { close(); document.removeEventListener("keydown", onEsc); } };
+  document.addEventListener("keydown", onEsc);
 }
 
 function openEditRenderModal(rec, onSaved){
@@ -2009,13 +2018,17 @@ function loadImageFromSrc(src){
   });
 }
 
-function compositeWithHeaderFooter(layoutImg, meta, size){
+async function compositeWithHeaderFooter(layoutImg, meta, size){
   const HEADER_H = meta.showMetadata ? 130 : 0;
   const FOOTER_H = (meta.showMetadata && meta.notes) ? 90 : 0;
   const PAD = 40;
+
+  const legendLines = meta.includeBomOverlay ? await getBomLegendLinesForOverlay() : [];
+  const LEGEND_H = legendLines.length ? measureBomLegendHeight(size.width, legendLines) : 0;
+
   const canvas = document.createElement("canvas");
   canvas.width = size.width;
-  canvas.height = size.height + HEADER_H + FOOTER_H;
+  canvas.height = size.height + HEADER_H + FOOTER_H + LEGEND_H;
   const ctx = canvas.getContext("2d");
 
   ctx.fillStyle = "#ffffff";
@@ -2034,12 +2047,18 @@ function compositeWithHeaderFooter(layoutImg, meta, size){
 
   ctx.drawImage(layoutImg, 0, HEADER_H, size.width, size.height);
 
+  if (legendLines.length) {
+    drawBomLegendBadges(ctx, size.width, size.height, HEADER_H);
+    drawBomLegendBand(ctx, size.width, HEADER_H + size.height, legendLines);
+  }
+
   if (FOOTER_H) {
+    const footerY = HEADER_H + size.height + LEGEND_H;
     ctx.fillStyle = "#0B0F14";
-    ctx.fillRect(0, HEADER_H+size.height, canvas.width, FOOTER_H);
+    ctx.fillRect(0, footerY, canvas.width, FOOTER_H);
     ctx.fillStyle = "#CBD5D9";
     ctx.font = "18px 'DM Sans', sans-serif";
-    wrapText(ctx, meta.notes, PAD, HEADER_H+size.height+30, canvas.width-PAD*2, 24);
+    wrapText(ctx, meta.notes, PAD, footerY+30, canvas.width-PAD*2, 24);
   }
 
   if (meta.showWatermark) {
@@ -2054,6 +2073,68 @@ function compositeWithHeaderFooter(layoutImg, meta, size){
     ctx.restore();
   }
   return canvas.toDataURL("image/png");
+}
+
+/**
+ * BOM legend numbers/badges are drawn by us directly from state.layout's actual
+ * coordinates — not by asking the AI to guess and hand-letter them onto the image.
+ * Generative models are unreliable at rendering small legible text/numbers
+ * (a known limitation across all current image models, not specific to Gemini),
+ * so numbering this way is the only way to guarantee every item gets exactly
+ * one correct, correctly-numbered badge.
+ */
+async function getBomLegendLinesForOverlay(){
+  const custom = (state.meta.bomLegendText || "").trim();
+  if (custom) return custom.split("\n").map(l => l.trim()).filter(Boolean);
+  const plain = await buildBomLegendPlainText(); // "1. Name\n2. Name..." — same order as state.layout
+  return plain.split("\n").filter(Boolean);
+}
+
+function drawBomLegendBadges(ctx, photoW, photoH, yOffset){
+  const badgeR = Math.max(13, Math.round(photoW * 0.014));
+  state.layout.forEach((item, i) => {
+    const cx = (item.x / STAGE_W) * photoW;
+    const cy = yOffset + (item.y / STAGE_H) * photoH;
+    ctx.beginPath();
+    ctx.arc(cx, cy, badgeR, 0, Math.PI * 2);
+    ctx.fillStyle = "#E8C97A";
+    ctx.fill();
+    ctx.lineWidth = Math.max(1.5, badgeR * 0.14);
+    ctx.strokeStyle = "#1a1508";
+    ctx.stroke();
+    ctx.fillStyle = "#1a1508";
+    ctx.font = `bold ${Math.round(badgeR * 1.15)}px 'DM Sans', sans-serif`;
+    ctx.textAlign = "center";
+    ctx.textBaseline = "middle";
+    ctx.fillText(String(i + 1), cx, cy + badgeR * 0.05);
+  });
+}
+
+function legendLayoutMetrics(canvasW, legendLines){
+  const pad = 40, colWidth = 260, lineH = 24, titleH = 34;
+  const cols = Math.max(1, Math.min(4, Math.floor((canvasW - pad*2) / colWidth)));
+  const perCol = Math.ceil(legendLines.length / cols);
+  return { pad, colWidth, lineH, titleH, cols, perCol };
+}
+function measureBomLegendHeight(canvasW, legendLines){
+  const { lineH, titleH, perCol } = legendLayoutMetrics(canvasW, legendLines);
+  return titleH + perCol * lineH + 30;
+}
+function drawBomLegendBand(ctx, canvasW, yStart, legendLines){
+  const { pad, colWidth, lineH, titleH, perCol } = legendLayoutMetrics(canvasW, legendLines);
+  const bandH = measureBomLegendHeight(canvasW, legendLines);
+  ctx.fillStyle = "#0B0F14";
+  ctx.fillRect(0, yStart, canvasW, bandH);
+  ctx.fillStyle = "#E8C97A";
+  ctx.font = "bold 19px 'Playfair Display', serif";
+  ctx.fillText("EQUIPMENT LEGEND", pad, yStart + 25);
+  ctx.font = "14px 'DM Sans', sans-serif";
+  ctx.fillStyle = "#CBD5D9";
+  legendLines.forEach((line, i) => {
+    const col = Math.floor(i / perCol);
+    const row = i % perCol;
+    ctx.fillText(line, pad + col * colWidth, yStart + titleH + 16 + row * lineH);
+  });
 }
 function wrapText(ctx, text, x, y, maxWidth, lineHeight){
   const words = (text||"").split(" ");
@@ -2156,7 +2237,7 @@ function openSettingsModal(){
 /* ---------------------------------------------------------------------
    BACKUP / RESTORE (entire Dexie DB <-> single JSON file)
 --------------------------------------------------------------------- */
-const BLOB_FIELDS = { assets: ["thumbnail","image"], projects: ["baseImage"], renders: ["image","thumbnail"] };
+const BLOB_FIELDS = { assets: ["thumbnail","image"], projects: ["baseImage"], renders: ["image","rawImage","thumbnail"] };
 
 function blobToBase64(blob){
   return new Promise((resolve, reject) => {
