@@ -2283,40 +2283,55 @@ function dedupeKeyFor(tableName, row){
 
 async function runRestore(dump, mode){
   const MERGEABLE_TABLES = ["assets", "renders"];
-  let addedCount = 0, skippedCount = 0;
 
-  await db.transaction("rw", db.tables, async () => {
-    for (const table of db.tables) {
-      const rows = dump.tables[table.name] || [];
-      const blobFields = BLOB_FIELDS[table.name] || [];
-      const decoded = await Promise.all(rows.map(async row => {
-        const copy = { ...row };
-        for (const field of blobFields) {
-          if (copy["__" + field + "IsBlob"]) {
-            copy[field] = await base64ToBlob(copy[field]);
-            delete copy["__" + field + "IsBlob"];
-          }
+  // Decode every blob field BEFORE opening the transaction. base64ToBlob() uses
+  // fetch(), and awaiting fetch() partway through a Dexie transaction silently
+  // invalidates it (a known Dexie/IndexedDB gotcha) — that's what was causing
+  // some tables (renders, sometimes others) to drop out of restores with no error.
+  const decodedTables = {};
+  for (const table of db.tables) {
+    const rows = dump.tables[table.name] || [];
+    const blobFields = BLOB_FIELDS[table.name] || [];
+    decodedTables[table.name] = await Promise.all(rows.map(async row => {
+      const copy = { ...row };
+      for (const field of blobFields) {
+        if (copy["__" + field + "IsBlob"]) {
+          copy[field] = await base64ToBlob(copy[field]);
+          delete copy["__" + field + "IsBlob"];
         }
-        return copy;
-      }));
-
-      if (mode === "overwrite") {
-        await table.clear();
-        if (decoded.length) await table.bulkPut(decoded);
-        continue;
       }
+      return copy;
+    }));
+  }
 
-      // merge mode
-      if (!MERGEABLE_TABLES.includes(table.name)) continue; // leave projects/settings alone
-      const existing = await table.toArray();
-      const existingKeys = new Set(existing.map(r => dedupeKeyFor(table.name, r)));
-      const toAdd = decoded.filter(r => !existingKeys.has(dedupeKeyFor(table.name, r)));
-      toAdd.forEach(r => delete r.id); // let Dexie assign fresh ids to avoid collisions
-      skippedCount += decoded.length - toAdd.length;
-      addedCount += toAdd.length;
-      if (toAdd.length) await table.bulkAdd(toAdd);
-    }
-  });
+  let addedCount = 0, skippedCount = 0;
+  try {
+    await db.transaction("rw", db.tables, async () => {
+      for (const table of db.tables) {
+        const decoded = decodedTables[table.name] || [];
+
+        if (mode === "overwrite") {
+          await table.clear();
+          if (decoded.length) await table.bulkPut(decoded);
+          continue;
+        }
+
+        // merge mode
+        if (!MERGEABLE_TABLES.includes(table.name)) continue; // leave projects/settings alone
+        const existing = await table.toArray();
+        const existingKeys = new Set(existing.map(r => dedupeKeyFor(table.name, r)));
+        const toAdd = decoded.filter(r => !existingKeys.has(dedupeKeyFor(table.name, r)));
+        toAdd.forEach(r => delete r.id); // let Dexie assign fresh ids to avoid collisions
+        skippedCount += decoded.length - toAdd.length;
+        addedCount += toAdd.length;
+        if (toAdd.length) await table.bulkAdd(toAdd);
+      }
+    });
+  } catch (err) {
+    console.error("Restore failed:", err);
+    showToast("Restore failed — " + err.message);
+    return;
+  }
 
   if (mode === "overwrite") {
     showToast("Restore complete — reloading…");
