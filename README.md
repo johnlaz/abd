@@ -1,6 +1,6 @@
 <div align="center">
 
-# AIM AV
+# AIM AV Booth Designer
 
 ### From empty floor to finished booth.
 
