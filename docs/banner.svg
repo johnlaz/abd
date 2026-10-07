@@ -1,0 +1,55 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 360" width="1280" height="360" role="img" aria-labelledby="t d">
+  <title id="t">ABD — AIM AV Booth Designer</title>
+  <desc id="d">ABD banner: a blueprint-style isometric booth with orange and magenta spotlights and the tagline "From empty floor to finished booth."</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#06122A"/><stop offset="1" stop-color="#0D2A5C"/></linearGradient>
+    <linearGradient id="ttl" x1="0" x2="1"><stop offset="0" stop-color="#7FE3FF"/><stop offset="1" stop-color="#E8F1FA"/></linearGradient>
+    <linearGradient id="warm" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#FFB45A" stop-opacity=".75"/><stop offset="1" stop-color="#FFB45A" stop-opacity="0"/></linearGradient>
+    <linearGradient id="pink" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#FF6FDC" stop-opacity=".75"/><stop offset="1" stop-color="#FF6FDC" stop-opacity="0"/></linearGradient>
+    <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse"><path d="M40 0H0V40" fill="none" stroke="#7FE3FF" stroke-opacity=".07"/></pattern>
+    <clipPath id="r"><rect width="1280" height="360" rx="24"/></clipPath>
+  </defs>
+  <g clip-path="url(#r)">
+    <rect width="1280" height="360" fill="url(#bg)"/>
+    <rect width="1280" height="360" fill="url(#grid)"/>
+    <circle cx="1020" cy="60" r="220" fill="#FF6FDC" opacity=".08"/>
+    <circle cx="140" cy="330" r="200" fill="#FFB45A" opacity=".06"/>
+  </g>
+  <rect x="1" y="1" width="1278" height="358" rx="23" fill="none" stroke="#7FE3FF" stroke-opacity=".25"/>
+
+  <!-- wordmark -->
+  <text x="72" y="168" font-family="Inter,'Segoe UI',system-ui,-apple-system,Arial,sans-serif" font-size="120" font-weight="800" letter-spacing="8" fill="url(#ttl)">ABD</text>
+  <text x="76" y="212" font-family="Inter,'Segoe UI',system-ui,-apple-system,Arial,sans-serif" font-size="26" font-weight="600" letter-spacing="1" fill="#E8F1FA" fill-opacity=".85">AIM AV Booth Designer</text>
+  <text x="76" y="262" font-family="Inter,'Segoe UI',system-ui,-apple-system,Arial,sans-serif" font-size="20" fill="#E8F1FA" fill-opacity=".65">From empty floor to finished booth.</text>
+  <g font-family="Inter,'Segoe UI',system-ui,-apple-system,Arial,sans-serif" font-size="14" font-weight="600">
+    <rect x="76" y="288" width="92" height="30" rx="15" fill="#7FE3FF" fill-opacity=".1" stroke="#7FE3FF" stroke-opacity=".4"/><text x="122" y="308" text-anchor="middle" fill="#7FE3FF">1 Load</text>
+    <rect x="178" y="288" width="92" height="30" rx="15" fill="#FFB45A" fill-opacity=".1" stroke="#FFB45A" stroke-opacity=".4"/><text x="224" y="308" text-anchor="middle" fill="#FFB45A">2 Place</text>
+    <rect x="280" y="288" width="104" height="30" rx="15" fill="#FF6FDC" fill-opacity=".1" stroke="#FF6FDC" stroke-opacity=".4"/><text x="332" y="308" text-anchor="middle" fill="#FF6FDC">3 Render</text>
+  </g>
+
+  <!-- isometric booth (blueprint linework) -->
+  <g transform="translate(860 40)" fill="none" stroke="#BFEFFF" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round">
+    <path d="M40 235 L210 300 L380 235 L210 170 Z" stroke-opacity=".7"/>
+    <path d="M40 235 V235 L40 215 L210 280 L380 215 L380 235" stroke-opacity=".35"/>
+    <!-- truss frame -->
+    <path d="M60 220 V70 L210 20 L360 70 V220" stroke-opacity=".95"/>
+    <path d="M210 20 V175" stroke-opacity=".9"/>
+    <path d="M60 70 L210 128 L360 70" stroke-opacity=".6"/>
+    <path d="M60 110 L210 168 L360 110" stroke-opacity=".25" stroke-dasharray="5 7"/>
+    <path d="M75 215 V80 M345 215 V80" stroke-opacity=".5"/>
+    <!-- screen -->
+    <path d="M232 112 L336 74 V150 L232 188 Z" fill="#7FE3FF" fill-opacity=".1" stroke-opacity=".8"/>
+    <!-- speakers -->
+    <rect x="70" y="190" width="34" height="68" rx="5" fill="#7FE3FF" fill-opacity=".12"/>
+    <circle cx="87" cy="214" r="8"/><circle cx="87" cy="238" r="10"/>
+    <rect x="316" y="190" width="34" height="68" rx="5" fill="#7FE3FF" fill-opacity=".12"/>
+    <circle cx="333" cy="214" r="8"/><circle cx="333" cy="238" r="10"/>
+  </g>
+  <!-- spotlights -->
+  <g transform="translate(860 40)">
+    <path d="M118 90 L60 255 L170 255 Z" fill="url(#warm)"/>
+    <path d="M302 90 L250 255 L360 255 Z" fill="url(#pink)"/>
+    <circle cx="118" cy="88" r="9" fill="#FFB45A"/><circle cx="118" cy="88" r="16" fill="#FFB45A" opacity=".25"/>
+    <circle cx="302" cy="88" r="9" fill="#FF6FDC"/><circle cx="302" cy="88" r="16" fill="#FF6FDC" opacity=".25"/>
+  </g>
+</svg>
