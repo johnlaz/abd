@@ -2,138 +2,152 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>AIM AV — From empty floor to finished booth</title>
-<meta name="description" content="AIM AV turns a booth photo and a few dragged icons into a photorealistic render — local-first booth layout tool for AV rental teams.">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700;800&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+<title>ABD — From empty floor to finished booth</title>
+<meta name="description" content="ABD (AIM AV Booth Designer) turns a booth photo and a few placed items into a photorealistic render. Free, local-first booth layout tool for AV and event teams.">
+<meta name="theme-color" content="#0A1F44">
+<meta name="color-scheme" content="dark">
+<meta property="og:title" content="ABD — From empty floor to finished booth">
+<meta property="og:description" content="Load a booth photo, place AV gear, render it photoreal. Free and local-first.">
+<meta property="og:type" content="website">
+<link rel="icon" type="image/png" sizes="192x192" href="app/icon-192.png">
+<link rel="apple-touch-icon" href="app/icon-192.png">
 <style>
   :root{
-    --gold:#E8C97A; --gold-dim:rgba(232,201,122,.5); --teal:#4FD1C5;
-    --bg-a:#0B0F14; --bg-b:#151b24; --bg-c:#0d1219;
-    --text:#E9EDEF; --text-dim:rgba(233,237,239,.62); --text-faint:rgba(233,237,239,.4);
-    --glass-bg:rgba(24,30,38,.5); --glass-border:rgba(255,255,255,.09); --glass-highlight:rgba(255,255,255,.06);
+    --accent:#7FE3FF; --accent-rgb:127,227,255; --on-accent:#03233A;
+    --warm:#FFB45A; --warm-rgb:255,180,90;
+    --ai:#FF6FDC; --ai-rgb:255,111,220;
+    --bg-a:#06122A; --bg-b:#0D2A5C; --bg-c:#081A3B;
+    --text:#E8F1FA; --text-dim:rgba(222,236,250,.72); --text-faint:rgba(222,236,250,.5);
+    --glass-bg:rgba(14,40,88,.5); --glass-border:rgba(150,210,255,.18); --glass-highlight:rgba(190,230,255,.10);
+    --font-ui:Inter,"SF Pro Text","Segoe UI Variable Text","Segoe UI",system-ui,-apple-system,Roboto,"Helvetica Neue",Arial,sans-serif;
+    --font-head:"SF Pro Display",Inter,"Segoe UI Variable Display","Segoe UI",system-ui,-apple-system,Roboto,"Helvetica Neue",Arial,sans-serif;
   }
   *{box-sizing:border-box;}
-  html{scroll-behavior:smooth;}
+  html{scroll-behavior:smooth;-webkit-text-size-adjust:100%;}
   body{
-    margin:0; color:var(--text); font-family:'DM Sans',sans-serif; background:var(--bg-a);
+    margin:0;color:var(--text);font-family:var(--font-ui);background:var(--bg-a);
     background:
-      radial-gradient(circle at 12% 8%, rgba(232,201,122,.10), transparent 38%),
-      radial-gradient(circle at 88% 68%, rgba(79,209,197,.09), transparent 42%),
+      radial-gradient(circle at 10% 6%, rgba(var(--warm-rgb),.12), transparent 34%),
+      radial-gradient(circle at 92% 14%, rgba(var(--ai-rgb),.14), transparent 38%),
+      radial-gradient(circle at 80% 90%, rgba(var(--accent-rgb),.14), transparent 44%),
       linear-gradient(165deg, var(--bg-a), var(--bg-b) 55%, var(--bg-c));
     background-attachment:fixed;
   }
-  h1,h2,h3{font-family:'Playfair Display',serif;margin:0;color:var(--text);}
+  body::before{ /* blueprint grid */
+    content:"";position:fixed;inset:0;pointer-events:none;z-index:-1;
+    background-image:linear-gradient(rgba(var(--accent-rgb),.05) 1px,transparent 1px),linear-gradient(90deg,rgba(var(--accent-rgb),.05) 1px,transparent 1px);
+    background-size:40px 40px;
+    -webkit-mask-image:radial-gradient(ellipse at 50% 20%,#000 20%,transparent 75%);mask-image:radial-gradient(ellipse at 50% 20%,#000 20%,transparent 75%);
+  }
+  h1,h2,h3{font-family:var(--font-head);margin:0;color:var(--text);letter-spacing:-.01em;}
   p{margin:0;}
   a{color:inherit;}
-  .wrap{max-width:1180px;margin:0 auto;padding:0 28px;}
-  @media (prefers-reduced-motion: reduce){ *{animation-duration:0.001ms !important; transition-duration:0.001ms !important;} html{scroll-behavior:auto;} }
+  :focus-visible{outline:2px solid var(--accent);outline-offset:3px;border-radius:8px;}
+  .wrap{max-width:1180px;margin:0 auto;padding:0 max(20px,env(safe-area-inset-left));}
+  @media (prefers-reduced-motion: reduce){ *{animation-duration:.001ms !important;transition-duration:.001ms !important;} html{scroll-behavior:auto;} }
 
   /* Nav */
   header{position:sticky;top:0;z-index:40;backdrop-filter:blur(18px) saturate(160%);-webkit-backdrop-filter:blur(18px) saturate(160%);
-    background:rgba(11,15,20,.55);border-bottom:1px solid var(--glass-border);}
-  nav{display:flex;align-items:center;justify-content:space-between;padding:16px 28px;max-width:1180px;margin:0 auto;}
-  .brand{display:flex;align-items:center;gap:10px;font-family:'Playfair Display',serif;font-weight:700;font-size:18px;letter-spacing:.01em;color:var(--gold);}
-  .brand-mark{width:30px;height:30px;border-radius:9px;background:linear-gradient(160deg,#151b24,#0B0F14);border:1px solid var(--glass-border);display:flex;align-items:center;justify-content:center;}
-  .brand-mark svg{width:16px;height:16px;}
-  .nav-cta{background:var(--gold);color:#1a1508;font-weight:600;font-size:13.5px;padding:9px 18px;border-radius:999px;text-decoration:none;
-    box-shadow:0 4px 16px rgba(232,201,122,.3);transition:transform .15s, filter .15s;}
-  .nav-cta:hover{transform:translateY(-1px);filter:brightness(1.05);}
+    background:rgba(6,18,42,.6);border-bottom:1px solid var(--glass-border);}
+  nav{display:flex;align-items:center;justify-content:space-between;padding:12px 20px;max-width:1180px;margin:0 auto;}
+  .brand{display:flex;align-items:center;gap:11px;text-decoration:none;}
+  .brand img{width:36px;height:36px;border-radius:10px;box-shadow:0 2px 14px rgba(var(--accent-rgb),.3);}
+  .brand b{font-family:var(--font-head);font-weight:800;font-size:20px;letter-spacing:.07em;color:var(--accent);line-height:1;}
+  .brand small{display:block;font-size:10.5px;color:var(--text-faint);letter-spacing:.02em;margin-top:3px;font-weight:500;}
+  .nav-cta{background:linear-gradient(135deg,var(--accent),rgba(var(--accent-rgb),.78));color:var(--on-accent);font-weight:700;font-size:13.5px;padding:10px 20px;border-radius:999px;text-decoration:none;
+    box-shadow:0 4px 18px rgba(var(--accent-rgb),.32);transition:transform .15s, filter .15s;white-space:nowrap;}
+  .nav-cta:hover{transform:translateY(-1px);filter:brightness(1.06);}
 
   /* Hero */
-  .hero{padding:88px 0 40px;}
-  .eyebrow{display:inline-flex;align-items:center;gap:8px;font-size:11.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--teal);
-    background:rgba(79,209,197,.08);border:1px solid rgba(79,209,197,.25);padding:6px 14px;border-radius:999px;margin-bottom:22px;}
-  .eyebrow::before{content:"";width:6px;height:6px;border-radius:50%;background:var(--teal);box-shadow:0 0 8px var(--teal);}
-  h1.headline{font-size:clamp(38px, 5.4vw, 66px);line-height:1.04;font-weight:700;letter-spacing:-.01em;max-width:15ch;}
-  h1.headline em{font-style:normal;color:var(--gold);}
-  .sub{margin-top:22px;font-size:18px;line-height:1.55;color:var(--text-dim);max-width:52ch;}
+  .hero{padding-top:84px;padding-bottom:40px;}
+  .eyebrow{display:inline-flex;align-items:center;gap:8px;font-size:11.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--ai);
+    background:rgba(var(--ai-rgb),.08);border:1px solid rgba(var(--ai-rgb),.3);padding:6px 14px;border-radius:999px;margin-bottom:22px;}
+  .eyebrow::before{content:"";width:6px;height:6px;border-radius:50%;background:var(--ai);box-shadow:0 0 8px var(--ai);}
+  h1.headline{font-size:clamp(38px,5.6vw,68px);line-height:1.03;font-weight:800;max-width:15ch;}
+  h1.headline em{font-style:normal;background:linear-gradient(90deg,var(--accent),var(--ai) 70%,var(--warm));-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;color:var(--accent);}
+  .sub{margin-top:22px;font-size:18px;line-height:1.55;color:var(--text-dim);max-width:54ch;}
   .hero-ctas{display:flex;gap:14px;margin-top:34px;flex-wrap:wrap;}
-  .btn-primary{background:var(--gold);color:#1a1508;font-weight:600;font-size:14.5px;padding:13px 26px;border-radius:999px;text-decoration:none;
-    box-shadow:0 8px 24px rgba(232,201,122,.32);transition:transform .15s, filter .15s;display:inline-block;}
-  .btn-primary:hover{transform:translateY(-2px);filter:brightness(1.05);}
-  .btn-ghost{border:1px solid var(--glass-border);color:var(--text-dim);font-size:14.5px;padding:13px 24px;border-radius:999px;text-decoration:none;
-    transition:.15s;display:inline-block;}
-  .btn-ghost:hover{color:var(--text);border-color:rgba(255,255,255,.2);}
+  .btn-primary{background:linear-gradient(135deg,var(--accent),rgba(var(--accent-rgb),.78));color:var(--on-accent);font-weight:700;font-size:15px;padding:14px 28px;border-radius:999px;text-decoration:none;
+    box-shadow:0 8px 28px rgba(var(--accent-rgb),.34);transition:transform .15s, filter .15s;display:inline-block;}
+  .btn-primary:hover{transform:translateY(-2px);filter:brightness(1.06);}
+  .btn-ghost{border:1px solid var(--glass-border);color:var(--text-dim);font-size:15px;padding:14px 24px;border-radius:999px;text-decoration:none;transition:.15s;display:inline-block;background:rgba(255,255,255,.02);}
+  .btn-ghost:hover{color:var(--text);border-color:rgba(var(--accent-rgb),.45);}
 
-  /* Stage scrubber — the signature element */
-  .stage{margin-top:64px;}
+  /* Stage scrubber */
+  .stage{margin-top:60px;}
   .stage-frame{position:relative;border-radius:20px;overflow:hidden;border:1px solid var(--glass-border);
-    box-shadow:0 30px 80px rgba(0,0,0,.5), inset 0 1px 0 var(--glass-highlight);aspect-ratio:16/9.6;background:#05070a;}
+    box-shadow:0 30px 80px rgba(0,0,10,.55), 0 0 0 1px rgba(var(--accent-rgb),.06), inset 0 1px 0 var(--glass-highlight);aspect-ratio:1280/828;background:#040a18;}
   .stage-frame img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;transition:opacity .55s ease;}
   .stage-frame img.active{opacity:1;}
-  .stage-frame::after{content:"";position:absolute;inset:0;background:linear-gradient(0deg, rgba(5,7,10,.7) 0%, rgba(5,7,10,0) 34%);pointer-events:none;}
-  .stage-caption{position:absolute;left:24px;bottom:20px;z-index:2;}
-  .stage-caption .num{font-family:'Playfair Display',serif;color:var(--gold);font-size:13px;letter-spacing:.08em;text-transform:uppercase;}
-  .stage-caption h3{font-size:22px;color:#fff;margin-top:2px;}
-  .stage-caption p{font-size:13.5px;color:rgba(255,255,255,.75);margin-top:2px;max-width:38ch;}
-
-  .stage-controls{display:flex;align-items:center;gap:18px;margin-top:22px;}
-  .stage-track{position:relative;flex:1;height:4px;border-radius:99px;background:rgba(255,255,255,.1);cursor:pointer;}
-  .stage-track-fill{position:absolute;left:0;top:0;height:100%;border-radius:99px;background:linear-gradient(90deg,var(--gold),var(--teal));
-    width:0%;transition:width .5s ease;}
-  .stage-stops{display:flex;justify-content:space-between;margin-top:12px;}
-  .stage-stop{background:none;border:none;color:var(--text-faint);font-size:12.5px;cursor:pointer;padding:4px 2px;transition:color .2s;
-    display:flex;flex-direction:column;align-items:flex-start;gap:2px;}
-  .stage-stop span.dot{width:8px;height:8px;border-radius:50%;background:rgba(255,255,255,.2);transition:.2s;}
-  .stage-stop.active{color:var(--gold);}
-  .stage-stop.active span.dot{background:var(--gold);box-shadow:0 0 8px var(--gold-dim);}
+  .stage-frame::after{content:"";position:absolute;inset:0;background:linear-gradient(0deg, rgba(4,10,24,.82) 0%, rgba(4,10,24,0) 38%);pointer-events:none;}
+  .stage-caption{position:absolute;left:24px;right:24px;bottom:20px;z-index:2;}
+  .stage-caption .num{color:var(--accent);font-size:12px;letter-spacing:.12em;text-transform:uppercase;font-weight:700;}
+  .stage-caption h3{font-size:clamp(18px,2.4vw,24px);color:#fff;margin-top:3px;}
+  .stage-caption p{font-size:14px;color:rgba(255,255,255,.8);margin-top:3px;max-width:44ch;}
+  .stage-controls{display:flex;align-items:center;gap:16px;margin-top:22px;}
+  .stage-track{position:relative;flex:1;height:5px;border-radius:99px;background:rgba(255,255,255,.1);cursor:pointer;}
+  .stage-track-fill{position:absolute;left:0;top:0;height:100%;border-radius:99px;background:linear-gradient(90deg,var(--accent),var(--warm),var(--ai));width:0%;transition:width .5s ease;}
+  .stage-stops{display:flex;justify-content:space-between;margin-top:10px;}
+  .stage-stop{background:none;border:none;color:var(--text-faint);font:inherit;font-size:13px;cursor:pointer;padding:8px 2px;transition:color .2s;display:flex;align-items:center;gap:8px;min-height:40px;}
+  .stage-stop .dot{width:8px;height:8px;border-radius:50%;background:rgba(255,255,255,.22);transition:.2s;}
+  .stage-stop.active{color:var(--accent);}
+  .stage-stop.active .dot{background:var(--accent);box-shadow:0 0 9px rgba(var(--accent-rgb),.7);}
   .stage-stop:hover{color:var(--text);}
-  .stage-nav-btn{width:38px;height:38px;border-radius:50%;border:1px solid var(--glass-border);background:var(--glass-bg);color:var(--text-dim);
+  .stage-nav-btn{width:42px;height:42px;border-radius:50%;border:1px solid var(--glass-border);background:var(--glass-bg);color:var(--text-dim);font-size:18px;
     display:flex;align-items:center;justify-content:center;cursor:pointer;flex-shrink:0;transition:.15s;}
-  .stage-nav-btn:hover{color:var(--gold);border-color:var(--gold-dim);}
+  .stage-nav-btn:hover{color:var(--accent);border-color:rgba(var(--accent-rgb),.5);}
 
   /* Sections */
-  section{padding:96px 0;}
-  .section-head{max-width:46ch;margin-bottom:52px;}
-  .section-head .kicker{font-size:11.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--teal);margin-bottom:12px;display:block;}
-  .section-head h2{font-size:clamp(28px,3.4vw,38px);line-height:1.14;}
-  .section-head p{margin-top:14px;color:var(--text-dim);font-size:15.5px;line-height:1.6;}
-
+  section{padding:88px 0;}
+  .section-head{max-width:48ch;margin-bottom:48px;}
+  .kicker{font-size:11.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--warm);margin-bottom:12px;display:block;font-weight:700;}
+  .section-head h2{font-size:clamp(28px,3.4vw,40px);line-height:1.12;}
+  .section-head p{margin-top:14px;color:var(--text-dim);font-size:16px;line-height:1.6;}
   .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;}
   @media (max-width:860px){.grid{grid-template-columns:1fr 1fr;}}
   @media (max-width:560px){.grid{grid-template-columns:1fr;}}
   .card{background:var(--glass-bg);-webkit-backdrop-filter:blur(20px) saturate(170%);backdrop-filter:blur(20px) saturate(170%);
-    border:1px solid var(--glass-border);border-radius:16px;padding:26px 24px;transition:transform .18s, border-color .18s;
-    box-shadow:inset 0 1px 0 var(--glass-highlight);}
-  .card:hover{transform:translateY(-3px);border-color:rgba(232,201,122,.3);}
-  .card .icon{width:38px;height:38px;border-radius:10px;background:rgba(232,201,122,.1);border:1px solid rgba(232,201,122,.25);
-    display:flex;align-items:center;justify-content:center;margin-bottom:16px;color:var(--gold);font-size:17px;}
-  .card h3{font-family:'DM Sans',sans-serif;font-weight:600;font-size:15.5px;color:var(--text);}
-  .card p{margin-top:8px;font-size:13.5px;line-height:1.55;color:var(--text-dim);}
+    border:1px solid var(--glass-border);border-radius:16px;padding:26px 24px;transition:transform .18s, border-color .18s, box-shadow .18s;box-shadow:inset 0 1px 0 var(--glass-highlight);}
+  .card:hover{transform:translateY(-3px);border-color:rgba(var(--accent-rgb),.4);box-shadow:inset 0 1px 0 var(--glass-highlight),0 14px 36px rgba(0,0,20,.35);}
+  .card .icon{width:42px;height:42px;border-radius:12px;background:rgba(var(--accent-rgb),.1);border:1px solid rgba(var(--accent-rgb),.28);display:flex;align-items:center;justify-content:center;margin-bottom:16px;color:var(--accent);}
+  .card:nth-child(3n+2) .icon{background:rgba(var(--ai-rgb),.1);border-color:rgba(var(--ai-rgb),.3);color:var(--ai);}
+  .card:nth-child(3n) .icon{background:rgba(var(--warm-rgb),.1);border-color:rgba(var(--warm-rgb),.3);color:var(--warm);}
+  .card .icon svg{width:21px;height:21px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;}
+  .card h3{font-size:16.5px;font-weight:700;}
+  .card p{margin-top:8px;font-size:14px;line-height:1.55;color:var(--text-dim);}
 
   /* CTA band */
-  .cta-band{border-radius:24px;background:linear-gradient(135deg, rgba(232,201,122,.1), rgba(79,209,197,.07));
-    border:1px solid var(--glass-border);padding:56px;text-align:center;box-shadow:inset 0 1px 0 var(--glass-highlight);}
-  .cta-band h2{font-size:clamp(26px,3.2vw,36px);max-width:24ch;margin:0 auto;}
-  .cta-band p{margin-top:14px;color:var(--text-dim);font-size:15px;}
+  .cta-band{border-radius:24px;background:linear-gradient(135deg, rgba(var(--accent-rgb),.12), rgba(var(--ai-rgb),.09));
+    border:1px solid var(--glass-border);padding:56px 24px;text-align:center;box-shadow:inset 0 1px 0 var(--glass-highlight);}
+  .cta-band h2{font-size:clamp(26px,3.2vw,38px);max-width:24ch;margin:0 auto;}
+  .cta-band p{margin-top:14px;color:var(--text-dim);font-size:15.5px;}
   .cta-band .hero-ctas{justify-content:center;margin-top:28px;}
 
-  footer{border-top:1px solid var(--glass-border);padding:36px 0;margin-top:20px;}
-  footer .wrap{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;}
-  footer .fnote{font-size:12.5px;color:var(--text-faint);}
+  footer{border-top:1px solid var(--glass-border);padding:34px 0 calc(34px + env(safe-area-inset-bottom));margin-top:20px;}
+  footer .wrap{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px 24px;}
+  footer .fnote{font-size:13px;color:var(--text-faint);}
+  footer a{text-decoration:none;color:var(--text-dim);}
+  footer a:hover{color:var(--accent);}
 
   @keyframes riseIn{from{opacity:0;transform:translateY(14px);}to{opacity:1;transform:translateY(0);}}
   .rise{animation:riseIn .7s ease both;}
-  .rise-delay-1{animation-delay:.08s;}
-  .rise-delay-2{animation-delay:.16s;}
-  .rise-delay-3{animation-delay:.24s;}
+  .rise-delay-1{animation-delay:.08s;} .rise-delay-2{animation-delay:.16s;} .rise-delay-3{animation-delay:.24s;}
+  @media (max-width:560px){
+    .hero{padding-top:52px;padding-bottom:24px;} section{padding:60px 0;} .sub{font-size:16.5px;}
+    .brand small{display:none;} .stage-caption p{display:none;} .stage-caption{bottom:14px;left:16px;}
+    .stage-stop{font-size:12px;} .btn-primary,.btn-ghost{width:100%;text-align:center;}
+  }
 </style>
 </head>
 <body>
 
 <header>
-  <nav>
-    <div class="brand">
-      <span class="brand-mark">
-        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <rect x="3" y="3" width="18" height="13" rx="2" stroke="#E8C97A" stroke-width="1.6"/>
-          <path d="M9 20h6M12 16v4" stroke="#E8C97A" stroke-width="1.6" stroke-linecap="round"/>
-        </svg>
-      </span>
-      AIM AV
-    </div>
+  <nav aria-label="Primary">
+    <a class="brand" href="./" aria-label="ABD home">
+      <img src="app/icon-192.png" alt="" width="36" height="36">
+      <span><b>ABD</b><small>AIM AV Booth Designer</small></span>
+    </a>
     <a class="nav-cta" href="./app/">Open the Designer</a>
   </nav>
 </header>
@@ -143,8 +157,8 @@
     <span class="eyebrow rise">Local-first booth designer</span>
     <h1 class="headline rise rise-delay-1">From empty floor to <em>finished booth.</em></h1>
     <p class="sub rise rise-delay-2">
-      AIM AV turns a booth photo and a few dragged icons into a photorealistic render your client can
-      actually picture — built for AV rental teams who quote fast and need to show, not just tell.
+      ABD turns a booth photo and a few placed items into a photorealistic render your client can
+      actually picture. Built for AV rental teams who quote fast and need to show, not just tell.
     </p>
     <div class="hero-ctas rise rise-delay-3">
       <a class="btn-primary" href="./app/">Open the Designer</a>
@@ -153,25 +167,25 @@
 
     <div class="stage rise rise-delay-3" id="how-it-works">
       <div class="stage-frame">
-        <img src="assets/workflow-1-load.jpg" alt="Original empty booth structure" data-stage="1">
-        <img src="assets/workflow-2-placement.jpg" alt="AV equipment icons placed on the booth layout" data-stage="2">
-        <img src="assets/workflow-3-render.jpg" alt="Final AI-rendered photorealistic booth" data-stage="3">
-        <div class="stage-caption">
-          <div class="num" id="stage-num">Stage 1 / 3</div>
+        <img src="app/shot-1-load.png" alt="The original empty booth structure loaded into ABD" data-stage="1" width="1280" height="828">
+        <img src="app/shot-2-place.png" alt="AV equipment icons placed on the booth layout" data-stage="2" width="1280" height="828">
+        <img src="app/shot-3-render.png" alt="The final AI-rendered photorealistic booth" data-stage="3" width="1280" height="828">
+        <div class="stage-caption" aria-live="polite">
+          <div class="num" id="stage-num">Step 1 / 3</div>
           <h3 id="stage-title">Load your booth</h3>
           <p id="stage-desc">Start from a floor plan, an empty booth photo, or nothing at all.</p>
         </div>
       </div>
 
       <div class="stage-controls">
-        <button class="stage-nav-btn" id="stage-prev" aria-label="Previous stage">‹</button>
+        <button class="stage-nav-btn" id="stage-prev" aria-label="Previous step">‹</button>
         <div class="stage-track" id="stage-track"><div class="stage-track-fill" id="stage-fill"></div></div>
-        <button class="stage-nav-btn" id="stage-next" aria-label="Next stage">›</button>
+        <button class="stage-nav-btn" id="stage-next" aria-label="Next step">›</button>
       </div>
       <div class="stage-stops">
-        <button class="stage-stop" data-stage="1"><span class="dot"></span>01 — Load</button>
-        <button class="stage-stop" data-stage="2"><span class="dot"></span>02 — Place</button>
-        <button class="stage-stop" data-stage="3"><span class="dot"></span>03 — Render</button>
+        <button class="stage-stop" data-stage="1"><span class="dot"></span>01 Load</button>
+        <button class="stage-stop" data-stage="2"><span class="dot"></span>02 Place</button>
+        <button class="stage-stop" data-stage="3"><span class="dot"></span>03 Render</button>
       </div>
     </div>
   </div>
@@ -181,38 +195,38 @@
       <div class="section-head">
         <span class="kicker">Why teams use it</span>
         <h2>Everything runs in your browser.</h2>
-        <p>No account, no install, no server. Your projects, your library, and your API key all stay local — the only thing that ever leaves your machine is the render request you trigger yourself.</p>
+        <p>No account, no install, no server. Your projects, your library, and your API key all stay on your device. The only thing that ever leaves it is the render request you trigger yourself.</p>
       </div>
       <div class="grid">
         <div class="card">
-          <div class="icon">▦</div>
+          <div class="icon"><svg viewBox="0 0 24 24"><rect x="3.5" y="3.5" width="7" height="7" rx="1.5"/><rect x="13.5" y="3.5" width="7" height="7" rx="1.5"/><rect x="3.5" y="13.5" width="7" height="7" rx="1.5"/><rect x="13.5" y="13.5" width="7" height="7" rx="1.5"/></svg></div>
           <h3>40+ item library</h3>
-          <p>Generic displays, kiosks, staging, lighting, and furniture — freely resizable, so one icon covers every real-world size instead of a fixed SKU.</p>
+          <p>Displays, kiosks, staging, truss, lighting, and furniture across 13 categories. Every item resizes freely, so one icon covers every real-world size instead of a fixed SKU.</p>
         </div>
         <div class="card">
-          <div class="icon">✨</div>
+          <div class="icon"><svg viewBox="0 0 24 24"><path d="M12 3l1.8 4.7L18.5 9.5l-4.7 1.8L12 16l-1.8-4.7L5.5 9.5l4.7-1.8z"/><path d="M19 15l.8 2.2L22 18l-2.2.8L19 21l-.8-2.2L16 18l2.2-.8z"/></svg></div>
           <h3>One-click AI render</h3>
-          <p>Send the layout to Gemini and get back a photorealistic booth photo with correct shadows, materials, and lighting — while your placement stays exact.</p>
+          <p>Send the layout to Gemini and get back a photorealistic booth photo with correct shadows, materials, and lighting, while every item stays exactly where you put it.</p>
         </div>
         <div class="card">
-          <div class="icon">☰</div>
+          <div class="icon"><svg viewBox="0 0 24 24"><path d="M8 6h12M8 12h12M8 18h12M4 6h.01M4 12h.01M4 18h.01"/></svg></div>
           <h3>Auto bill of materials</h3>
-          <p>Every item on the canvas is tallied by name and category automatically. No manual counting, no separate spreadsheet.</p>
+          <p>Every item on the canvas is tallied by name and category automatically. No manual counting and no separate spreadsheet to keep in sync.</p>
         </div>
         <div class="card">
-          <div class="icon">⌘</div>
-          <h3>Drag, resize, rotate, flip</h3>
-          <p>Full 360° rotation, mirroring on either axis, and undo/redo — the canvas behaves like a real design tool, not a static mockup.</p>
+          <div class="icon"><svg viewBox="0 0 24 24"><path d="M9 11V5.5a1.5 1.5 0 013 0V11m0-1.5a1.5 1.5 0 013 0V12m0-1a1.5 1.5 0 013 0v4.5A5.5 5.5 0 0112 21h-1.2a5.5 5.5 0 01-4.4-2.2L4 15.5a1.6 1.6 0 012.4-2L9 15.5"/></svg></div>
+          <h3>Drag, tap, pinch</h3>
+          <p>Drag items on desktop, tap to add on a phone or tablet, pinch to zoom. Rotate, flip, resize and undo. It behaves like a real design tool on any screen.</p>
         </div>
         <div class="card">
-          <div class="icon">◧</div>
+          <div class="icon"><svg viewBox="0 0 24 24"><path d="M5 4h11l3 3v13H5z"/><path d="M8 4v5h7V4M8 20v-6h8v6"/></svg></div>
           <h3>Autosaves as you work</h3>
           <p>Every change is saved to your browser automatically. Close the tab, come back later, and your project is exactly where you left it.</p>
         </div>
         <div class="card">
-          <div class="icon">⇩</div>
+          <div class="icon"><svg viewBox="0 0 24 24"><path d="M12 4v11M7.5 10.5L12 15l4.5-4.5M5 19.5h14"/></svg></div>
           <h3>Installable, works offline</h3>
-          <p>Add it to your home screen or desktop. Once loaded, the layout tool keeps working without a connection.</p>
+          <p>Add it to your home screen or desktop. Once loaded, the layout tool keeps working with no connection. Only AI renders need the internet.</p>
         </div>
       </div>
     </div>
@@ -222,7 +236,7 @@
     <div class="wrap">
       <div class="cta-band">
         <h2>Show the client the booth before it's built.</h2>
-        <p>Free to use — bring your own Gemini API key for AI renders.</p>
+        <p>Free to use. Bring your own Gemini API key for AI renders.</p>
         <div class="hero-ctas">
           <a class="btn-primary" href="./app/">Open the Designer</a>
         </div>
@@ -233,8 +247,8 @@
 
 <footer>
   <div class="wrap">
-    <div class="fnote">AIM AV — part of the TRS AV toolkit.</div>
-    <div class="fnote">Built local-first. No account required.</div>
+    <div class="fnote">© 2026 LAZLAB Creations. All Rights Reserved.</div>
+    <div class="fnote"><a href="mailto:lazlab.io@gmail.com">lazlab.io@gmail.com</a></div>
   </div>
 </footer>
 
@@ -243,10 +257,9 @@
   "use strict";
   const stages = [
     { title: "Load your booth", desc: "Start from a floor plan, an empty booth photo, or nothing at all." },
-    { title: "Place your equipment", desc: "Drag items from the library onto the canvas, resize and rotate to fit." },
+    { title: "Place your equipment", desc: "Drag or tap items from the library onto the canvas, then resize and rotate to fit." },
     { title: "Render with AI", desc: "One click turns the placeholder layout into a photorealistic preview." },
   ];
-
   let current = 1;
   const images = document.querySelectorAll(".stage-frame img");
   const stops = document.querySelectorAll(".stage-stop");
@@ -259,42 +272,41 @@
   function setStage(n){
     current = Math.min(3, Math.max(1, n));
     images.forEach(img => img.classList.toggle("active", Number(img.dataset.stage) === current));
-    stops.forEach(s => s.classList.toggle("active", Number(s.dataset.stage) === current));
+    stops.forEach(s => { const on = Number(s.dataset.stage) === current; s.classList.toggle("active", on); s.setAttribute("aria-pressed", on ? "true" : "false"); });
     fill.style.width = ((current - 1) / 2 * 100) + "%";
-    numEl.textContent = `Stage ${current} / 3`;
+    numEl.textContent = "Step " + current + " / 3";
     const s = stages[current - 1];
     titleEl.textContent = s.title;
     descEl.textContent = s.desc;
   }
-
-  stops.forEach(btn => btn.addEventListener("click", () => setStage(Number(btn.dataset.stage))));
-  document.getElementById("stage-prev").addEventListener("click", () => setStage(current - 1));
-  document.getElementById("stage-next").addEventListener("click", () => setStage(current + 1));
-
+  let autoplayed = false, iv = null;
+  const touched = () => { autoplayed = true; clearInterval(iv); };
+  stops.forEach(btn => btn.addEventListener("click", () => { touched(); setStage(Number(btn.dataset.stage)); }));
+  document.getElementById("stage-prev").addEventListener("click", () => { touched(); setStage(current - 1); });
+  document.getElementById("stage-next").addEventListener("click", () => { touched(); setStage(current + 1); });
   track.addEventListener("click", (e) => {
     const rect = track.getBoundingClientRect();
-    const pct = (e.clientX - rect.left) / rect.width;
-    setStage(Math.round(pct * 2) + 1);
+    touched();
+    setStage(Math.round((e.clientX - rect.left) / rect.width * 2) + 1);
   });
 
-  // Auto-advance once, gently, so first-time visitors notice it's interactive — then stops.
-  let autoplayed = false;
-  const stageEl = document.querySelector(".stage");
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting && !autoplayed) {
-        autoplayed = true;
-        let step = 1;
-        const iv = setInterval(() => {
-          step++;
-          if (step > 3) { clearInterval(iv); return; }
-          setStage(step);
-        }, 1400);
-      }
-    });
-  }, { threshold: 0.5 });
-  observer.observe(stageEl);
-
+  // Auto-advance once, gently, so first-time visitors notice it's interactive. Stops as soon as they touch it.
+  if ("IntersectionObserver" in window && !window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting && !autoplayed) {
+          autoplayed = true;
+          let step = 1;
+          iv = setInterval(() => {
+            step++;
+            if (step > 3) { clearInterval(iv); return; }
+            setStage(step);
+          }, 1500);
+        }
+      });
+    }, { threshold: 0.5 });
+    observer.observe(document.querySelector(".stage"));
+  }
   setStage(1);
 })();
 </script>
