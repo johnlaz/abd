@@ -2,66 +2,73 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>AIM AV — Booth Designer</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+<title>ABD — AIM AV Booth Designer</title>
+<meta name="description" content="ABD turns a booth photo and a few placed items into a photorealistic render. Local-first booth layout and AI rendering for AV and event teams.">
 <link rel="manifest" href="manifest.json">
-<link rel="icon" type="image/png" sizes="32x32" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAFmElEQVR42p2Xy48cVxXGf9+91a95vxwciyQGEskOkoEoCyIWQSJIIFBYAIkUYANiF8gfgCyRiD+A1yoSGxaAyLBBkWCBwgoCEmIxSmQEwRobM7HHduye7pme7qp7D4vq6q6erm47lFStvo+633l+51yRPx4IjdUPnPWK3xV8UXAWlACC4lfDwfDRxGi8qvEMYIIM2DV4XVn4cbt9Y7fAVPFncWXrOZN+4pwewKx8CuNzJwHLAoykVIVIyvcKh5ntG/E7B7f2fg14ASytnvoy0nYOawFwo9P/f83H4PnIgIjkJWEWv9K++d/fqLm+/pALyY6cVoVFkJ9UawwuTWtZBW5WBj9hNQhyzmHWVhYv+Hpj+RXn9elZ4ABOYAZpFgkGIRpx+IYIwWw4B8FyuzovTkiGJCQ5IEpaiE5Oi2tbl4XOTti2pLmUAzfqCZvrLbNoNlrVpFtiNLkY1e5lHB1n1GsJlm9Hk27LbWS2q6W1U1keiKIKPMsi66stfvDSp+gepqQh4jQdjBaNes3RXF6wWjbQK6/+jb39LvWaq3JD4cqQzPU5otcPfPJDG9x8r8fPtneuffz86Zvd3kBOYMV3LpHvttPOM88+cvCJz5/6xtuv2bkPLurf19o06wlDo51MKQQ+mQU+2uREMLPDXqqvfenxty5+75lB/932AzWvDBwA0VBi/fBm67HbF3f2a907ndVgyi0lSpJOgAOQzE21Ukh452gf9GuDvYPlG7e6p73zqUoploZQf+rUO9ee2P7jfzoLC5+tNeuGmWZoPhonU1lUznMbrxlGkjhXX6jveO8veT/p18Q5aC2mWlo6J+9KWldrztgC90MypTmLNWQNSRMQRBOWgRkymxFzTDFsMh988okREYwQhrxWZpeY/8SI8OUTBLJK8HEMzNK8CCJykm41k4zNhcFGr+9q3k+IkIYgNhcHrYbPQrRJza0KPLdtQmWGanpG4l+776394fVLZ27d7dWcnJUPjDFqa62V/vPK3bVHH16bMLtVFrbCAvdRWIKhZt3xq9/948nf//nKkzHYCeGGdODFnbt9Xn7xKcKUTauzLZkPnhs/ceK4H7DjAR3vyUKuk/cOCUKwfJ932HGfXj8jcRrHAFad6mUBqkuqSJzoHg04/5ENnv3ceRZaNcxywM5hCsDKYn1IG47u0YCPndvirzvXcU7cq6RreeO0TTcT45iVIAvGF57+MI89ssYgDYCoJY4XX7gAwE9/sUMaIgLqNc/uXoffvnE5F2CG5iMBVjYetPtoJugcDohZzGtzMGrNhL+/9gIAT3z1l6T9DCUOi+ATx8pivbqTOhEZyXzw8ea15UZez50IIdJseAo23Npo0u8HvHc5+5oRijI8B1xlKp4HPiw4I5YLQzIarY3Gltf/99HGuYosmQKXVJFPqubMebWF6Th3U93rHHANWzMbFqdRqlrx2rD71b1rS8Ed9wtuZhz34+hwDeeKlivvHRyDQSCOqPheJAda3TyT5eVjvtnN4NXvf4aPPrrBYS/Fe8fDDy6DwdXrHWI0mo2EK3sHfOviG3nr5vIOeRY4KCQGVyWdpZSMVT43M97ceZcbt4/opwEh+mkeiY26B4NazbG3f0iIRt77zwS33Pt2VSubZ37onHvJzALgNeWK8ccH3QEWbeTXgunK5V8SK0uNketnXFqCk/Mxhh9pff3MQ8FrR2gVLEqlJvVEJ+NdcWGaxe35xhBsLrgkh1k7SBf88XHnoLm48o6ce97ll4ZQ6iQmGLqIdCu0tnIGMJ6vvisaKCq/mikqfv3O3uW/eMD3jzpv11tLl4R7WnLLo1vHRBt1srCosoGtSrWivXbOOWAfwjdv7+1uA94PK67vH3Xeaiy3tjFnSFuIlSFP6CS7vM9bsoEy0GVhP09D+Pad61f+VNzK/wf6TEymvDEJaQAAAABJRU5ErkJggg==">
-<link rel="icon" type="image/png" sizes="192x192" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMAAAADACAYAAABS3GwHAAAIOUlEQVR42u3dPW9cRRTG8TNXW0QKYAtshCApkQ2fwlIq2IQOGhSMaPKZ0qCYQJN0JCuqoHwKiBXJFXYKNhLbpVsK79vdnfs+d3fmnP+pEr+snfHvmTMn673XSWR1c/9wOv+zq/UZrtsXdM0/wIX8B7ugj9b8u3Xhv2LZR03eXrmYvLlYsHdbVvCngL/oHZPx7kKx9S98c2+G3vW2rOBPCP96bTsMbuvwwQ/+Gus/GV86FQHIwQc/+Buuf99BcFuDD37wu/aP31cQ3Fbggx/8Lszjhw5CBn7wp4JfRGTv4LNpdB2gED74we/6+/mG6AYZ+MGfIv5Q3SADP/hTxB8qBBn4wZ8q/hAhyMAP/pTxdw1BBn7wp45/XvuHt6a9BgD84I8Vv5utf9MQZOAHvxb8bTpBBn7wa8LfNAQZ+MGvDX+TEGR9rB34wb9r/EGOQPxuD/hTx1/VBTLwg1/7zl8WgizU2oEf/KkceyoDwItZwK8Nf1EXyLquHfjBn+LOXxgAXsMLfq34fV0gY+cHv8Wd3xsALl0Cfu3417tAxs4Pfos7/0YAuGIb+G3gd7J/eHvq7wDgB79y/MUzAPjBbwz/IgBcpRn81vDPj0FZj8sKfvBHu/P7ZwDwg98Q/sIAgB/86vG7ggCAH/xW8IuIOMv35Hr9x09CXdfR8JE5/LkAWMIP/LIgnJnBvzgCgZ+a1/no1Ax+EZGMMz/Vd8WKX0TEvVfyJJiFM//nX/1sfuD17fqhjkJR4xeRgeWd3wL+kxdPc296eefbjc88Gp71cvSJHb+UB4BjT8r4T/586n/7LBAv73xn99izPgSD3wb+fBCemMdfEADw6z7zGx54PW8bgF9Wh+QzSbwe3BjWPsyfvHgS9CiUGv61DsDOT9nCvxIA8FP28M8CAH7KJv6CIRj8KdfDd6Pac0zX83/q+EVcP/cHSBE/UbKHX6TymWDwr9QwoS4wfnBjeNDX7q8Ff7sjEPiTCcHDd6Ox74gE/mUNwM9MYBV/sw6gfuBlCrCGv34AwA9+hfjrBQD84FeKvzoA4J/XKFG/I/CX14CBV7SHAPyNOwD4KQP4/QEAP2UE/2YAwE8Zwp8PAK/koozhXwYA/LZpGhl4/QEAP/iN4vcPweAHvxH84koDoBy/gN86/pIOAH7w68dfEADwUzbwewIAfsoO/rUAMPBStvCvBAD8lD38swCAn7KJ3zsEg5+ygn/jukDgpyzhz3UA8FPW8C8CAH7KIn6R2neJBD+lD793CLaLn/RYw++CBQD84E8Qf5gOAH7wJ4q/ewDAD/6E8XcLAAMv+BPH3z4A4CcbCvC3CwD4wa8Ef/MAgB/8ivA3CwADL/iV4a8fAPAz8CrEXy8ARvA78JvDXx0A8INfMX6R0vsD2MN/9PWj0y6LH3S9uHRJ7/iLO4D1nd86frGB3x8A6wMv+M3g3wwA+MFvCH8+AOAHvzH8ywCAn4HXIP7rADDwgt8ofv8QDH7wG8EvzoULgL4nueziFyP4g3UA8IM/RfxBAgB+8KeKv3MAwA/+lPF3CgADLwNv6vhbBwD84NeAv1UAwA9+LfgbBwD84NeEv1EA9OEXOR+dgl9E/n523yR+ERH3/oefTC3hPx/9KFR5fXHvVxP4a3UAjTs/Bf5aAdB45j8anqEc/NVHIAsDb58zAPjjx18YAP63J/zA++r5D40e8/juL70MvL2sT6L4vUcg8IfH3+v6gL/Tp2fgB79V/LkAgB/81vAvAgD+2PAL+LeAX8R7m1Twg98Gfs8QDH7w28G/dptU8IPfFv6VDgB+8NvDPwsA+MFvE79nBgA/+O3gFym7LhD4wa8cf3EHAL/EWuAPh98fAPCD3wj+zQCAH/yG8OcDAH7wG8O/DAD4oyAM/u3ivw4A+MFvFL9/CAY/+I3gF9cpAODf5fcP/u74O3QA8IM/ffwtAwB+8OvA3yIA4Ae/HvwNAwB+8OvC3yAA4O/0/XNnlijx1wwA+MGvE3+NAIAf/HrxVwQA/ODXjb8kAODfLX4B/xbwFwQA/OC3gd8TAPCD3w7+tQCAvy/8DvxR4l8JAPjBbw//LADgB79N/AVDMPjBbwN/+XWBwA9+5fgrOwD4wa8Zf2kAwA9+7fgLAwB+8FvA7w0A+MFvBb+IiPvgo0+n4M8//qvn90VrffnNb+D3BQD8uuG3DoJi/IsjEPgpi/hFvHeJ5Nhjof76/Xvz+EVEBuD31/G9xx3+5XG+mKUSvTH8TkQGk7dXbm9lEAb/rCM8s9URLOIfv7lwDe8PoBf/8d3Hppx7h2BD+HNDMDs/87BF/Iu/7x2sHIHAr/r4w86/rPGbC1cjADzDm+LAy85f/VGLGWAyvnLgB781/PkZAPzgN4JfvEMw+MFvBb/v/gDLYxD4wa8b//jqwhV0APCD38bO7w3AZHzpwA9+zfhXd/+KIRj84Ne78xcGIHQXAD/4Y8G/vvv33gHAD/5Yd/7SAIToAuAHf0z4fbt/bx0A/OCPfeevDEDbLgB+8MeGv2j3r+wATUMAfvCnhD/oEQj84E/l2NMoAHW6APjBHyP+qt2/dgcoCwH4wZ8q/kZHIF8IwA/+lPE3ngFWQwB+8KeOv9UQPBlfOvCDXwP+VgEQEfnv338c+MGfOv7WAegvBOAH//bwdwpA+BCAH/zbxd85AOFCAH7wbx9/8J/T/uGtKfjB3zf+EPCDdYBu3QD84N8d/uA/r2bdAPzg7/77/NEGoDwI4Ad/+5cxJhWAzSCAH/zNr96QfACWQbg9BT/4i96xLfg7C0BhGMBvFv/8QrW7qOhuC7H/cb5DgF8X/l1i99X/BnxLrQGzMSsAAAAASUVORK5CYII=">
-<link rel="apple-touch-icon" href="data:image/png;base64,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">
-<meta name="theme-color" content="#0B0F14">
+<link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
+<link rel="apple-touch-icon" href="icon-192.png">
+<meta name="theme-color" content="#0A1F44">
+<meta name="color-scheme" content="dark light">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="apple-mobile-web-app-title" content="AIM AV">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
-<script src="https://cdn.jsdelivr.net/npm/dexie@4.0.8/dist/dexie.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/konva@9.3.14/konva.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+<meta name="apple-mobile-web-app-title" content="ABD">
+<script src="vendor/dexie.min.js"></script>
+<script src="vendor/konva.min.js"></script>
+<script src="vendor/html2canvas.min.js"></script>
 <style>
   :root{
     --radius-lg:18px; --radius-md:12px; --radius-sm:8px;
+    --font-ui:Inter,"SF Pro Text","Segoe UI Variable Text","Segoe UI",system-ui,-apple-system,Roboto,"Helvetica Neue",Arial,sans-serif;
+    --font-head:"SF Pro Display",Inter,"Segoe UI Variable Display","Segoe UI",system-ui,-apple-system,Roboto,"Helvetica Neue",Arial,sans-serif;
   }
-  /* Dark theme (default) */
+  /* ABD palette — taken from the icon: cobalt glass, ice-cyan linework,
+     orange + magenta spotlights. Accent = cyan, AI = magenta, warm = orange. */
   :root, :root[data-theme="dark"]{
-    --gold:#E8C97A; --teal:#4FD1C5;
-    --bg-a:#0B0F14; --bg-b:#151b24;
-    --text:#E4E9ED; --text-dim:rgba(228,233,237,.55);
-    --glass-bg:rgba(24,30,38,.55); --glass-bg-strong:rgba(20,25,32,.72);
-    --glass-border:rgba(255,255,255,.10); --glass-highlight:rgba(255,255,255,.07);
-    --shadow:0 8px 32px rgba(0,0,0,.45); --shadow-sm:0 2px 10px rgba(0,0,0,.3);
-    --input-bg:rgba(255,255,255,.06); --hover-bg:rgba(255,255,255,.08);
-    --canvas-bg:#1a1f26;
+    --accent:#7FE3FF; --accent-rgb:127,227,255; --on-accent:#03233A;
+    --ai:#FF6FDC; --ai-rgb:255,111,220;
+    --warm:#FFB45A; --warm-rgb:255,180,90;
+    --bg-a:#06122A; --bg-b:#0D2A5C;
+    --text:#E8F1FA; --text-dim:rgba(222,236,250,.68);
+    --glass-bg:rgba(14,40,88,.55); --glass-bg-strong:rgba(10,30,70,.88);
+    --glass-border:rgba(150,210,255,.18); --glass-highlight:rgba(190,230,255,.10);
+    --shadow:0 10px 36px rgba(2,10,30,.55); --shadow-sm:0 2px 10px rgba(2,10,30,.4);
+    --input-bg:rgba(150,210,255,.08); --hover-bg:rgba(150,210,255,.15);
+    --canvas-bg:#0B1C3B;
+    --grid-line:rgba(127,227,255,.07);
     --icon-filter:none;
   }
-  /* Light theme — deeper accent colors (the bright dark-mode gold/teal wash out
-     on light backgrounds), and a dimmer, warmer base so glass panels read as
-     distinct surfaces instead of blending into stark white. */
+  /* Light theme — deeper accents so they hold contrast on pale glass. */
   :root[data-theme="light"]{
-    --gold:#96650E; --teal:#0A7A6E;
-    --bg-a:#D6DBE2; --bg-b:#C5CCD6;
-    --text:#141922; --text-dim:rgba(20,25,34,.62);
-    --glass-bg:rgba(255,255,255,.58); --glass-bg-strong:rgba(255,255,255,.82);
-    --glass-border:rgba(15,20,30,.16); --glass-highlight:rgba(255,255,255,.9);
-    --shadow:0 8px 32px rgba(15,20,30,.18); --shadow-sm:0 2px 10px rgba(15,20,30,.12);
-    --input-bg:rgba(15,20,30,.06); --hover-bg:rgba(15,20,30,.09);
-    --canvas-bg:#e9ecef;
+    --accent:#0A66A3; --accent-rgb:10,102,163; --on-accent:#FFFFFF;
+    --ai:#B3149B; --ai-rgb:179,20,155;
+    --warm:#B35A00; --warm-rgb:179,90,0;
+    --bg-a:#DCE9F7; --bg-b:#BFD3EC;
+    --text:#0C1B2E; --text-dim:rgba(12,27,46,.68);
+    --glass-bg:rgba(255,255,255,.62); --glass-bg-strong:rgba(255,255,255,.9);
+    --glass-border:rgba(10,40,90,.16); --glass-highlight:rgba(255,255,255,.95);
+    --shadow:0 10px 36px rgba(10,40,90,.18); --shadow-sm:0 2px 10px rgba(10,40,90,.12);
+    --input-bg:rgba(10,40,90,.06); --hover-bg:rgba(10,40,90,.10);
+    --canvas-bg:#EEF4FB;
+    --grid-line:rgba(10,102,163,.10);
     --icon-filter:brightness(.6) saturate(1.3);
   }
 
   *{box-sizing:border-box;}
-  html,body{height:100%;margin:0;color:var(--text);font-family:'DM Sans',sans-serif;}
+  html,body{height:100%;margin:0;color:var(--text);font-family:var(--font-ui);-webkit-text-size-adjust:100%;}
   body{
     background:
-      radial-gradient(circle at 15% 10%, rgba(232,201,122,.12), transparent 40%),
-      radial-gradient(circle at 85% 90%, rgba(79,209,197,.10), transparent 45%),
+      radial-gradient(circle at 12% 8%, rgba(var(--warm-rgb),.10), transparent 36%),
+      radial-gradient(circle at 88% 12%, rgba(var(--ai-rgb),.12), transparent 40%),
+      radial-gradient(circle at 80% 95%, rgba(var(--accent-rgb),.12), transparent 45%),
       linear-gradient(160deg, var(--bg-a), var(--bg-b));
     background-attachment:fixed;
     transition:background-color .2s ease, color .2s ease;
   }
-  h1,h2,h3{font-family:'Playfair Display',serif;color:var(--gold);margin:0;}
+  h1,h2,h3{font-family:var(--font-head);color:var(--accent);margin:0;letter-spacing:-.005em;}
   button{font-family:inherit;cursor:pointer;}
-  #app{height:100vh;display:flex;flex-direction:column;}
+  #app{height:100vh;height:100dvh;display:flex;flex-direction:column;}
 
   /* Glass surface — shared treatment for topbar, sidebars, modals, cards */
   .glass{
@@ -78,14 +85,14 @@
   #topbar h1{font-size:19px;}
   .btn{background:var(--input-bg);border:1px solid var(--glass-border);color:var(--text);border-radius:999px;padding:7px 14px;font-size:12.5px;transition:.15s;}
   .btn:hover{background:var(--hover-bg);transform:translateY(-1px);}
-  .btn.primary{background:var(--gold);color:#1a1508;border-color:var(--gold);font-weight:600;box-shadow:0 4px 14px rgba(232,201,122,.35);}
+  .btn.primary{background:linear-gradient(135deg,var(--accent),rgba(var(--accent-rgb),.78));color:var(--on-accent);border-color:var(--accent);font-weight:600;box-shadow:0 4px 16px rgba(var(--accent-rgb),.35);}
   .btn.primary:hover{filter:brightness(1.04);transform:translateY(-1px);}
   .btn:disabled{opacity:.35;cursor:not-allowed;transform:none;}
   .btn-row{display:flex;gap:8px;flex-wrap:wrap;align-items:center;}
   #autosave-status{font-size:11px;color:var(--text-dim);min-width:90px;text-align:right;}
   #theme-toggle{display:flex;align-items:center;gap:2px;background:var(--input-bg);border:1px solid var(--glass-border);border-radius:999px;padding:3px;}
   #theme-toggle button{background:none;border:none;border-radius:999px;padding:5px 9px;font-size:13px;color:var(--text-dim);line-height:1;transition:.15s;}
-  #theme-toggle button.active{background:var(--gold);color:#1a1508;}
+  #theme-toggle button.active{background:var(--accent);color:var(--on-accent);}
 
   /* Main layout */
   #main{flex:1;display:flex;overflow:hidden;gap:12px;padding:12px;min-height:0;}
@@ -104,18 +111,21 @@
   .ib-cat-toggle:hover{color:var(--text);}
   .ib-cat-items{display:grid;grid-template-columns:1fr 1fr;gap:8px;padding:0 4px 12px;}
   .ib-card{background:var(--input-bg);border:1px solid var(--glass-border);border-radius:var(--radius-sm);padding:8px;text-align:center;cursor:grab;transition:.15s;}
-  .ib-card:hover{border-color:rgba(232,201,122,.6);background:var(--hover-bg);transform:translateY(-1px);box-shadow:var(--shadow-sm);}
+  .ib-card:hover{border-color:rgba(var(--accent-rgb),.6);background:var(--hover-bg);transform:translateY(-1px);box-shadow:var(--shadow-sm);}
   .ib-card img{height:60px;width:100%;object-fit:contain;pointer-events:none;filter:var(--icon-filter);}
   .ib-card span{display:block;font-size:10.5px;line-height:1.25;margin-top:4px;color:var(--text-dim);}
   #ib-empty{font-size:12px;color:var(--text-dim);text-align:center;padding:30px 10px;}
   #ib-upload-wrap{padding:12px;border-top:1px solid var(--glass-border);}
   #ib-category-select{width:100%;margin-bottom:8px;background:var(--input-bg);border:1px solid var(--glass-border);border-radius:var(--radius-sm);padding:6px 8px;color:var(--text);font-size:12px;}
-  #ib-upload-btn{width:100%;border:1px solid rgba(232,201,122,.4);color:var(--gold);border-radius:999px;padding:9px;font-size:12px;font-weight:600;background:rgba(232,201,122,.08);}
-  #ib-upload-btn:hover{background:rgba(232,201,122,.16);}
+  #ib-upload-btn{width:100%;border:1px solid rgba(var(--accent-rgb),.4);color:var(--accent);border-radius:999px;padding:9px;font-size:12px;font-weight:600;background:rgba(var(--accent-rgb),.08);}
+  #ib-upload-btn:hover{background:rgba(var(--accent-rgb),.16);}
 
   /* Canvas */
-  #canvas-area{flex:1;overflow:auto;padding:24px;min-width:0;position:relative;}
-  #stage-container{background:var(--canvas-bg);border:1px solid var(--glass-border);border-radius:var(--radius-md);overflow:hidden;position:relative;box-shadow:var(--shadow);margin:0 auto;}
+  #canvas-area{flex:1;overflow:auto;padding:24px;min-width:0;position:relative;border-radius:var(--radius-lg);
+    background-image:linear-gradient(var(--grid-line) 1px,transparent 1px),linear-gradient(90deg,var(--grid-line) 1px,transparent 1px);
+    background-size:32px 32px;background-position:-1px -1px;overscroll-behavior:contain;display:flex;}
+  #stage-container{flex:none;margin:auto !important;}
+  #stage-container{touch-action:none;background:var(--canvas-bg);border:1px solid var(--glass-border);border-radius:var(--radius-md);overflow:hidden;position:relative;box-shadow:var(--shadow);margin:0 auto;}
   #zoom-controls{display:flex;align-items:center;gap:1px;background:var(--input-bg);border:1px solid var(--glass-border);border-radius:999px;padding:3px;}
   #zoom-controls button{width:26px;height:26px;border-radius:50%;border:none;background:none;color:var(--text-dim);font-size:14px;cursor:pointer;transition:.15s;}
   #zoom-controls button:hover{background:var(--hover-bg);color:var(--text);}
@@ -143,19 +153,19 @@
   .modal-close:hover{color:var(--text);}
   .modal-body{padding:16px 20px;display:flex;flex-direction:column;gap:14px;}
   .field label{display:block;font-size:11px;text-transform:uppercase;letter-spacing:.06em;color:var(--text-dim);margin-bottom:5px;}
-  .section-label{display:block;font-family:'Playfair Display',serif;color:var(--gold);font-size:13px;letter-spacing:.02em;
+  .section-label{display:block;font-family:var(--font-head);font-weight:600;color:var(--accent);font-size:13px;letter-spacing:.02em;
     padding-top:12px;border-top:1px solid var(--glass-border);margin-top:2px;}
   .modal-body>.section-label:first-child{border-top:none;padding-top:0;margin-top:0;}
-  .field input[type=text],.field input[type=number],.field textarea,.field select{width:100%;background:var(--input-bg);border:1px solid var(--glass-border);border-radius:var(--radius-sm);padding:8px 10px;color:var(--text);font-size:13px;font-family:inherit;}
+  .field input[type=text],.field input[type=password],.field input[type=number],.field textarea,.field select{width:100%;background:var(--input-bg);border:1px solid var(--glass-border);border-radius:var(--radius-sm);padding:8px 10px;color:var(--text);font-size:13px;font-family:inherit;}
   .toggle-row{display:flex;align-items:center;gap:8px;font-size:13px;padding-top:8px;border-top:1px solid var(--glass-border);}
-  .toggle-row input{accent-color:var(--gold);}
+  .toggle-row input{accent-color:var(--accent);}
   .modal-foot{display:flex;justify-content:flex-end;gap:8px;padding:14px 20px;border-top:1px solid var(--glass-border);}
 
   /* Toolbar dividers */
   .divider{width:1px;height:20px;background:var(--glass-border);flex-shrink:0;}
 
   /* Panel show/hide toggle buttons in the toolbar — pressed look when the panel is visible */
-  #toggle-itembank-btn.active, #toggle-bom-btn.active{background:rgba(232,201,122,.14);border-color:rgba(232,201,122,.4);color:var(--gold);}
+  #toggle-itembank-btn.active, #toggle-bom-btn.active{background:rgba(var(--accent-rgb),.14);border-color:rgba(var(--accent-rgb),.4);color:var(--accent);}
 
   /* Collapse handles on the sidebars themselves */
   .panel-collapse-btn{position:absolute;top:14px;right:8px;width:22px;height:22px;border-radius:50%;border:1px solid var(--glass-border);
@@ -181,6 +191,172 @@
   #toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:var(--glass-bg-strong);-webkit-backdrop-filter:blur(20px) saturate(180%);backdrop-filter:blur(20px) saturate(180%);
     border:1px solid var(--glass-border);border-radius:999px;padding:10px 18px;font-size:12.5px;color:var(--text);opacity:0;transition:opacity .25s;pointer-events:none;z-index:100;box-shadow:var(--shadow);}
   #toast.show{opacity:1;}
+
+  /* ===================================================================
+     ABD v2 — brand, welcome, dock, a11y, responsive
+     =================================================================== */
+  .sr-only{position:absolute;width:1px;height:1px;margin:-1px;padding:0;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0;}
+  :focus{outline:none;}
+  :focus-visible{outline:2px solid var(--accent);outline-offset:2px;border-radius:6px;}
+  .btn:focus-visible,#theme-toggle button:focus-visible{border-radius:999px;}
+
+  #topbar{align-items:center;}
+  .top-head{display:flex;align-items:center;justify-content:space-between;gap:12px;}
+  .brand{display:flex;align-items:center;gap:11px;min-width:0;}
+  .brand-logo{width:38px;height:38px;border-radius:10px;flex-shrink:0;box-shadow:0 2px 12px rgba(var(--accent-rgb),.28);}
+  .brand-text{display:flex;flex-direction:column;line-height:1.1;min-width:0;}
+  #topbar h1{font-size:21px;font-weight:800;letter-spacing:.06em;
+    background:linear-gradient(90deg,var(--accent),var(--text));-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;color:var(--accent);}
+  .brand-sub{font-size:10.5px;color:var(--text-dim);letter-spacing:.02em;margin-top:3px;white-space:nowrap;}
+  .ver-stamp{font-variant-numeric:tabular-nums;opacity:.85;border:1px solid var(--glass-border);border-radius:99px;padding:0 6px;margin-left:4px;font-size:9.5px;}
+  .top-meta{display:flex;align-items:center;gap:10px;}
+  @media (min-width:1700px){
+    .top-head{display:contents;}
+    .brand{order:0;}
+    #topbar > .btn-row{order:1;flex:1;justify-content:flex-end;}
+    .top-meta{order:2;}
+  }
+  @media (max-width:1699px){
+    #topbar{flex-direction:column;align-items:stretch;gap:8px;}
+    #topbar > .btn-row{width:100%;}
+  }
+
+  .btn{min-height:32px;padding:6px 10px;}
+  .btn-row{gap:5px;}
+  .btn.ai-btn{border-color:rgba(var(--ai-rgb),.55);color:var(--ai);background:rgba(var(--ai-rgb),.10);font-weight:600;}
+  .btn.ai-btn:hover{background:rgba(var(--ai-rgb),.2);box-shadow:0 0 18px rgba(var(--ai-rgb),.28);}
+  .btn.warm{border-color:rgba(var(--warm-rgb),.5);color:var(--warm);}
+  .btn svg{vertical-align:-3px;}
+
+  /* item cards */
+  .ib-card{cursor:pointer;user-select:none;-webkit-user-select:none;}
+  .ib-card:active{transform:scale(.97);}
+  .ib-card:hover{border-color:rgba(var(--accent-rgb),.6);}
+
+  /* welcome / empty state */
+  #canvas-wrap{position:relative;flex:1;min-width:0;display:flex;}
+  #canvas-hint{padding:16px;z-index:3;}
+  #canvas-hint .welcome{pointer-events:auto;max-width:420px;text-align:center;padding:26px 24px 22px;border-radius:var(--radius-lg);
+    background:var(--glass-bg-strong);border:1px solid var(--glass-border);box-shadow:var(--shadow),inset 0 1px 0 var(--glass-highlight);color:var(--text);}
+  .welcome img{width:64px;height:64px;border-radius:16px;box-shadow:0 4px 22px rgba(var(--accent-rgb),.3);}
+  .welcome h2{font-size:21px;margin:12px 0 6px;color:var(--text);}
+  .welcome p{margin:0;font-size:13.5px;line-height:1.5;color:var(--text-dim);}
+  .welcome-steps{list-style:none;display:flex;gap:8px;justify-content:center;margin:16px 0 18px;padding:0;flex-wrap:wrap;}
+  .welcome-steps li{font-size:11.5px;padding:6px 11px;border-radius:99px;border:1px solid var(--glass-border);background:var(--input-bg);color:var(--text-dim);}
+  .welcome-steps li b{color:var(--accent);font-weight:700;}
+  .welcome-steps li:nth-child(2) b{color:var(--warm);}
+  .welcome-steps li:nth-child(3) b{color:var(--ai);}
+  .welcome .btn-row{justify-content:center;}
+
+  /* selection bar (touch) */
+  #sel-bar{display:none;position:absolute;left:50%;top:12px;transform:translateX(-50%);z-index:6;gap:2px;padding:4px;border-radius:999px;
+    background:var(--glass-bg-strong);border:1px solid var(--glass-border);box-shadow:var(--shadow);}
+  #sel-bar button{width:40px;height:40px;border-radius:50%;border:none;background:none;color:var(--text);font-size:17px;display:flex;align-items:center;justify-content:center;}
+  #sel-bar button:active{background:var(--hover-bg);}
+  #sel-bar button.danger{color:#ff7a8a;}
+
+  /* bottom dock (phone) */
+  #dock{display:none;}
+  #update-banner{position:fixed;left:50%;transform:translateX(-50%);bottom:20px;z-index:120;display:none;align-items:center;gap:12px;
+    padding:10px 10px 10px 18px;border-radius:999px;background:var(--glass-bg-strong);border:1px solid rgba(var(--accent-rgb),.5);
+    box-shadow:var(--shadow);font-size:13px;color:var(--text);max-width:calc(100vw - 24px);}
+  #update-banner.show{display:flex;}
+  .modal-foot .ver-note{margin-right:auto;font-size:11px;color:var(--text-dim);align-self:center;}
+  .field .key-row{display:flex;gap:6px;}
+  .field .key-row input{flex:1;min-width:0;}
+  .field .key-row .btn{flex-shrink:0;}
+  .model-status{font-size:11px;color:var(--text-dim);margin-top:6px;line-height:1.4;min-height:15px;}
+  .model-status.warn{color:var(--warm);}
+  .model-status.ok{color:var(--accent);}
+
+  .modal{max-width:calc(100vw - 24px);max-height:calc(100vh - 24px);max-height:calc(100dvh - 24px);display:flex;flex-direction:column;}
+  .modal-body{overflow-y:auto;overscroll-behavior:contain;}
+  .modal-head,.modal-foot{flex-shrink:0;}
+  .modal-close{min-width:32px;min-height:32px;font-size:18px;}
+  #toast{max-width:calc(100vw - 24px);text-align:center;}
+
+  /* tablet */
+  @media (max-width:1100px) and (min-width:821px){
+    #itembank,#bom{width:224px;}
+  }
+
+  /* phone */
+  @media (max-width:820px), (max-height:520px) and (orientation:landscape){
+    #topbar{margin:calc(8px + env(safe-area-inset-top)) 8px 0;padding:8px 10px;border-radius:14px;
+      -webkit-backdrop-filter:none;backdrop-filter:none;background:var(--glass-bg-strong);}
+    .brand-logo{width:32px;height:32px;border-radius:9px;}
+    #topbar h1{font-size:18px;}
+    .brand-sub .bs-name{display:none;}
+    .brand-sub{margin-top:2px;}
+    #autosave-status{min-width:0;font-size:10.5px;}
+    #topbar > .btn-row{flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none;-webkit-overflow-scrolling:touch;padding:2px 0;
+      -webkit-mask-image:linear-gradient(90deg,#000 90%,transparent);mask-image:linear-gradient(90deg,#000 90%,transparent);}
+    #topbar > .btn-row::-webkit-scrollbar{display:none;}
+    #topbar > .btn-row > *{flex-shrink:0;}
+    .btn{min-height:38px;padding:8px 14px;font-size:13px;}
+    #toggle-itembank-btn,#toggle-bom-btn,#ai-render-btn,#export-btn{display:none;}
+    #theme-toggle button{padding:6px 10px;}
+
+    /* dropdowns become sheets above the dock */
+    .dropdown-menu,.dropdown-menu.align-right{position:fixed;left:10px;right:10px;top:auto;bottom:calc(76px + env(safe-area-inset-bottom));min-width:0;z-index:60;}
+    .dropdown-menu button,.dropdown-menu label{padding:13px 12px;font-size:14px;}
+
+    #main{padding:8px 8px calc(74px + env(safe-area-inset-bottom));gap:0;}
+    #canvas-area{padding:8px;}
+    #sel-bar.show{display:flex;}
+
+    /* side panels become bottom sheets */
+    #itembank,#bom{position:fixed;left:8px;right:8px;bottom:calc(76px + env(safe-area-inset-bottom));width:auto !important;
+      height:min(56dvh,480px);max-height:calc(100dvh - 190px);z-index:40;margin:0;
+      transition:transform .24s ease,opacity .18s ease;
+      -webkit-backdrop-filter:none;backdrop-filter:none;background:var(--glass-bg-strong);}
+    #itembank.collapsed,#bom.collapsed{width:auto !important;opacity:0;pointer-events:none;transform:translateY(28px);margin:0;padding:16px;}
+    #itembank.collapsed{padding:0;}
+    .panel-collapse-btn{width:34px;height:34px;top:10px;right:10px;font-size:15px;}
+    .panel-collapse-btn-right{left:auto;right:10px;}
+    #bom h3{margin-left:0;}
+    #itembank .ib-head{padding:14px 52px 12px 14px;}
+    #ib-search{padding:10px 12px;font-size:15px;}
+    .ib-cat-items{grid-template-columns:repeat(3,1fr);}
+    .ib-card span{font-size:11px;}
+
+    /* dock */
+    #dock{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;position:fixed;left:8px;right:8px;bottom:calc(8px + env(safe-area-inset-bottom));z-index:50;
+      padding:6px;border-radius:20px;background:var(--glass-bg-strong);border:1px solid var(--glass-border);box-shadow:var(--shadow),inset 0 1px 0 var(--glass-highlight);}
+    #dock button{display:flex;flex-direction:column;align-items:center;gap:3px;padding:8px 2px 7px;border:none;border-radius:14px;background:none;color:var(--text-dim);font-size:11px;font-weight:600;}
+    #dock button svg{width:22px;height:22px;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;}
+    #dock button.active{color:var(--accent);background:rgba(var(--accent-rgb),.14);}
+    #dock button.ai{color:var(--ai);}
+    #dock button.ai.active,#dock button.ai:active{background:rgba(var(--ai-rgb),.16);}
+    #dock button:active{background:var(--hover-bg);}
+    #toast{bottom:calc(92px + env(safe-area-inset-bottom));}
+    #update-banner{bottom:calc(92px + env(safe-area-inset-bottom));}
+    .modal-overlay{align-items:flex-end;padding:0;}
+    .modal{width:100% !important;max-width:100%;border-radius:20px 20px 0 0;max-height:92dvh;}
+    .field input[type=text],.field input[type=password],.field input[type=number],.field textarea,.field select{font-size:16px;}
+    #welcome-bank{display:inline-block;}
+  }
+  @media (min-width:821px) and (min-height:521px){ #welcome-bank{display:none;} }
+  @media (min-width:821px) and (max-height:520px) and (orientation:portrait){ #welcome-bank{display:none;} }
+  @media (max-height:520px) and (orientation:landscape){
+    #dock{grid-template-columns:repeat(4,auto);justify-content:center;gap:4px;padding:4px;}
+    #dock button{flex-direction:row;gap:7px;padding:8px 16px;font-size:12px;}
+    #dock button svg{width:18px;height:18px;}
+    #main{padding-bottom:calc(58px + env(safe-area-inset-bottom));}
+    #itembank,#bom{bottom:calc(62px + env(safe-area-inset-bottom));height:calc(100dvh - 130px);max-height:none;left:auto;width:min(340px,48vw) !important;}
+    #bom{right:8px;} #itembank{left:8px;right:auto;}
+    #toast,#update-banner{bottom:calc(70px + env(safe-area-inset-bottom));}
+    #topbar{flex-direction:row !important;align-items:center;flex-wrap:nowrap;gap:8px;padding:6px 10px;}
+    .top-head{display:contents;}
+    .brand{order:0;} #topbar > .btn-row{order:1;flex:1;min-width:0;width:auto;} .top-meta{order:2;}
+    .brand-text,#autosave-status{display:none;}
+    .brand-logo{width:30px;height:30px;}
+    .welcome{padding:14px 16px;} .welcome img{display:none;} .welcome-steps{margin:10px 0;}
+    .dropdown-menu,.dropdown-menu.align-right{bottom:calc(64px + env(safe-area-inset-bottom));left:auto;right:10px;width:260px;}
+    .modal-overlay{align-items:center;} .modal{width:min(520px,94vw) !important;border-radius:var(--radius-lg);max-height:94dvh;}
+  }
+  @media (max-width:420px){ .welcome{padding:20px 16px;} .welcome h2{font-size:19px;} }
+  @media (prefers-reduced-motion:reduce){ *{animation-duration:.001ms !important;transition-duration:.001ms !important;} }
 </style>
 </head>
 <body>
@@ -194,9 +370,25 @@
 </script>
 <div id="app">
 
-  <div id="topbar" class="glass">
-    <h1>AIM AV — Booth Designer</h1>
-    <div class="btn-row">
+  <header id="topbar" class="glass">
+    <div class="top-head">
+      <div class="brand">
+        <img class="brand-logo" src="icon-192.png" alt="" width="38" height="38">
+        <div class="brand-text">
+          <h1>ABD<span class="sr-only"> — AIM AV Booth Designer</span></h1>
+          <span class="brand-sub"><span class="bs-name">AIM AV Booth Designer</span><span class="ver-stamp" id="ver-stamp" title="App version">v2.0.0</span></span>
+        </div>
+      </div>
+      <div class="top-meta">
+        <span id="autosave-status" role="status" aria-live="polite">Loading…</span>
+        <div id="theme-toggle" role="group" aria-label="Theme">
+          <button data-theme-choice="system" title="Match system" aria-label="Match system theme">🖥️</button>
+          <button data-theme-choice="light" title="Light" aria-label="Light theme">☀️</button>
+          <button data-theme-choice="dark" title="Dark" aria-label="Dark theme">🌙</button>
+        </div>
+      </div>
+    </div>
+    <div class="btn-row" role="toolbar" aria-label="Designer tools">
       <div class="menu-wrap">
         <button class="btn" id="file-menu-btn">File ▾</button>
         <div class="dropdown-menu" id="file-menu">
@@ -219,6 +411,7 @@
             <button id="rotate-ccw-btn" title="Rotate -90°">⟲ 90°</button>
             <button id="rotate-cw-btn" title="Rotate +90°">⟳ 90°</button>
           </div>
+          <button id="delete-btn" title="Delete the selected item(s)" style="color:#ff7a8a;margin-top:4px;">🗑 Delete selected</button>
           <div class="field" style="margin-top:8px;">
             <label>Exact rotation (°)</label>
             <input type="number" id="rotation-input" placeholder="0–360">
@@ -227,10 +420,10 @@
       </div>
       <span class="divider"></span>
       <div id="zoom-controls">
-        <button id="zoom-out-btn" title="Zoom out">−</button>
-        <span id="zoom-pct">100%</span>
-        <button id="zoom-in-btn" title="Zoom in">+</button>
-        <button class="btn" id="zoom-fit" title="Fit the whole canvas in view">Fit</button>
+        <button id="zoom-out-btn" title="Zoom out" aria-label="Zoom out">−</button>
+        <span id="zoom-pct" aria-live="off">100%</span>
+        <button id="zoom-in-btn" title="Zoom in" aria-label="Zoom in">+</button>
+        <button class="btn" id="zoom-fit" aria-label="Fit canvas to screen" title="Fit the whole canvas in view">Fit</button>
       </div>
       <button class="btn" id="toggle-itembank-btn" title="Show/hide the Item Bank">◧ Bank</button>
       <button class="btn" id="toggle-bom-btn" title="Show/hide the Bill of Materials">▤ BOM</button>
@@ -239,25 +432,19 @@
       <button class="btn primary" id="export-btn">Export PNG</button>
       <button class="btn" id="render-options-btn" title="Quick notes and BOM legend text for the next render only">📝 Render Notes</button>
       <label class="btn" id="bom-overlay-toggle" title="Add a numbered equipment legend to the next render" style="display:flex;align-items:center;gap:6px;cursor:pointer;">
-        <input type="checkbox" id="inline-bom-overlay" style="accent-color:var(--gold);margin:0;"> Add BOM legend
+        <input type="checkbox" id="inline-bom-overlay" style="accent-color:var(--accent);margin:0;"> Add BOM legend
       </label>
-      <button class="btn" id="ai-render-btn" style="border-color:rgba(79,209,197,.5);color:var(--teal);">✨ Render with AI</button>
+      <button class="btn ai-btn" id="ai-render-btn" title="Send the layout to AI for a photorealistic render">✨ Render with AI</button>
       <button class="btn" id="settings-btn">Settings</button>
-      <span id="autosave-status">Loading…</span>
-      <div id="theme-toggle" title="Theme">
-        <button data-theme-choice="system" title="Match system">🖥️</button>
-        <button data-theme-choice="light" title="Light">☀️</button>
-        <button data-theme-choice="dark" title="Dark">🌙</button>
-      </div>
     </div>
-  </div>
+  </header>
 
   <div id="main">
-    <aside id="itembank" class="glass">
-      <button class="panel-collapse-btn" id="collapse-itembank-btn" title="Collapse">‹</button>
+    <aside id="itembank" class="glass" aria-label="Item Bank">
+      <button class="panel-collapse-btn" id="collapse-itembank-btn" title="Hide the Item Bank" aria-label="Hide the Item Bank">‹</button>
       <div class="ib-head">
         <h2>Item Bank</h2>
-        <input id="ib-search" type="text" placeholder="Search items…">
+        <input id="ib-search" type="search" placeholder="Search items…" aria-label="Search items" autocomplete="off">
       </div>
       <div id="ib-list"></div>
       <div id="ib-upload-wrap">
@@ -282,25 +469,55 @@
       </div>
     </aside>
 
-    <div id="canvas-area">
-      <div id="stage-container">
-        <div id="canvas-hint">Drag items from the bank onto the canvas</div>
+    <div id="canvas-wrap">
+      <div id="canvas-hint">
+        <div class="welcome">
+          <img src="icon-192.png" alt="" width="64" height="64">
+          <h2>Start your booth</h2>
+          <p>Load a floor plan or booth photo, or start on a blank canvas. Drag items from the Item Bank, or just tap one to add it.</p>
+          <ol class="welcome-steps"><li><b>1</b> Load</li><li><b>2</b> Place</li><li><b>3</b> Render</li></ol>
+          <div class="btn-row">
+            <button class="btn primary" id="welcome-load">Load floor plan</button>
+            <button class="btn" id="welcome-bank">Open Item Bank</button>
+          </div>
+        </div>
+      </div>
+      <div id="sel-bar" role="toolbar" aria-label="Selected item actions">
+        <button data-act="rotate-ccw-btn" aria-label="Rotate left 90 degrees">⟲</button>
+        <button data-act="rotate-cw-btn" aria-label="Rotate right 90 degrees">⟳</button>
+        <button data-act="flip-h-btn" aria-label="Flip horizontally">↔</button>
+        <button data-act="flip-v-btn" aria-label="Flip vertically">↕</button>
+        <button data-act="delete-btn" class="danger" aria-label="Delete selected">🗑</button>
+      </div>
+      <div id="canvas-area">
+        <div id="stage-container"></div>
       </div>
     </div>
 
-    <aside id="bom" class="glass">
-      <button class="panel-collapse-btn panel-collapse-btn-right" id="collapse-bom-btn" title="Collapse">›</button>
+    <aside id="bom" class="glass" aria-label="Bill of Materials">
+      <button class="panel-collapse-btn panel-collapse-btn-right" id="collapse-bom-btn" title="Hide the Bill of Materials" aria-label="Hide the Bill of Materials">›</button>
       <h3>Bill of Materials</h3>
       <div id="bom-content"><p id="bom-empty">No items placed yet.</p></div>
     </aside>
   </div>
 </div>
 
-<div id="toast"></div>
+<div id="toast" role="status" aria-live="polite"></div>
+<div id="update-banner" role="alert"><span>A new version of ABD is ready.</span><button class="btn primary" id="update-reload">Reload</button></div>
+<nav id="dock" aria-label="Quick actions">
+  <button data-target="toggle-itembank-btn" id="dock-items" aria-label="Item Bank"><svg viewBox="0 0 24 24"><rect x="3.5" y="3.5" width="7" height="7" rx="1.5"/><rect x="13.5" y="3.5" width="7" height="7" rx="1.5"/><rect x="3.5" y="13.5" width="7" height="7" rx="1.5"/><path d="M17 13.5v7M13.5 17h7"/></svg>Items</button>
+  <button data-target="toggle-bom-btn" id="dock-bom" aria-label="Bill of Materials"><svg viewBox="0 0 24 24"><path d="M8 6h12M8 12h12M8 18h12M4 6h.01M4 12h.01M4 18h.01"/></svg>BOM</button>
+  <button data-target="ai-render-btn" class="ai" aria-label="Render with AI"><svg viewBox="0 0 24 24"><path d="M12 3l1.8 4.7L18.5 9.5l-4.7 1.8L12 16l-1.8-4.7L5.5 9.5l4.7-1.8z"/><path d="M19 15l.8 2.2L22 18l-2.2.8L19 21l-.8-2.2L16 18l2.2-.8z"/></svg>Render</button>
+  <button data-target="export-btn" aria-label="Export PNG"><svg viewBox="0 0 24 24"><path d="M12 4v11M7.5 10.5L12 15l4.5-4.5M5 19.5h14"/></svg>Export</button>
+</nav>
 
 <script>
 (function(){
 "use strict";
+
+/* Keep in sync with CACHE_VERSION in sw.js ("abd-v" + APP_VERSION). */
+const APP_VERSION = "2.0.0";
+const PHONE_MQ = "(max-width: 820px), (max-height: 520px) and (orientation: landscape)";
 
 /* ---------------------------------------------------------------------
    THEME — defaults to system preference; user choice persists locally
@@ -311,8 +528,13 @@ function applyTheme(choice){
     ? (window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light")
     : choice;
   document.documentElement.setAttribute("data-theme", effective);
-  document.querySelectorAll("#theme-toggle button").forEach(b =>
-    b.classList.toggle("active", b.dataset.themeChoice === choice));
+  document.querySelectorAll("#theme-toggle button").forEach(b => {
+    const on = b.dataset.themeChoice === choice;
+    b.classList.toggle("active", on);
+    b.setAttribute("aria-pressed", on ? "true" : "false");
+  });
+  const tc = document.querySelector('meta[name="theme-color"]');
+  if (tc) tc.setAttribute("content", effective === "dark" ? "#0A1F44" : "#DCE9F7");
 }
 function currentThemeChoice(){
   return localStorage.getItem("aimav-theme") || "system";
@@ -331,7 +553,7 @@ window.matchMedia("(prefers-color-scheme: dark)").addEventListener("change", () 
 });
 
 /* ---------------------------------------------------------------------
-   CDN LOAD GUARD — fail loud instead of silently leaving the UI blank
+   LIBRARY LOAD GUARD — fail loud instead of silently leaving the UI blank
 --------------------------------------------------------------------- */
 const missing = [];
 if (typeof Dexie === "undefined") missing.push("Dexie");
@@ -339,10 +561,9 @@ if (typeof Konva === "undefined") missing.push("Konva");
 if (typeof html2canvas === "undefined") missing.push("html2canvas");
 if (missing.length) {
   document.body.innerHTML =
-    '<div style="padding:40px;font-family:sans-serif;color:#CBD5D9;background:#0B0F14;height:100vh;">' +
-    '<h2 style="color:#E8C97A;">Couldn\u2019t load required libraries</h2>' +
-    '<p>' + missing.join(", ") + ' failed to load from the CDN. Check your internet connection and refresh. ' +
-    'If this keeps happening, the CDN may be blocked on this network.</p></div>';
+    '<div style="padding:40px;font-family:system-ui,sans-serif;color:#E8F1FA;background:#0A1F44;height:100vh;">' +
+    '<h2 style="color:#7FE3FF;">Couldn\u2019t load required libraries</h2>' +
+    '<p>' + missing.join(", ") + ' failed to load. Refresh the page; if it keeps happening, clear this site\u2019s cache and reload.</p></div>';
   throw new Error("Missing dependencies: " + missing.join(", "));
 }
 
@@ -477,7 +698,10 @@ const itemLayer = new Konva.Layer();
 stage.add(baseLayer);
 stage.add(itemLayer);
 
+const COARSE = window.matchMedia("(pointer: coarse)").matches;
 const transformer = new Konva.Transformer({ rotateEnabled:true, keepRatio:false,
+  borderStroke:"#7FE3FF", anchorStroke:"#7FE3FF", anchorFill:"#0A1F44", anchorCornerRadius:3,
+  anchorSize: COARSE ? 20 : 10, rotateAnchorOffset: COARSE ? 40 : 30, padding: 2,
   boundBoxFunc:(oldBox,newBox)=> (newBox.width<20||newBox.height<20) ? oldBox : newBox });
 itemLayer.add(transformer);
 
@@ -487,15 +711,23 @@ const konvaNodesByInstanceId = new Map();
 /* Marquee (rubber-band) select: drag on empty canvas to select multiple
    items at once. Plain click-and-release with no drag just clears selection. */
 const selectionRect = new Konva.Rect({
-  fill: "rgba(232,201,122,0.15)", stroke: "#E8C97A", strokeWidth: 1, visible: false, listening: false
+  fill: "rgba(127,227,255,0.15)", stroke: "#7FE3FF", strokeWidth: 1, visible: false, listening: false
 });
 itemLayer.add(selectionRect);
 let marqueeActive = false;
 let marqueeStart = null;
 let marqueeMoved = false;
 
+let panState = null, pinchState = null;
+const canvasAreaEl = document.getElementById("canvas-area");
 stage.on("mousedown touchstart", (e) => {
   if (e.target !== stage) return; // clicked an item — its own click handler deals with selection
+  if (e.evt && e.evt.type === "touchstart") {
+    // One finger on empty canvas pans (a tap with no movement still clears the selection).
+    const t = e.evt.touches[0];
+    if (t && e.evt.touches.length === 1) panState = { x:t.clientX, y:t.clientY, sl:canvasAreaEl.scrollLeft, st:canvasAreaEl.scrollTop, moved:false };
+    return;
+  }
   marqueeStart = stage.getRelativePointerPosition();
   marqueeActive = true;
   marqueeMoved = false;
@@ -516,6 +748,11 @@ stage.on("mousemove touchmove", () => {
   itemLayer.batchDraw();
 });
 stage.on("mouseup touchend", (e) => {
+  if (panState) {
+    const moved = panState.moved; panState = null;
+    if (!moved && !pinchState) { clearSelection(); itemLayer.batchDraw(); }
+    return;
+  }
   if (!marqueeActive) return;
   marqueeActive = false;
   selectionRect.visible(false);
@@ -556,6 +793,34 @@ function applyZoom(newZoom){
 }
 function zoomBy(factor){ applyZoom(zoomLevel * factor); }
 
+/* Touch: two-finger pinch zooms (and pans with the midpoint); one finger on empty canvas pans. */
+const tDist = (t) => Math.hypot(t[0].clientX - t[1].clientX, t[0].clientY - t[1].clientY);
+const tMid = (t) => ({ x:(t[0].clientX + t[1].clientX) / 2, y:(t[0].clientY + t[1].clientY) / 2 });
+stageContainer.addEventListener("touchstart", (e) => {
+  if (e.touches.length === 2) {
+    pinchState = { dist:tDist(e.touches), zoom:zoomLevel, mid:tMid(e.touches), sl:canvasAreaEl.scrollLeft, st:canvasAreaEl.scrollTop };
+    panState = null; marqueeActive = false; selectionRect.visible(false);
+    itemLayer.getChildren().forEach(n => { if (n.isDragging && n.isDragging()) n.stopDrag(); });
+  }
+}, { passive:true });
+stageContainer.addEventListener("touchmove", (e) => {
+  if (pinchState && e.touches.length === 2) {
+    e.preventDefault();
+    const m = tMid(e.touches);
+    applyZoom(pinchState.zoom * tDist(e.touches) / pinchState.dist);
+    canvasAreaEl.scrollLeft = pinchState.sl - (m.x - pinchState.mid.x);
+    canvasAreaEl.scrollTop = pinchState.st - (m.y - pinchState.mid.y);
+  } else if (panState && e.touches.length === 1) {
+    const t = e.touches[0];
+    const dx = t.clientX - panState.x, dy = t.clientY - panState.y;
+    if (Math.abs(dx) + Math.abs(dy) > 6) panState.moved = true;
+    canvasAreaEl.scrollLeft = panState.sl - dx;
+    canvasAreaEl.scrollTop = panState.st - dy;
+  }
+}, { passive:false });
+stageContainer.addEventListener("touchend", (e) => { if (e.touches.length < 2) pinchState = null; }, { passive:true });
+stageContainer.addEventListener("touchcancel", () => { pinchState = null; panState = null; }, { passive:true });
+
 function fitToScreen(){
   const canvasArea = document.getElementById("canvas-area");
   const availW = canvasArea.clientWidth - 48;
@@ -581,12 +846,22 @@ const toggleBomBtn = document.getElementById("toggle-bom-btn");
 function setPanelCollapsed(panelEl, toggleBtn, collapsed, storageKey){
   panelEl.classList.toggle("collapsed", collapsed);
   toggleBtn.classList.toggle("active", !collapsed);
-  localStorage.setItem(storageKey, collapsed ? "1" : "0");
+  if (!window.matchMedia(PHONE_MQ).matches) localStorage.setItem(storageKey, collapsed ? "1" : "0");
+  else if (!collapsed) { // phone: only one sheet open at a time
+    const other = panelEl === itembankEl ? bomEl : itembankEl;
+    const otherBtn = panelEl === itembankEl ? toggleBomBtn : toggleItembankBtn;
+    other.classList.add("collapsed"); otherBtn.classList.remove("active");
+  }
+  panelEl.setAttribute("aria-hidden", collapsed ? "true" : "false");
+  if (collapsed) panelEl.setAttribute("inert", ""); else panelEl.removeAttribute("inert");
+  syncDock();
   setTimeout(fitToScreen, 240); // let the panel's own transition finish, then reclaim the freed space
 }
 
-const itembankCollapsed = localStorage.getItem("aimav-itembank-collapsed") === "1";
-const bomCollapsed = localStorage.getItem("aimav-bom-collapsed") === "1";
+const IS_PHONE = window.matchMedia(PHONE_MQ).matches;
+// On phones the panels are bottom sheets: start closed (they'd cover the canvas), and don't persist that choice.
+const itembankCollapsed = IS_PHONE ? true : localStorage.getItem("aimav-itembank-collapsed") === "1";
+const bomCollapsed = IS_PHONE ? true : localStorage.getItem("aimav-bom-collapsed") === "1";
 setPanelCollapsed(itembankEl, toggleItembankBtn, itembankCollapsed, "aimav-itembank-collapsed");
 setPanelCollapsed(bomEl, toggleBomBtn, bomCollapsed, "aimav-bom-collapsed");
 
@@ -596,6 +871,34 @@ toggleBomBtn.addEventListener("click", () =>
   setPanelCollapsed(bomEl, toggleBomBtn, !bomEl.classList.contains("collapsed"), "aimav-bom-collapsed"));
 document.getElementById("collapse-itembank-btn").addEventListener("click", () => toggleItembankBtn.click());
 document.getElementById("collapse-bom-btn").addEventListener("click", () => toggleBomBtn.click());
+
+/* Phone dock — buttons just trigger the existing toolbar controls. */
+function syncDock(){
+  const i = document.getElementById("dock-items"), b = document.getElementById("dock-bom");
+  if (i) i.classList.toggle("active", !itembankEl.classList.contains("collapsed"));
+  if (b) b.classList.toggle("active", !bomEl.classList.contains("collapsed"));
+}
+document.querySelectorAll("#dock button").forEach(btn =>
+  btn.addEventListener("click", () => { document.getElementById(btn.dataset.target).click(); }));
+syncDock();
+
+/* Welcome card actions */
+document.getElementById("welcome-load").addEventListener("click", () => document.getElementById("base-image-input").click());
+document.getElementById("welcome-bank").addEventListener("click", () => {
+  if (itembankEl.classList.contains("collapsed")) toggleItembankBtn.click();
+});
+
+/* Selection bar (touch) — mirrors the Transform menu for the current selection. */
+document.querySelectorAll("#sel-bar button").forEach(btn =>
+  btn.addEventListener("click", () => document.getElementById(btn.dataset.act).click()));
+function syncSelBar(){
+  const bar = document.getElementById("sel-bar");
+  if (bar) bar.classList.toggle("show", state.selectedInstanceIds.size > 0);
+}
+document.getElementById("delete-btn").addEventListener("click", () => {
+  document.getElementById("transform-menu").classList.remove("open");
+  deleteSelected();
+});
 
 /* Toolbar dropdown groups: File / Transform / AI. Opening one closes the others;
    clicking outside any of them closes whichever is open. */
@@ -830,6 +1133,7 @@ function setSelectedRotation(deg){
 }
 
 function syncRotationInput(){
+  syncSelBar();
   const input = document.getElementById("rotation-input");
   if (!input) return;
   const sel = getSelectedList();
@@ -859,6 +1163,20 @@ stageContainer.addEventListener("drop", async (e) => {
   const y = (e.clientY - rect.top) / zoomLevel;
   addPlacedItem(asset, x - (asset.defaultWidth||160)/2, y - (asset.defaultHeight||160)/2);
 });
+
+function addAssetAtViewCenter(asset){
+  const area = document.getElementById("canvas-area").getBoundingClientRect();
+  const rect = stageContainer.getBoundingClientRect();
+  const w = asset.defaultWidth || 160, h = asset.defaultHeight || 160;
+  const jitter = (state.layout.length % 6) * 36;
+  let cx = (area.left + area.width / 2 - rect.left) / zoomLevel + jitter;
+  let cy = (area.top + area.height / 2 - rect.top) / zoomLevel + jitter;
+  cx = Math.min(STAGE_W - w / 2, Math.max(w / 2, cx));
+  cy = Math.min(STAGE_H - h / 2, Math.max(h / 2, cy));
+  addPlacedItem(asset, cx - w / 2, cy - h / 2);
+  if (window.matchMedia(PHONE_MQ).matches && !itembankEl.classList.contains("collapsed")) toggleItembankBtn.click();
+  showToast("Added " + asset.name + " — drag to position");
+}
 
 /* ---------------------------------------------------------------------
    SEED CATALOG — generic, resolution-independent AV icon library.
@@ -1347,6 +1665,9 @@ async function renderItemBank(){
       card.className = "ib-card";
       card.draggable = true;
       card.title = asset.name;
+      card.tabIndex = 0;
+      card.setAttribute("role", "button");
+      card.setAttribute("aria-label", "Add " + asset.name);
       const img = document.createElement("img");
       img.src = URL.createObjectURL(asset.thumbnail);
       const label = document.createElement("span");
@@ -1355,6 +1676,12 @@ async function renderItemBank(){
       card.appendChild(label);
       card.addEventListener("dragstart", (e) => {
         e.dataTransfer.setData("application/x-asset-id", String(asset.id));
+      });
+      // Tap / click / Enter adds the item at the middle of the visible canvas (drag still works on desktop).
+      const addHere = () => addAssetAtViewCenter(asset);
+      card.addEventListener("click", addHere);
+      card.addEventListener("keydown", (e) => {
+        if (e.key === "Enter" || e.key === " ") { e.preventDefault(); addHere(); }
       });
       itemsWrap.appendChild(card);
     });
@@ -1421,7 +1748,12 @@ function makeThumbnail(file, maxSize){
 /* ---------------------------------------------------------------------
    BILL OF MATERIALS
 --------------------------------------------------------------------- */
+function syncWelcome(){
+  const hint = document.getElementById("canvas-hint");
+  if (hint) hint.style.display = (!baseImageNode && state.layout.length === 0) ? "flex" : "none";
+}
 async function renderBOM(){
+  syncWelcome();
   const el = document.getElementById("bom-content");
   if (!state.layout.length) {
     el.innerHTML = '<p id="bom-empty">No items placed yet.</p>';
@@ -1439,7 +1771,7 @@ async function renderBOM(){
 
   let html = '<table><thead><tr><th>Qty</th><th>Item</th><th>Category</th></tr></thead><tbody>';
   rows.forEach(r => {
-    html += `<tr><td>${r.qty}x</td><td>${escapeHtml(r.name)}</td><td style="color:rgba(255,255,255,.5)">${escapeHtml(r.category)}</td></tr>`;
+    html += `<tr><td>${r.qty}x</td><td>${escapeHtml(r.name)}</td><td style="color:var(--text-dim)">${escapeHtml(r.category)}</td></tr>`;
   });
   html += "</tbody></table>";
   el.innerHTML = html;
@@ -1901,9 +2233,9 @@ function openRenderViewer(rec){
   overlay.innerHTML = `
     <button id="rv-close" style="position:absolute;top:22px;right:26px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.15);
       color:#fff;width:38px;height:38px;border-radius:50%;font-size:16px;cursor:pointer;">✕</button>
-    <div style="font-family:'Playfair Display',serif;color:#E8C97A;font-size:15px;margin-bottom:16px;letter-spacing:.02em;">${escapeHtml(rec.name)}</div>
+    <div style="font-family:var(--font-head);color:var(--accent);font-size:15px;margin-bottom:16px;letter-spacing:.02em;">${escapeHtml(rec.name)}</div>
     <img src="${url}" style="max-width:88vw;max-height:78vh;object-fit:contain;border-radius:10px;box-shadow:0 40px 100px rgba(0,0,0,.6);">
-    <button id="rv-download" style="margin-top:20px;background:#E8C97A;color:#1a1508;border:none;font-weight:600;font-size:13px;
+    <button id="rv-download" style="margin-top:20px;background:var(--accent);color:var(--on-accent);border:none;font-weight:600;font-size:13px;
       padding:11px 22px;border-radius:999px;cursor:pointer;">Download PNG</button>
   `;
   document.body.appendChild(overlay);
@@ -1961,7 +2293,7 @@ async function openRenderOptionsModal(){
         <div class="field" id="m-bom-text-wrap" style="border-top:none;padding-top:0;">
           <label style="display:flex;justify-content:space-between;align-items:center;">
             <span>Legend text (edit freely — only changes the overlay text, not your items)</span>
-            <button type="button" id="m-bom-regenerate" style="background:none;border:none;color:var(--teal);font-size:10.5px;cursor:pointer;text-decoration:underline;padding:0;">↻ Regenerate from layout</button>
+            <button type="button" id="m-bom-regenerate" style="background:none;border:none;color:var(--ai);font-size:10.5px;cursor:pointer;text-decoration:underline;padding:0;">↻ Regenerate from layout</button>
           </label>
           <textarea id="m-bom-text" rows="6" placeholder="1. Item name&#10;2. Item name…" style="font-family:monospace;font-size:12px;"></textarea>
         </div>
@@ -2035,13 +2367,13 @@ async function compositeWithHeaderFooter(layoutImg, meta, size){
   ctx.fillRect(0,0,canvas.width,canvas.height);
 
   if (HEADER_H) {
-    ctx.fillStyle = "#0B0F14";
+    ctx.fillStyle = "#0A1F44";
     ctx.fillRect(0,0,canvas.width,HEADER_H);
-    ctx.fillStyle = "#E8C97A";
-    ctx.font = "bold 40px 'Playfair Display', serif";
+    ctx.fillStyle = "#7FE3FF";
+    ctx.font = "bold 40px system-ui, 'Segoe UI', Arial, sans-serif";
     ctx.fillText(meta.companyName || "AIM AV", PAD, HEADER_H/2 - 6);
     ctx.fillStyle = "#CBD5D9";
-    ctx.font = "22px 'DM Sans', sans-serif";
+    ctx.font = "22px system-ui, 'Segoe UI', Arial, sans-serif";
     ctx.fillText(`Client: ${meta.clientName || "—"}    ${new Date().toLocaleDateString()}`, PAD, HEADER_H/2 + 34);
   }
 
@@ -2054,10 +2386,10 @@ async function compositeWithHeaderFooter(layoutImg, meta, size){
 
   if (FOOTER_H) {
     const footerY = HEADER_H + size.height + LEGEND_H;
-    ctx.fillStyle = "#0B0F14";
+    ctx.fillStyle = "#0A1F44";
     ctx.fillRect(0, footerY, canvas.width, FOOTER_H);
     ctx.fillStyle = "#CBD5D9";
-    ctx.font = "18px 'DM Sans', sans-serif";
+    ctx.font = "18px system-ui, 'Segoe UI', Arial, sans-serif";
     wrapText(ctx, meta.notes, PAD, footerY+30, canvas.width-PAD*2, 24);
   }
 
@@ -2065,7 +2397,7 @@ async function compositeWithHeaderFooter(layoutImg, meta, size){
     ctx.save();
     ctx.globalAlpha = 0.22;
     ctx.fillStyle = "#000000";
-    ctx.font = "bold 90px 'DM Sans', sans-serif";
+    ctx.font = "bold 90px system-ui, 'Segoe UI', Arial, sans-serif";
     ctx.translate(canvas.width/2, canvas.height/2);
     ctx.rotate(-Math.PI/8);
     ctx.textAlign = "center";
@@ -2097,13 +2429,13 @@ function drawBomLegendBadges(ctx, photoW, photoH, yOffset){
     const cy = yOffset + (item.y / STAGE_H) * photoH;
     ctx.beginPath();
     ctx.arc(cx, cy, badgeR, 0, Math.PI * 2);
-    ctx.fillStyle = "#E8C97A";
+    ctx.fillStyle = "#7FE3FF";
     ctx.fill();
     ctx.lineWidth = Math.max(1.5, badgeR * 0.14);
-    ctx.strokeStyle = "#1a1508";
+    ctx.strokeStyle = "#03233A";
     ctx.stroke();
-    ctx.fillStyle = "#1a1508";
-    ctx.font = `bold ${Math.round(badgeR * 1.15)}px 'DM Sans', sans-serif`;
+    ctx.fillStyle = "#03233A";
+    ctx.font = `bold ${Math.round(badgeR * 1.15)}px system-ui, 'Segoe UI', Arial, sans-serif`;
     ctx.textAlign = "center";
     ctx.textBaseline = "middle";
     ctx.fillText(String(i + 1), cx, cy + badgeR * 0.05);
@@ -2123,12 +2455,12 @@ function measureBomLegendHeight(canvasW, legendLines){
 function drawBomLegendBand(ctx, canvasW, yStart, legendLines){
   const { pad, colWidth, lineH, titleH, perCol } = legendLayoutMetrics(canvasW, legendLines);
   const bandH = measureBomLegendHeight(canvasW, legendLines);
-  ctx.fillStyle = "#0B0F14";
+  ctx.fillStyle = "#0A1F44";
   ctx.fillRect(0, yStart, canvasW, bandH);
-  ctx.fillStyle = "#E8C97A";
-  ctx.font = "bold 19px 'Playfair Display', serif";
+  ctx.fillStyle = "#7FE3FF";
+  ctx.font = "bold 19px system-ui, 'Segoe UI', Arial, sans-serif";
   ctx.fillText("EQUIPMENT LEGEND", pad, yStart + 25);
-  ctx.font = "14px 'DM Sans', sans-serif";
+  ctx.font = "14px system-ui, 'Segoe UI', Arial, sans-serif";
   ctx.fillStyle = "#CBD5D9";
   legendLines.forEach((line, i) => {
     const col = Math.floor(i / perCol);
@@ -2158,6 +2490,43 @@ function downloadDataUrl(dataUrl, filename){
 --------------------------------------------------------------------- */
 document.getElementById("settings-btn").addEventListener("click", openSettingsModal);
 
+/* Gemini model list — update only. Lists the image-capable models a key can see; never replaces or swaps anything. */
+async function fetchGeminiImageModels(apiKey){
+  const out = []; let pageToken = "";
+  for (let i = 0; i < 5; i++) {
+    const url = "https://generativelanguage.googleapis.com/v1beta/models?pageSize=200" + (pageToken ? "&pageToken=" + encodeURIComponent(pageToken) : "");
+    const res = await fetch(url, { headers: { "x-goog-api-key": apiKey } });
+    if (!res.ok) { const e = new Error("MODELS_" + res.status); e.status = res.status; throw e; }
+    const j = await res.json();
+    (j.models || []).forEach(m => {
+      const id = String(m.name || "").replace(/^models\//, "");
+      if ((m.supportedGenerationMethods || []).includes("generateContent") && /image/i.test(id)) out.push({ id, label: m.displayName || id });
+    });
+    pageToken = j.nextPageToken || "";
+    if (!pageToken) break;
+  }
+  return out;
+}
+function mergeModelOptions(sel, list, selected, listIsAuthoritative){
+  const have = new Set(Array.from(sel.options).map(o => o.value));
+  list.forEach(m => {
+    if (have.has(m.id)) return;
+    const o = document.createElement("option");
+    o.value = m.id; o.textContent = m.label + " (" + m.id + ") — from your key";
+    sel.appendChild(o); have.add(m.id);
+  });
+  const ids = new Set(list.map(m => m.id));
+  Array.from(sel.options).forEach(o => {
+    const stale = listIsAuthoritative && list.length && !ids.has(o.value);
+    o.dataset.stale = stale ? "1" : "";
+    o.textContent = o.textContent.replace(/ ⚠ not in your key’s current list$/, "") + (stale ? " ⚠ not in your key’s current list" : "");
+  });
+  if (selected && !have.has(selected)) {
+    const o = document.createElement("option");
+    o.value = selected; o.textContent = selected + " (saved selection)"; sel.appendChild(o);
+  }
+}
+
 function openSettingsModal(){
   const overlay = document.createElement("div");
   overlay.className = "modal-overlay";
@@ -2174,17 +2543,22 @@ function openSettingsModal(){
 
         <span class="section-label" style="margin-top:6px;">AI Render</span>
         <div class="field">
-          <label>Gemini API Key</label>
-          <input type="text" id="m-gemini-key" placeholder="Stored locally in this browser only">
+          <label for="m-gemini-key">Gemini API Key</label>
+          <div class="key-row">
+            <input type="password" id="m-gemini-key" placeholder="Stored locally in this browser only" autocomplete="off" autocapitalize="off" spellcheck="false">
+            <button type="button" class="btn" id="m-key-toggle" aria-label="Show API key" aria-pressed="false">Show</button>
+          </div>
         </div>
         <div class="field">
-          <label>AI Render Model</label>
+          <label for="m-gemini-model">AI Render Model</label>
           <select id="m-gemini-model" style="width:100%;background:var(--input-bg);border:1px solid var(--glass-border);border-radius:8px;padding:8px 10px;color:var(--text);font-size:13px;">
             <option value="gemini-3.1-flash-image">Nano Banana 2 (gemini-3.1-flash-image) — recommended</option>
             <option value="gemini-3.1-flash-lite-image">Nano Banana 2 Lite — fastest / cheapest</option>
             <option value="gemini-3-pro-image">Nano Banana Pro — highest quality, slower/pricier</option>
             <option value="gemini-2.5-flash-image">Nano Banana (legacy 2.5) — being phased out by Google</option>
           </select>
+          <div style="margin-top:8px;"><button type="button" class="btn" id="m-model-refresh">↻ Refresh models from my key</button></div>
+          <div class="model-status" id="m-model-status" role="status" aria-live="polite"></div>
         </div>
         <div class="field">
           <label>Render Notes — extra instructions for every AI render</label>
@@ -2192,6 +2566,7 @@ function openSettingsModal(){
         </div>
       </div>
       <div class="modal-foot">
+        <span class="ver-note">ABD v${APP_VERSION}</span>
         <button class="btn" id="m-cancel">Cancel</button>
         <button class="btn primary" id="m-save">Save</button>
       </div>
@@ -2204,10 +2579,51 @@ function openSettingsModal(){
   overlay.querySelector("#m-metadata").checked = state.meta.showMetadata;
   overlay.querySelector("#m-watermark").checked = state.meta.showWatermark;
   overlay.querySelector("#m-ai-notes").value = state.meta.aiNotes || "";
+  const keyInput = overlay.querySelector("#m-gemini-key");
+  const modelSel = overlay.querySelector("#m-gemini-model");
+  const modelStatus = overlay.querySelector("#m-model-status");
+  const setModelStatus = (msg, cls) => { modelStatus.textContent = msg || ""; modelStatus.className = "model-status" + (cls ? " " + cls : ""); };
+  let savedModel = GEMINI_MODEL;
   db.settings.get("app").then(s => {
-    overlay.querySelector("#m-gemini-key").value = (s && s.geminiApiKey) || "";
-    overlay.querySelector("#m-gemini-model").value = (s && s.geminiModel) || GEMINI_MODEL;
+    keyInput.value = (s && s.geminiApiKey) || "";
+    savedModel = (s && s.geminiModel) || GEMINI_MODEL;
+    if (s && Array.isArray(s.geminiModelList) && s.geminiModelList.length) mergeModelOptions(modelSel, s.geminiModelList, savedModel, true);
+    else modelSel.value = savedModel;
+    if (!Array.from(modelSel.options).some(o => o.value === savedModel)) mergeModelOptions(modelSel, [], savedModel, false);
+    modelSel.value = savedModel;
+    if (s && s.geminiModelsFetchedAt) setModelStatus("Model list refreshed " + new Date(s.geminiModelsFetchedAt).toLocaleString() + ".", "ok");
   });
+  overlay.querySelector("#m-key-toggle").addEventListener("click", (e) => {
+    const show = keyInput.type === "password";
+    keyInput.type = show ? "text" : "password";
+    e.currentTarget.textContent = show ? "Hide" : "Show";
+    e.currentTarget.setAttribute("aria-pressed", show ? "true" : "false");
+    e.currentTarget.setAttribute("aria-label", show ? "Hide API key" : "Show API key");
+  });
+  async function refreshModels(){
+    const key = keyInput.value.trim();
+    if (!key) { setModelStatus("Paste your Gemini API key first, then refresh.", "warn"); return; }
+    setModelStatus("Checking which image models your key can use…");
+    try {
+      const list = await fetchGeminiImageModels(key);
+      if (!list.length) { setModelStatus("Your key returned no image-capable models. Your current selection is unchanged.", "warn"); return; }
+      const current = modelSel.value;
+      mergeModelOptions(modelSel, list, current, true);
+      modelSel.value = current; // never auto-swap the user's selection
+      const existing = await db.settings.get("app");
+      await db.settings.put({ ...(existing || { id: "app" }), geminiModelList: list, geminiModelsFetchedAt: Date.now() });
+      const missing = Array.from(modelSel.options).find(o => o.value === current && o.dataset.stale === "1");
+      setModelStatus(missing
+        ? "Found " + list.length + " models. Heads up: your selected model isn’t in your key’s current list. It’s kept, but renders may fail. Pick another if so."
+        : "Found " + list.length + " image models for your key.", missing ? "warn" : "ok");
+    } catch (err) {
+      setModelStatus(err.status === 400 || err.status === 403
+        ? "Google rejected that key. Check it and try again."
+        : "Couldn’t reach Google to refresh the list. Your current models are unchanged.", "warn");
+    }
+  }
+  overlay.querySelector("#m-model-refresh").addEventListener("click", refreshModels);
+  keyInput.addEventListener("change", () => { if (keyInput.value.trim().length > 20) refreshModels(); });
 
   const close = () => overlay.remove();
   overlay.querySelector(".modal-close").addEventListener("click", close);
@@ -2468,6 +2884,7 @@ function deleteSelected(){
   });
   transformer.nodes([]);
   state.selectedInstanceIds.clear();
+  syncSelBar();
   itemLayer.draw();
   syncRotationInput();
   pushHistory();
@@ -2524,21 +2941,110 @@ function showToast(msg){
   await seedCatalogIfNeeded();
   await renderItemBank();
   await loadProject();
+  syncWelcome();
   fitToScreen();
 })();
 
+/* Re-fit when the window or orientation changes (not while typing, so the phone keyboard doesn't jump the canvas). */
+let resizeT = null;
+window.addEventListener("resize", () => {
+  clearTimeout(resizeT);
+  resizeT = setTimeout(() => {
+    const a = document.activeElement;
+    if (a && (a.tagName === "INPUT" || a.tagName === "TEXTAREA" || a.tagName === "SELECT")) return;
+    fitToScreen();
+  }, 180);
+});
+
+/* ---------------------------------------------------------------------
+   ACCESSIBILITY — labels for icon-only controls, dialog semantics,
+   focus trap + restore for every modal (they're all built as .modal-overlay).
+--------------------------------------------------------------------- */
+document.querySelectorAll("button[title]:not([aria-label]), label[title]").forEach(el => {
+  if (el.tagName === "BUTTON" && !el.getAttribute("aria-label")) el.setAttribute("aria-label", el.getAttribute("title"));
+});
+[["file-menu-btn","file-menu"],["transform-menu-btn","transform-menu"]].forEach(([b, m]) => {
+  const btn = document.getElementById(b), menu = document.getElementById(m);
+  btn.setAttribute("aria-haspopup", "true");
+  btn.setAttribute("aria-expanded", "false");
+  new MutationObserver(() => btn.setAttribute("aria-expanded", menu.classList.contains("open") ? "true" : "false"))
+    .observe(menu, { attributes:true, attributeFilter:["class"] });
+});
+const FOCUSABLE = 'a[href],button:not([disabled]),input:not([disabled]):not([type=hidden]),select:not([disabled]),textarea:not([disabled]),[tabindex]:not([tabindex="-1"])';
+const dialogReturnFocus = new WeakMap();
+new MutationObserver((muts) => {
+  muts.forEach(mu => {
+    mu.addedNodes.forEach(node => {
+      if (!(node instanceof HTMLElement) || !node.classList.contains("modal-overlay")) return;
+      const modal = node.querySelector(".modal") || node;
+      const title = modal.querySelector("h3");
+      modal.setAttribute("role", "dialog");
+      modal.setAttribute("aria-modal", "true");
+      if (title) { title.id = title.id || ("dlg-" + Math.random().toString(36).slice(2, 8)); modal.setAttribute("aria-labelledby", title.id); }
+      modal.querySelectorAll(".modal-close").forEach(c => c.setAttribute("aria-label", "Close"));
+      dialogReturnFocus.set(node, document.activeElement);
+      setTimeout(() => {
+        const first = modal.querySelector("input:not([type=hidden]):not([type=checkbox]),textarea,select") || modal.querySelector(FOCUSABLE);
+        if (first) first.focus({ preventScroll:true });
+      }, 30);
+      node.addEventListener("keydown", (e) => {
+        if (e.key === "Escape") { const c = modal.querySelector(".modal-close, #m-cancel"); if (c) c.click(); return; }
+        if (e.key !== "Tab") return;
+        const items = [...modal.querySelectorAll(FOCUSABLE)].filter(el => el.offsetParent !== null);
+        if (!items.length) return;
+        const f = items[0], l = items[items.length - 1];
+        if (e.shiftKey && document.activeElement === f) { e.preventDefault(); l.focus(); }
+        else if (!e.shiftKey && document.activeElement === l) { e.preventDefault(); f.focus(); }
+      });
+    });
+    mu.removedNodes.forEach(node => {
+      if (!(node instanceof HTMLElement) || !node.classList.contains("modal-overlay")) return;
+      const back = dialogReturnFocus.get(node);
+      if (back && back.focus && document.contains(back)) back.focus({ preventScroll:true });
+    });
+  });
+}).observe(document.body, { childList:true });
+
+/* ---------------------------------------------------------------------
+   VERSION STAMP + SERVICE WORKER (update prompt)
+--------------------------------------------------------------------- */
+document.getElementById("ver-stamp").textContent = "v" + APP_VERSION;
+if ("caches" in window) {
+  caches.keys().then(keys => {
+    const mine = keys.find(k => k.startsWith("abd-v"));
+    const stamp = document.getElementById("ver-stamp");
+    if (mine && stamp) stamp.title = "App version " + APP_VERSION + " · offline cache " + mine + (mine === "abd-v" + APP_VERSION ? "" : " (updating…)");
+  }).catch(() => {});
+}
+if ("serviceWorker" in navigator && location.protocol.startsWith("http")) {
+  const banner = document.getElementById("update-banner");
+  let reloading = false;
+  const hadController = !!navigator.serviceWorker.controller; // false on the very first visit
+  navigator.serviceWorker.addEventListener("controllerchange", () => {
+    // First install also fires this (clients.claim) — never reload then, or first-run setup gets interrupted.
+    if (!hadController || reloading) return;
+    reloading = true; location.reload();
+  });
+  navigator.serviceWorker.register("sw.js").then((reg) => {
+    const offer = (worker) => {
+      banner.classList.add("show");
+      document.getElementById("update-reload").onclick = () => worker.postMessage({ type: "SKIP_WAITING" });
+    };
+    if (reg.waiting && navigator.serviceWorker.controller) offer(reg.waiting);
+    reg.addEventListener("updatefound", () => {
+      const nw = reg.installing;
+      if (!nw) return;
+      nw.addEventListener("statechange", () => {
+        if (nw.state === "installed" && navigator.serviceWorker.controller) offer(nw);
+      });
+    });
+    setInterval(() => reg.update().catch(() => {}), 60 * 60 * 1000);
+  }).catch((err) => console.warn("Service worker registration failed:", err));
+}
+
 })();
 </script>
 
-<script>
-  // Service worker requires http(s) — silently skips on file:// or unsupported browsers.
-  if ("serviceWorker" in navigator && location.protocol.startsWith("http")) {
-    window.addEventListener("load", () => {
-      navigator.serviceWorker.register("sw.js").catch((err) => {
-        console.warn("Service worker registration failed:", err);
-      });
-    });
-  }
-</script>
+
 </body>
 </html>
