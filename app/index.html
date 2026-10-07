@@ -274,7 +274,23 @@
   .modal-head,.modal-foot{flex-shrink:0;}
   .modal-close{min-width:32px;min-height:32px;font-size:18px;}
   #toast{max-width:calc(100vw - 24px);text-align:center;}
+  body:has(.modal-overlay) #toast{bottom:auto !important;top:16px;}
 
+  .mr-intro{margin:0;font-size:13.5px;line-height:1.55;color:var(--text-dim);}
+  .mr-steps{list-style:none;counter-reset:mr;margin:0;padding:0;display:flex;flex-direction:column;gap:10px;}
+  .mr-steps li{counter-increment:mr;display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px 14px;border-radius:var(--radius-md);
+    background:var(--input-bg);border:1px solid var(--glass-border);}
+  .mr-steps li > div{display:flex;flex-direction:column;gap:3px;min-width:0;}
+  .mr-steps li > div::before{content:"Step " counter(mr);font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--accent);font-weight:700;}
+  .mr-steps li b{font-size:13.5px;color:var(--text);}
+  .mr-steps li span{font-size:12px;color:var(--text-dim);line-height:1.4;}
+  .mr-steps li .btn{flex-shrink:0;text-decoration:none;display:inline-flex;align-items:center;justify-content:center;white-space:nowrap;}
+  .mr-prompt summary{cursor:pointer;font-size:12px;color:var(--text-dim);}
+  .mr-prompt textarea{width:100%;margin-top:8px;font-size:11.5px;font-family:ui-monospace,Menlo,Consolas,monospace;background:var(--input-bg);color:var(--text);border:1px solid var(--glass-border);border-radius:var(--radius-sm);padding:8px;}
+  .paid-note{font-size:12.5px;line-height:1.5;padding:10px 12px;border-radius:var(--radius-md);background:rgba(var(--warm-rgb),.10);border:1px solid rgba(var(--warm-rgb),.4);color:var(--text);}
+  .paid-note b{color:var(--warm);}
+  .linklike{background:none;border:none;padding:0;font:inherit;color:var(--accent);text-decoration:underline;cursor:pointer;}
+  @media (max-width:560px){ .mr-steps li{flex-direction:column;align-items:stretch;} .mr-steps li .btn{width:100%;min-height:42px;} }
   /* tablet */
   @media (max-width:1100px) and (min-width:821px){
     #itembank,#bom{width:224px;}
@@ -376,7 +392,7 @@
         <img class="brand-logo" src="icon-192.png" alt="" width="38" height="38">
         <div class="brand-text">
           <h1>ABD<span class="sr-only"> — AIM AV Booth Designer</span></h1>
-          <span class="brand-sub"><span class="bs-name">AIM AV Booth Designer</span><span class="ver-stamp" id="ver-stamp" title="App version">v2.0.0</span></span>
+          <span class="brand-sub"><span class="bs-name">AIM AV Booth Designer</span><span class="ver-stamp" id="ver-stamp" title="App version">v2.0.1</span></span>
         </div>
       </div>
       <div class="top-meta">
@@ -516,7 +532,7 @@
 "use strict";
 
 /* Keep in sync with CACHE_VERSION in sw.js ("abd-v" + APP_VERSION). */
-const APP_VERSION = "2.0.0";
+const APP_VERSION = "2.0.1";
 const PHONE_MQ = "(max-width: 820px), (max-height: 520px) and (orientation: landscape)";
 
 /* ---------------------------------------------------------------------
@@ -1922,16 +1938,106 @@ async function callGeminiRender(imageBase64, promptText){
   return `data:${mime};base64,${inline.data}`;
 }
 
-function handleRenderError(err){
+/* pkg = { imageDataUrl, prompt, kind } — what was (or would have been) sent to Gemini, so the
+   manual fallback can hand the person exactly the same image + prompt. */
+function handleRenderError(err, pkg){
   console.error(err);
+  const billingish = /billing|free.?tier|RESOURCE_EXHAUSTED|quota|PERMISSION_DENIED|FAILED_PRECONDITION/i.test(err.message || "");
   if (err.code === "NO_API_KEY") {
-    showToast("Add a Gemini API key in Settings first");
-    openSettingsModal();
-  } else if (err.code === "QUOTA") {
-    showToast("Quota/billing limit hit on this model — open Settings to try a different one, or enable billing at aistudio.google.com");
+    openManualRenderModal("nokey", pkg);
+  } else if (err.code === "QUOTA" || billingish) {
+    openManualRenderModal("quota", pkg);
   } else {
     showToast("AI render failed — " + err.message);
   }
+}
+
+/* "AI render needs a paid key" + manual fallback: download the layout image, copy the prompt,
+   render it yourself in the Gemini app / AI Studio, then import the result back here. */
+function openManualRenderModal(reason, pkg){
+  if (!pkg) { // opened from Settings with nothing built yet — build it now
+    if (!state.layout.length) { showToast("Place at least one item first, then prepare a manual render"); return; }
+    buildRenderPackage().then(p => openManualRenderModal(reason, p));
+    return;
+  }
+  const headline = {
+    nokey: "AI render needs a paid Gemini key",
+    quota: "Google blocked this render: no free quota",
+    manual: "Render it yourself with Gemini"
+  }[reason] || "Render it yourself with Gemini";
+  const intro = {
+    nokey: "Gemini’s image models have no free tier, so rendering inside ABD needs an API key from a billing-enabled Google project (about 3–7¢ per image). No key yet? You can still get the same result by hand.",
+    quota: "Google answered with a quota/billing error. Gemini’s image models have no free tier, so a key needs a billing-enabled project (about 3–7¢ per image). Or do this render by hand instead.",
+    manual: "Same image, same prompt, no API key. Free Google accounts get a limited number of images per day in the Gemini app / AI Studio."
+  }[reason];
+  const overlay = document.createElement("div");
+  overlay.className = "modal-overlay";
+  overlay.innerHTML = `
+    <div class="modal" style="width:560px;">
+      <div class="modal-head"><h3>${headline}</h3><button class="modal-close">✕</button></div>
+      <div class="modal-body">
+        <p class="mr-intro">${intro}</p>
+        <ol class="mr-steps">
+          <li><div><b>Download your layout image</b><span>The flattened canvas, exactly what ABD would send.</span></div>
+            <button class="btn" id="mr-download">⇩ Download PNG</button></li>
+          <li><div><b>Copy the render prompt</b><span>Includes the item legend and your Render Notes.</span></div>
+            <button class="btn" id="mr-copy">⧉ Copy prompt</button></li>
+          <li><div><b>Generate it in Gemini</b><span>Open the Gemini app or AI Studio, choose an image-capable model, attach the PNG, paste the prompt.</span></div>
+            <a class="btn" href="https://aistudio.google.com/" target="_blank" rel="noopener">Open AI Studio ↗</a></li>
+          <li><div><b>Bring the result back</b><span>Import the image to add the header/footer and BOM legend, save it to your Library, or refine it.</span></div>
+            <label class="btn primary" style="cursor:pointer;">⇧ Import render<input type="file" id="mr-import" accept="image/*" hidden></label></li>
+        </ol>
+        <details class="mr-prompt"><summary>Preview prompt</summary><textarea id="mr-prompt-text" readonly rows="8"></textarea></details>
+      </div>
+      <div class="modal-foot" style="flex-wrap:wrap;">
+        <button class="btn" id="mr-settings">Add / change API key</button>
+        <button class="btn" id="mr-close">Close</button>
+      </div>
+    </div>`;
+  document.body.appendChild(overlay);
+  const close = () => overlay.remove();
+  overlay.querySelector(".modal-close").addEventListener("click", close);
+  overlay.querySelector("#mr-close").addEventListener("click", close);
+  overlay.addEventListener("click", (e) => { if (e.target === overlay) close(); });
+  overlay.querySelector("#mr-prompt-text").value = pkg.prompt;
+  overlay.querySelector("#mr-download").addEventListener("click", () => {
+    downloadDataUrl(pkg.imageDataUrl, pkg.kind === "refine" ? "abd-render-to-refine.png" : "abd-layout.png");
+    showToast("Layout image downloaded");
+  });
+  overlay.querySelector("#mr-copy").addEventListener("click", async () => {
+    let ok = false;
+    try { await navigator.clipboard.writeText(pkg.prompt); ok = true; }
+    catch (e) {
+      const ta = overlay.querySelector("#mr-prompt-text");
+      overlay.querySelector(".mr-prompt").open = true; ta.focus(); ta.select();
+      try { ok = document.execCommand("copy"); } catch (_) {}
+    }
+    showToast(ok ? "Prompt copied. Paste it into Gemini along with the image" : "Couldn’t copy automatically. Select the prompt text and copy it");
+  });
+  overlay.querySelector("#mr-import").addEventListener("change", (e) => {
+    const file = e.target.files && e.target.files[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = () => { close(); showAiRenderResult(String(reader.result)); };
+    reader.readAsDataURL(file);
+  });
+  overlay.querySelector("#mr-settings").addEventListener("click", () => { close(); openSettingsModal(); });
+}
+
+/* Flatten the canvas + build the full prompt (shared by the API render and the manual fallback). */
+async function buildRenderPackage(){
+  transformer.nodes([]); itemLayer.draw();
+  const imageDataUrl = stage.toDataURL({ pixelRatio: 2, mimeType: "image/png" });
+  const legend = await buildItemLegend();
+  let prompt = `${AI_RENDER_PROMPT}\n\nITEM LEGEND:\n${legend}`;
+  const standingNotes = (state.meta.aiNotes || "").trim();
+  const quickNotes = (state.meta.quickRenderNotes || "").trim();
+  if (standingNotes || quickNotes) {
+    prompt += `\n\nADDITIONAL INSTRUCTIONS FROM THE USER (apply these on top of everything above):`;
+    if (standingNotes) prompt += `\n- Standing project notes: ${standingNotes}`;
+    if (quickNotes) prompt += `\n- Notes for this render only: ${quickNotes}`;
+  }
+  return { imageDataUrl, prompt, kind: "render" };
 }
 
 document.getElementById("ai-render-btn").addEventListener("click", async () => {
@@ -1941,19 +2047,9 @@ document.getElementById("ai-render-btn").addEventListener("click", async () => {
     return;
   }
 
-  transformer.nodes([]); itemLayer.draw();
-  const layoutDataUrl = stage.toDataURL({ pixelRatio: 2, mimeType: "image/png" });
-  const base64 = layoutDataUrl.split(",")[1];
-  const legend = await buildItemLegend();
-  let fullPrompt = `${AI_RENDER_PROMPT}\n\nITEM LEGEND:\n${legend}`;
-
-  const standingNotes = (state.meta.aiNotes || "").trim();
-  const quickNotes = (state.meta.quickRenderNotes || "").trim();
-  if (standingNotes || quickNotes) {
-    fullPrompt += `\n\nADDITIONAL INSTRUCTIONS FROM THE USER (apply these on top of everything above):`;
-    if (standingNotes) fullPrompt += `\n- Standing project notes: ${standingNotes}`;
-    if (quickNotes) fullPrompt += `\n- Notes for this render only: ${quickNotes}`;
-  }
+  const pkg = await buildRenderPackage();
+  const base64 = pkg.imageDataUrl.split(",")[1];
+  const fullPrompt = pkg.prompt;
   // Note: the numbered BOM legend is NOT requested from the AI — it's drawn by
   // us afterward from the actual item coordinates (see compositeWithHeaderFooter),
   // since generative models are unreliable at accurate small text/numbers.
@@ -1966,7 +2062,7 @@ document.getElementById("ai-render-btn").addEventListener("click", async () => {
     const rawDataUrl = await callGeminiRender(base64, fullPrompt);
     showAiRenderResult(rawDataUrl);
   } catch (err) {
-    handleRenderError(err);
+    handleRenderError(err, pkg);
   } finally {
     btn.disabled = false;
     btn.textContent = originalLabel;
@@ -2118,7 +2214,7 @@ function openRefineModal(rawDataUrl){
       close();
       showAiRenderResult(newRawDataUrl);
     } catch (err) {
-      handleRenderError(err);
+      handleRenderError(err, { imageDataUrl: rawDataUrl, prompt: `${REFINE_PROMPT_BASE}${notes}`, kind: "refine" });
       btn.disabled = false;
       btn.textContent = "Refine";
     }
@@ -2542,6 +2638,9 @@ function openSettingsModal(){
         <label class="toggle-row" style="border-top:none;padding-top:0;"><input type="checkbox" id="m-watermark"> Show watermark on export</label>
 
         <span class="section-label" style="margin-top:6px;">AI Render</span>
+        <div class="paid-note" role="note">
+          <b>Gemini image models need a paid key.</b> Google offers no free tier for image generation, so the key must belong to a billing-enabled project (about 3–7¢ per render). No paid key? You can still <button type="button" class="linklike" id="m-manual-render">render manually with the Gemini app</button>.
+        </div>
         <div class="field">
           <label for="m-gemini-key">Gemini API Key</label>
           <div class="key-row">
@@ -2623,6 +2722,7 @@ function openSettingsModal(){
     }
   }
   overlay.querySelector("#m-model-refresh").addEventListener("click", refreshModels);
+  overlay.querySelector("#m-manual-render").addEventListener("click", () => { close(); openManualRenderModal("manual"); });
   keyInput.addEventListener("change", () => { if (keyInput.value.trim().length > 20) refreshModels(); });
 
   const close = () => overlay.remove();
@@ -2984,8 +3084,11 @@ new MutationObserver((muts) => {
       modal.querySelectorAll(".modal-close").forEach(c => c.setAttribute("aria-label", "Close"));
       dialogReturnFocus.set(node, document.activeElement);
       setTimeout(() => {
-        const first = modal.querySelector("input:not([type=hidden]):not([type=checkbox]),textarea,select") || modal.querySelector(FOCUSABLE);
+        const vis = (el) => el.offsetParent !== null && !el.hidden;
+        const first = [...modal.querySelectorAll("input:not([type=hidden]):not([type=checkbox]):not([type=file]),textarea:not([readonly]),select")].find(vis)
+          || [...modal.querySelectorAll(FOCUSABLE)].find(vis);
         if (first) first.focus({ preventScroll:true });
+        else { modal.setAttribute("tabindex", "-1"); modal.focus({ preventScroll:true }); }
       }, 30);
       node.addEventListener("keydown", (e) => {
         if (e.key === "Escape") { const c = modal.querySelector(".modal-close, #m-cancel"); if (c) c.click(); return; }

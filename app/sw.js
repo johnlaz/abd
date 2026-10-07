@@ -1,7 +1,7 @@
 // ABD service worker
 // CACHE_VERSION must match APP_VERSION in index.html ("abd-v" + APP_VERSION).
 // Bump both on every deploy that changes any cached file; old caches are purged on activate.
-const CACHE_VERSION = "abd-v2.0.0";
+const CACHE_VERSION = "abd-v2.0.1";
 
 // Everything the app needs to run offline. All same-origin, so a failed fetch
 // fails the install (and retries next visit) instead of leaving a half-cached app.
