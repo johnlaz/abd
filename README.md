@@ -73,7 +73,9 @@ No build step. Deploy the folder as-is to GitHub Pages or any static host. The l
 
 **Refresh models.** When you paste a key, ABD asks Google which image-capable models that key can use and adds any new ones to the picker. You can also press **Refresh models from my key** any time. This only *adds* to the list: your existing models, default and saved selection are never replaced. If your saved model isn't in your key's current list it stays selected and gets a ⚠ flag, so you can decide.
 
-**Billing note.** Image generation on the newer models appears to need a billing account linked to the Google Cloud project behind your key (pay-as-you-go, a few cents per image). A `429` on render is almost always this, not a bug. Check AI Studio billing or try another model.
+**Paid key required.** Google lists no free tier for its Gemini image models, so rendering inside ABD needs a key from a billing-enabled Google project (pay-as-you-go, roughly 3–7¢ per image). A `429` or billing error on render is this, not a bug.
+
+**No paid key? Render manually.** If there's no key, or Google rejects the render for quota/billing, ABD opens a *Render manually* dialog (also reachable from Settings): download the layout PNG, copy the prompt, generate the image in the Gemini app or AI Studio (free accounts get a limited number per day), then **Import render** to bring it back for the header/footer, BOM legend, Library and Refine.
 
 **Render Notes** add per-project instructions on top of the automatic item legend, e.g. *"uplights should be blue"* or *"add a few people walking near the booth."*
 
@@ -111,6 +113,10 @@ If you move the app to a different path, update `id` and `start_url` in `app/man
 - No true 3D: items are flat images composited in 2D; the AI step adds depth, shadows and materials.
 
 ## Changelog
+
+### 2.0.1
+- Render now tells you up front that Gemini image models need a paid key, and falls back to a **manual render** dialog (download image, copy prompt, import the result) when there's no key or Google blocks the render
+- Toasts show at the top while a dialog is open so they no longer cover its buttons
 
 ### 2.0.0
 - **New name and look:** ABD, with a cobalt/cyan blueprint theme taken from the new icon
